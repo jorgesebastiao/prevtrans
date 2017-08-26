@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+#sidenav-overlay {
+  z-index: 1 !important;
+}
+.error-msg{
+  color: #ff0000;
+  position: absolute;
+  margin-top: -20px;
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+}
