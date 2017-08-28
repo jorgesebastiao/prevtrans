@@ -3,6 +3,7 @@ import { NgModule,  LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import 'materialize-css';
 import {MaterializeModule} from 'angular2-materialize';
 import {AgmCoreModule} from '@agm/core';
 

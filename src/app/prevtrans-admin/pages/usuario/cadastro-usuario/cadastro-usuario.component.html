@@ -1,0 +1,134 @@
+<div class="container">
+  <div clas="row">
+    <form materialize [formGroup]="usuarioForm"novalidate>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor" id ="limpa">
+            <label class="black-text" id="fom">Dados Pessoais</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Cpf Inválido">
+            <input id="cpf"  type="text"  prevtransMask="999.999.999-99" formControlName="cpf" autocomplete="off">
+            <label class="black-text text-darken-4"  for="cpf">Cpf</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="nome"  type="text" formControlName="nome" autocomplete="off">
+            <label class="black-text text-darken-4"  for="nome">Nome Completo</label>
+          </app-input-container>
+        </div>
+
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório">
+          <label class="grey-text text-darken-4" for="dataNascimento">Data Nascimento</label>
+          <input class="datepicker" id="dataNascimento" formControlName="dataNascimento" type="text" />
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l6">
+          <app-input-container errorMessage="E-mail inválido">
+            <input id="email"  type="text" formControlName="email" autocomplete="off">
+            <label class="black-text text-darken-4"  for="email">E-mail</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l3">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="telefone"  type="text"formControlName="telefone" autocomplete="off">
+            <label class="grey-text text-darken-4"  for="telefone">Telefone</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l3">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="celular" prevtransMask="(99)99999-9999" type="text" formControlName="celular" autocomplete="off">
+            <label class="grey-text text-darken-4"  for="celular">Celular</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor" id ="limpa">
+            <label class="black-text " id="fom">Endereço</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m4 l3">
+          <app-input-container errorMessage="Cep inválido">
+            <input id="cep" (blur)="consultaCep()"  prevtransMask="99999-999" type="text" formControlName="cep" autocomplete="off">
+            <label class="black-text text-darken-4"  for="cep">Cep</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l7">
+          <app-input-container errorMessage="Campo Obrigatorio">
+            <input id="endereco"  type="text" formControlName="endereco" autocomplete="off">
+            <label class="black-text text-darken-4"  for="endereco">Endereço</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container errorMessage="Número Inválido">
+            <input id="numero"  type="text" formControlName="numero" autocomplete="off">
+            <label class="black-text text-darken-4"  for="numero">Numero</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l4">
+          <app-input-container errorMessage="Campo Obrigátorio">
+            <input id="complemento"  type="text" formControlName="complemento" autocomplete="off">
+            <label class="black-text text-darken-4"  for="complemento">Complemento</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l4">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="bairro" formControlName="bairro" type="text" autocomplete="off">
+            <label  class="black-text text-darken-4" for="bairro">Bairro</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l1">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="estado" formControlName="estado" type="text">
+            <label  class="black-text text-darken-4" for="estado">Estado</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l3">
+          <app-input-container errorMessage="Campo Obrigatorio">
+            <input id="cidade" formControlName="cidade" type="text">
+            <label class="black-text text-darken-4" for="cidade" >Cidade</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor" id ="limpa">
+            <label class="black-text" id="fom">Dados de Acesso</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+      <div class="input-field col s12 m3 l4">
+        <app-input-container errorMessage="Campo Obrigátorio">
+          <input id="usuario"  type="text" formControlName="usuario" autocomplete="off">
+          <label class="black-text text-darken-4"  for="cpf">Usuário</label>
+        </app-input-container>
+      </div>
+      <div class="input-field col s12 m3 l4">
+        <app-input-container errorMessage="Campo Obrigátorio">
+          <input id="senha"  type="password"  formControlName="senha" autocomplete="off">
+          <label class="black-text text-darken-4"  for="senha">Senha</label>
+        </app-input-container>
+      </div>
+      <div class="input-field col s12 m3 l4">
+        <app-input-container errorMessage="Campo Obrigátorio">
+          <input id="confirmaSenha"  type="password" formControlName="confirmaSenha" autocomplete="off">
+          <label class="black-text text-darken-4"  for="confirmaSenha">Confirma Senha</label>
+        </app-input-container>
+      </div>
+      </div>
+      <div class="row">
+        <button class="amber accent-4 right waves-effect waves-yellow btn"><i class="material-icons left">clear</i>Cancelar</button>
+        <button (click)="salvar(usuarioForm.value)" [disabled]="!usuarioForm.valid" class="amber accent-4 right waves-effect waves-yellow btn"style="margin-right: 10px; "><i class="material-icons left">done</i>Salvar </button>
+      </div>
+    </form>
+  </div>
+</div>

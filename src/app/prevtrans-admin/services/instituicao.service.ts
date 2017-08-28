@@ -12,6 +12,7 @@ import {PrevtransAdminHerrorHandler} from '../prevtrans-admin-herror-handler';
 @Injectable()
 export class InstituicaoService {
 
+
   constructor(private http: Http) {
   }
 
@@ -29,6 +30,14 @@ export class InstituicaoService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(`${PREVTRANS_API}/instituicoes`,
+      JSON.stringify(instituicao),
+      new RequestOptions({headers: headers}))
+      .map(response => response.json());
+  }
+  putInstituicao(instituicao: Instituicao):Observable<String>{
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(`${PREVTRANS_API}/instituicoes`,
       JSON.stringify(instituicao),
       new RequestOptions({headers: headers}))
       .map(response => response.json());

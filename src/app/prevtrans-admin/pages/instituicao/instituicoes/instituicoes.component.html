@@ -1,0 +1,60 @@
+<nav id="menu">
+  <div class="nav-wrapper amber darken-1 col s12">
+    <ul id="nav-menu" class="left hide-on-med-and-down">
+      <li><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Instituição</a>
+      </li>
+      <li>
+        <form>
+          <div class="header-search-wrapper">
+            <i class="material-icons" style="margin-right: 15px">search</i>
+            <input class="header-search-input " placeholder="Pesquisar Instituição">
+          </div>
+        </form>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container" style="width: 90%; margin-top: 64px">
+  <div class="row">
+    <div class="col s12">
+      <table class="striped responsive-table">
+        <thead>
+        <tr>
+          <th>Instituição</th>
+          <th>Nome Fantasia</th>
+          <th>Cnpj</th>
+          <th>Inscrição Municipal</th>
+          <th>Inscricao Estadual</th>
+          <th>Telefone</th>
+          <th style="text-align: center" >Alterar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let instituicao of instituicoes">
+          <td>{{instituicao.razaoSocial}}</td>
+          <td>{{instituicao.nomeFantasia}}</td>
+          <td>{{instituicao.cnpj | cpnj}}</td>
+          <td>{{instituicao.inscricaoMunicipal}}</td>
+          <td>{{instituicao.inscricaoEstadual}}</td>
+          <td>{{instituicao.telefone}}</td>
+          <td style="text-align: center">
+            <a [routerLink]="[instituicao.idInstituicao]"
+               class="waves-effect waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!--<ul class="pagination">-->
+<!--<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>-->
+<!--<li class="active"><a href="#!">1</a></li>-->
+<!--<li class="waves-effect"><a href="#!">2</a></li>-->
+<!--<li class="waves-effect"><a href="#!">3</a></li>-->
+<!--<li class="waves-effect"><a href="#!">4</a></li>-->
+<!--<li class="waves-effect"><a href="#!">5</a></li>-->
+<!--<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>-->
+<!--</ul>-->
+
