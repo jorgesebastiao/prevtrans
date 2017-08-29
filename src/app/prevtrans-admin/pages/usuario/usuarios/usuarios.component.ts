@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Pessoa} from '../../../models';
+import {Pessoa} from '../../../../shared/models';
 
 
 @Component({

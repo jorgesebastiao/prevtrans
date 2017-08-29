@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
-import {AcidenteTransito} from '../../../models/acidenteTransito.model';
+import {AcidenteTransito} from '../../../../shared/models/acidenteTransito.model';
 
 declare var jQuery: any;
 
@@ -11,14 +11,14 @@ declare var jQuery: any;
 })
 export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
-  acidenteTransitoForm: FormGroup;
-  acidenteTransito: AcidenteTransito;
+  acidenteTransitoForm : FormGroup;
+  acidenteTransito : AcidenteTransito;
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.acidenteTransito= new AcidenteTransito();
-    this.acidenteTransitoForm=this.formBuilder.group(
+    this.acidenteTransitoForm = this.formBuilder.group(
       {
         tituloPublicacao: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
         descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(1000)])

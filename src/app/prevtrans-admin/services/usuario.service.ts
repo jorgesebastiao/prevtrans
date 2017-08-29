@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {PREVTRANS_API} from '../../app.api';
-import {Usuario} from '../models/usuario.model';
+import {Usuario} from '../../shared/models/usuario.model';
 import {PrevtransAdminHerrorHandler} from '../prevtrans-admin-herror-handler';
 
 @Injectable()

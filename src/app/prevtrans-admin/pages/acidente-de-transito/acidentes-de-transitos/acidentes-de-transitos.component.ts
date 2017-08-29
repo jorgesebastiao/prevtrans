@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AcidenteTransito} from '../../../models/acidenteTransito.model';
+import {AcidenteTransito} from '../../../../shared/models/acidenteTransito.model';
 
 @Component({
   selector: 'app-acidentes-de-transitos',

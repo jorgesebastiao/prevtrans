@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Pessoa, Usuario} from '../../../models';
+import {Pessoa, Usuario} from '../../../../shared/models';
 import {CepService, PessoaService, UsuarioService} from '../../../services';
 
 declare var jQuery: any;
@@ -28,7 +28,7 @@ export class CadastroUsuarioComponent implements OnInit {
 
   ngOnInit() {
     this.inicializaDataPick();
-    this.inicializaJquery();
+    this.inicializaMaterialize();
     this.validaForm();
     const id = this.routes.snapshot.params['id'];
     if (id) {
@@ -57,7 +57,7 @@ export class CadastroUsuarioComponent implements OnInit {
   }
 
   carregarUsuario(id: string) {
-
+    this.inicializaMaterialize();
   }
 
   consultaCep() {
@@ -74,8 +74,8 @@ export class CadastroUsuarioComponent implements OnInit {
             estado: dados.uf,
             cidade: dados.localidade
           });
+          this.inicializaMaterialize();
         });
-      this.inicializaJquery();
     }
   }
 
@@ -100,7 +100,7 @@ export class CadastroUsuarioComponent implements OnInit {
     });
   }
 
-  inicializaJquery() {
+  inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
     });

@@ -1,2 +1,1 @@
-export * from './usuarios';
-export * from './cadastro-usuario';
+export * from './usuario.module';

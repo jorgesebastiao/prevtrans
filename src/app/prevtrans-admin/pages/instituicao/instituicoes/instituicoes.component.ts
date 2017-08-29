@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router'
-import {Instituicao} from '../../../models/instituicao.model';
+import {Router} from '@angular/router';
+import {Instituicao} from '../../../../shared/models/instituicao.model';
 import {InstituicaoService} from '../../../services';
 
 declare var jQuery;
@@ -36,5 +36,5 @@ export class InstituicoesComponent implements OnInit {
         }
       });
     });
-  };
+  }
 }

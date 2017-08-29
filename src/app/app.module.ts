@@ -1,15 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule,  LOCALE_ID } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import 'materialize-css';
 import {MaterializeModule} from 'angular2-materialize';
 import {AgmCoreModule} from '@agm/core';
-
+import {SharedModule} from './shared/shared.module';
 import { AppComponent } from './app.component';
-import { PrevtransAdminModule } from './prevtrans-admin/prevtrans-admin.module';
-import { PrevtransPublicoModule } from './prevtrans-publico/prevtrans-publico.module';
 import {AppRoutes} from './app.routes';
 
 @NgModule({
@@ -18,11 +15,9 @@ import {AppRoutes} from './app.routes';
     ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpModule,
     MaterializeModule,
-    PrevtransAdminModule,
-    PrevtransPublicoModule,
+    SharedModule.forRoot(),
     AppRoutes,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyBM3AfwfdqdUA2NYbDrxelJzQBdI80hGwI'})
   ],

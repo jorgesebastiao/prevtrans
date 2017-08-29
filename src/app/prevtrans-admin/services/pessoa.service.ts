@@ -6,7 +6,7 @@ import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {PREVTRANS_API} from '../../app.api';
 import {PrevtransAdminHerrorHandler} from '../prevtrans-admin-herror-handler';
-import {Pessoa} from '../models';
+import {Pessoa} from '../../shared/models';
 
 @Injectable()
 export class PessoaService {

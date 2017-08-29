@@ -6,7 +6,7 @@ import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 
 import {PREVTRANS_API} from '../../app.api';
-import {Instituicao} from '../models/instituicao.model';
+import {Instituicao} from '../../shared/models/instituicao.model';
 import {PrevtransAdminHerrorHandler} from '../prevtrans-admin-herror-handler';
 
 @Injectable()

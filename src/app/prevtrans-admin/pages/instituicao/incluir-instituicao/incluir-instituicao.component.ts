@@ -1,8 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormGroup, FormControl, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 
-import {Instituicao} from '../../../models';
+import {Instituicao} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../services';
 
 declare var jQuery: any;
@@ -14,19 +14,24 @@ declare var Materialize: any;
   styleUrls: ['./incluir-instituicao.component.css']
 })
 export class IncluirInstituicaoComponent implements OnInit {
-  cnpjPattern= /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
-  cepPattern =  /^[0-9]{8}$/;
+  cnpjPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+  cepPattern = /^[0-9]{8}$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
   instituicao = new Instituicao();
-  instituicaoForm: FormGroup
-  constructor(private formBuilder: FormBuilder, private routes:  ActivatedRoute, private cepService: CepService, private instituicaoService:  InstituicaoService  ) { }
+  instituicaoForm: FormGroup;
+
+  constructor(private formBuilder: FormBuilder,
+              private routes: ActivatedRoute,
+              private cepService: CepService,
+              private instituicaoService: InstituicaoService) {
+  }
 
   ngOnInit() {
-    this.inicializaJquery();
+    this.inicializaMaterialize();
     this.validaForm();
-    const  id =  this.routes.snapshot.params['id'];
-    if  (id)  {
+    const id = this.routes.snapshot.params['id'];
+    if (id) {
       this.carregarInstituicao(id);
     }
   }
@@ -35,48 +40,52 @@ export class IncluirInstituicaoComponent implements OnInit {
     return Boolean(this.instituicao.idInstituicao);
   }
 
-  salvar(instituicao: Instituicao){
-    console.log(this.instituicaoForm.get('cnpj').value)
-    if(this.editando) {
+  salvar(instituicao: Instituicao) {
+    console.log(this.instituicaoForm.get('cnpj').value);
+    if (this.editando) {
       console.log('alterando');
       this.alterarInstituicao(instituicao);
-    }else{
+    } else {
       console.log('salvando');
       this.salvarInstituicao(instituicao);
     }
   }
 
-  salvarInstituicao(instituicao: Instituicao){
+  salvarInstituicao(instituicao: Instituicao) {
     console.log(instituicao);
     this.instituicaoService.postInstituicao(instituicao)
-     .subscribe(instituicao =>{ instituicao = instituicao
-         this.instituicaoForm.patchValue(instituicao)
-       }
-     );
-  }
-
-  alterarInstituicao(instituicao: Instituicao){
-    instituicao.idInstituicao=this.instituicao.idInstituicao;
-    console.log(instituicao);
-    this.instituicaoService.putInstituicao(instituicao)
-      .subscribe(instituicao =>{ instituicao = instituicao
+      .subscribe(instituicao => {
+          instituicao = instituicao
           this.instituicaoForm.patchValue(instituicao)
         }
       );
   }
 
-  carregarInstituicao(id: string){
-      this.instituicaoService.getInstituicao(id)
-      .subscribe(instituicao =>{ this.instituicao = instituicao
-      this.instituicaoForm.patchValue(this.instituicao)
+  alterarInstituicao(instituicao: Instituicao) {
+    instituicao.idInstituicao = this.instituicao.idInstituicao;
+    console.log(instituicao);
+    this.instituicaoService.putInstituicao(instituicao)
+      .subscribe(instituicao => {
+          instituicao = instituicao
+          this.instituicaoForm.patchValue(instituicao)
+        }
+      );
+  }
+
+  carregarInstituicao(id: string) {
+    this.instituicaoService.getInstituicao(id)
+      .subscribe(instituicao => {
+        this.instituicao = instituicao
+        this.instituicaoForm.patchValue(this.instituicao)
+        this.inicializaMaterialize();
       });
   }
 
-  consultaCep(){
+  consultaCep() {
     let cepBusca = this.instituicaoForm.get('cep').value;
     console.log(cepBusca)
-    if ( cepBusca && (cepBusca !== this.instituicao.cep)) {
-      this.instituicao.cep=cepBusca
+    if (cepBusca && (cepBusca !== this.instituicao.cep)) {
+      this.instituicao.cep = cepBusca
       this.cepService.consultaCep(cepBusca)
         .subscribe(dados => {
           this.instituicaoForm.patchValue({
@@ -86,12 +95,12 @@ export class IncluirInstituicaoComponent implements OnInit {
             estado: dados.uf,
             cidade: dados.localidade
           });
+          this.inicializaMaterialize();
         });
-      this.inicializaJquery();
     }
   }
 
-  validaForm(){
+  validaForm() {
     this.instituicaoForm = this.formBuilder.group({
       razaoSocial: this.formBuilder.control(null, [Validators.required, Validators.minLength(5)]),
       nomeFantasia: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
@@ -110,8 +119,9 @@ export class IncluirInstituicaoComponent implements OnInit {
       cidade: this.formBuilder.control('', [Validators.required, Validators.minLength(3)])
     });
   }
-  inicializaJquery(){
-    jQuery(document).ready(function() {
+
+  inicializaMaterialize() {
+    jQuery(document).ready(function () {
       Materialize.updateTextFields();
     });
   }

@@ -1,2 +1,1 @@
-export * from './acidentes-de-transitos';
-export * from './cadastro-acidente-de-transito';
+export * from './acidente-de-transito.module';

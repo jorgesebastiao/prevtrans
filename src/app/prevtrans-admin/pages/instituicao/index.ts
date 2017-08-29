@@ -1,2 +1,1 @@
-export  * from './incluir-instituicao';
-export  * from './instituicoes';
+export * from './instituicao.module';
