@@ -3,4 +3,4 @@ import {GraficosComponent} from './graficos.component';
 
 export const GraficosRoutes: Routes = [
   {path: '', component: GraficosComponent}
-]
+];

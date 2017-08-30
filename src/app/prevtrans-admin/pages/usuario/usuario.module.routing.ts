@@ -6,4 +6,4 @@ export const UsuarioRoutes: Routes = [
   {path: '', component: UsuariosComponent, pathMatch: 'full' },
   {path: 'novo', component: CadastroUsuarioComponent},
   {path: ':id', component: CadastroUsuarioComponent}
-]
+];

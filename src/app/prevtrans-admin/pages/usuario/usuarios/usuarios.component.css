@@ -12,9 +12,6 @@
     display: none!important;
   }
 }
-.input-search{
-  display: flex;
-}
 
 .header-search-wrapper {
   height: 40px;

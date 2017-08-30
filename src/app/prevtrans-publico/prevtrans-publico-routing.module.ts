@@ -1,10 +1,10 @@
 import {Routes} from '@angular/router';
-import {HomeComponent} from './home/home.component';
 import {AcidentesMapsComponent} from './acidentes-maps/acidentes-maps.component';
+import {PrevtransPublicoComponent} from './prevtrans-publico.component';
 
 export const PrevtransPublicoRoutes: Routes = [
   {
-    path: '', component: HomeComponent,
+    path: '', component: PrevtransPublicoComponent,
     children: [
       {path: '', component: AcidentesMapsComponent},
       {path: 'graficos', loadChildren: './graficos/graficos.module#GraficosModule'}

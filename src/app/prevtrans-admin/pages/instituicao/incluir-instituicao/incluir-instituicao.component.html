@@ -1,10 +1,10 @@
 <div class="container">
-  <div clas="row">
-    <form materialize [formGroup]="instituicaoForm"novalidate>
+  <div class="row">
+    <form materialize [formGroup]="instituicaoForm" novalidate>
       <div class="row">
         <div class="col s12">
-          <h1 class="divisor" id ="limpa">
-            <label class="black-text" id="fom">Dados Instituição</label>
+          <h1 class="divisor" >
+            <label class="black-text fom">Dados Instituição</label>
           </h1>
         </div>
       </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="input-field col s12 m4 l3">
           <app-input-container errorMessage="Campo Obrigatório">
-            <input id="telefone"  type="text"formControlName="telefone" autocomplete="off">
+            <input id="telefone"  type="text" formControlName="telefone" autocomplete="off">
             <label class="black-text"  for="telefone">Telefone</label>
           </app-input-container>
         </div>
@@ -60,8 +60,8 @@
       </div>
       <div class="row">
         <div class="col s12">
-          <h1 class="divisor" id ="limpa">
-            <label class="black-text " id="fom">Endereço</label>
+          <h1 class="divisor">
+            <label class="black-text fom" >Endereço</label>
           </h1>
         </div>
       </div>
@@ -111,7 +111,7 @@
       </div>
       <div class="row">
         <button class="amber accent-4 right waves-effect waves-yellow btn"><i class="material-icons left">clear</i>Cancelar</button>
-        <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid" class="amber accent-4 right waves-effect waves-yellow btn"style="margin-right: 10px; "><i class="material-icons left">done</i>Salvar </button>
+        <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid" class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i class="material-icons left">done</i>Salvar </button>
       </div>
     </form>
   </div>

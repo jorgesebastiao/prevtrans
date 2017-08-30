@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Pessoa, Usuario} from '../../../../shared/models';
 import {CepService, PessoaService, UsuarioService} from '../../../services';
+import {PrevtransCpfValidator} from '../../../validators/prevtrans-cpf-validator';
 
 declare var jQuery: any;
 declare var Materialize: any;
@@ -62,9 +63,9 @@ export class CadastroUsuarioComponent implements OnInit {
 
   consultaCep() {
     let cepBusca = this.usuarioForm.get('cep').value;
-    console.log(cepBusca)
+    console.log(cepBusca);
     if (cepBusca && (cepBusca !== this.pessoa.cep)) {
-      this.pessoa.cep = cepBusca
+      this.pessoa.cep = cepBusca;
       this.cepService.consultaCep(cepBusca)
         .subscribe(dados => {
           this.usuarioForm.patchValue({
@@ -81,7 +82,8 @@ export class CadastroUsuarioComponent implements OnInit {
 
   validaForm() {
     this.usuarioForm = this.formBuilder.group({
-      cpf: this.formBuilder.control(null, [Validators.required, Validators.minLength(5)]),
+      cpf: this.formBuilder.control(null, [Validators.required,  Validators.compose([
+        Validators.required, CadastroUsuarioComponent.validaCpf])]),
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       dataNascimento: this.formBuilder.control(null, [Validators.required, Validators.minLength(1)]),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
@@ -98,6 +100,10 @@ export class CadastroUsuarioComponent implements OnInit {
       senha: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       confirmaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
     });
+  }
+
+  static validaCpf(control: AbstractControl): {[key: string]: boolean} {
+    return PrevtransCpfValidator.validate(control);
   }
 
   inicializaMaterialize() {

@@ -27,7 +27,7 @@
         <tbody>
         <tr *ngFor="let acidenteTransito of acidentesTransitos">
           <td>{{acidenteTransito.idAcidenteTransito}}</td>
-          <a (click)="selecionaAcidenteTransito(acidenteTransito)"[routerLink]="[':id']"class="waves-effect waves-yellow btn-flat"><i class="material-icons">mode_edit</i></a>
+          <a (click)="selecionaAcidenteTransito(acidenteTransito)" [routerLink]="[':id']" class="waves-effect waves-yellow btn-flat"><i class="material-icons">mode_edit</i></a>
         </tr>
         </tbody>
       </table>

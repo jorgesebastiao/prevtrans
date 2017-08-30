@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {FormGroup, FormControl, FormBuilder, Validators, AbstractControl} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 
 import {Instituicao} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../services';
+import {PrevtransCnpjValidator} from '../../../validators/prevtrans-cnpj-validator';
 
 declare var jQuery: any;
 declare var Materialize: any;
@@ -14,7 +15,6 @@ declare var Materialize: any;
   styleUrls: ['./incluir-instituicao.component.css']
 })
 export class IncluirInstituicaoComponent implements OnInit {
-  cnpjPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
   cepPattern = /^[0-9]{8}$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
@@ -55,8 +55,8 @@ export class IncluirInstituicaoComponent implements OnInit {
     console.log(instituicao);
     this.instituicaoService.postInstituicao(instituicao)
       .subscribe(instituicao => {
-          instituicao = instituicao
-          this.instituicaoForm.patchValue(instituicao)
+        //  instituicao = instituicao;
+          this.instituicaoForm.patchValue(instituicao);
         }
       );
   }
@@ -66,8 +66,8 @@ export class IncluirInstituicaoComponent implements OnInit {
     console.log(instituicao);
     this.instituicaoService.putInstituicao(instituicao)
       .subscribe(instituicao => {
-          instituicao = instituicao
-          this.instituicaoForm.patchValue(instituicao)
+        //  instituicao = instituicao;
+          this.instituicaoForm.patchValue(instituicao);
         }
       );
   }
@@ -75,17 +75,17 @@ export class IncluirInstituicaoComponent implements OnInit {
   carregarInstituicao(id: string) {
     this.instituicaoService.getInstituicao(id)
       .subscribe(instituicao => {
-        this.instituicao = instituicao
-        this.instituicaoForm.patchValue(this.instituicao)
+        this.instituicao = instituicao;
+        this.instituicaoForm.patchValue(this.instituicao);
         this.inicializaMaterialize();
       });
   }
 
   consultaCep() {
     let cepBusca = this.instituicaoForm.get('cep').value;
-    console.log(cepBusca)
+    console.log(cepBusca);
     if (cepBusca && (cepBusca !== this.instituicao.cep)) {
-      this.instituicao.cep = cepBusca
+      this.instituicao.cep = cepBusca;
       this.cepService.consultaCep(cepBusca)
         .subscribe(dados => {
           this.instituicaoForm.patchValue({
@@ -104,7 +104,8 @@ export class IncluirInstituicaoComponent implements OnInit {
     this.instituicaoForm = this.formBuilder.group({
       razaoSocial: this.formBuilder.control(null, [Validators.required, Validators.minLength(5)]),
       nomeFantasia: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-      cnpj: this.formBuilder.control('', [Validators.required]),
+      cnpj: this.formBuilder.control('', Validators.compose([
+        Validators.required, IncluirInstituicaoComponent.validaCnpj])),
       inscricaoEstadual: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       inscricaoMunicipal: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
@@ -120,6 +121,9 @@ export class IncluirInstituicaoComponent implements OnInit {
     });
   }
 
+  static validaCnpj(control: AbstractControl): {[key: string]: boolean} {
+    return PrevtransCnpjValidator.validate(control);
+  }
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();

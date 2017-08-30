@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
-import { AdminComponent } from './admin/admin.component';
 import { HeaderAdminComponent } from './header-admin/header-admin.component';
 import {PrevtransAdminRoutes} from './prevtrans-admin-routing.module';
+import { PrevtransAdminComponent } from './prevtrans-admin.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild(PrevtransAdminRoutes)
   ],
-  declarations: [AdminComponent, HeaderAdminComponent],
+  declarations: [HeaderAdminComponent, PrevtransAdminComponent],
 })
 export class PrevtransAdminModule { }
