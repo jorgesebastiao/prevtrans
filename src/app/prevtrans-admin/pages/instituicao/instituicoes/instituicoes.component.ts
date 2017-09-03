@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Instituicao} from '../../../../shared/models/instituicao.model';
-import {InstituicaoService} from '../../../services';
+import {InstituicaoService} from '../../../../shared/services';
 
 declare var jQuery;
 

@@ -3,8 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 
 import {Instituicao} from '../../../../shared/models';
-import {CepService, InstituicaoService} from '../../../services';
-import {PrevtransCnpjValidator} from '../../../validators/prevtrans-cnpj-validator';
+import {CepService, InstituicaoService} from '../../../../shared/services';
+import {PrevtransCnpjValidator} from '../../../../shared/validators/prevtrans-cnpj-validator';
 
 declare var jQuery: any;
 declare var Materialize: any;

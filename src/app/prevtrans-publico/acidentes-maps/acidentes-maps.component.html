@@ -1,6 +1,31 @@
-<div class="col s12" id="map">
+<div materialize class="col s12" id="map">
   <agm-map class="box" [latitude]="lat" [longitude]="lng" [mapTypeId]="'roadmap'" [zoom]="zoom">
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
+                (markerClick)="clickedMarker(acidenteTransito)"
+                [latitude]="acidenteTransito.latitude"
+                [longitude]="acidenteTransito.longitude"
+                [openInfoWindow]="false"></agm-marker>
   </agm-map>
 </div>
 
+
+<div  id="exibe-informacao" class="modal scrollbar">
+  <div class="modal-content">
+    <h4>{{acidenteTransito.tituloPublicacao}}</h4>
+    <div class="slider">
+      <ul class="slides">
+        <li>
+          <img src=""> <!-- random image -->
+          <div class="caption center-align">
+            <h3>Prevtrans!</h3>
+            <h5 class="light grey-text text-lighten-3">Todos os Direitos Reservados</h5>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <p>{{acidenteTransito.descricao}}</p>
+  </div>
+  <div class="modal-footer">
+    <a  class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+  </div>
+</div>

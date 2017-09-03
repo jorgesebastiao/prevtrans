@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Pessoa, Usuario} from '../../../../shared/models';
-import {CepService, PessoaService, UsuarioService} from '../../../services';
-import {PrevtransCpfValidator} from '../../../validators/prevtrans-cpf-validator';
+import {CepService, PessoaService, UsuarioService} from '../../../../shared/services';
+import {PrevtransCpfValidator} from '../../../../shared/validators/prevtrans-cpf-validator';
 
 declare var jQuery: any;
 declare var Materialize: any;
