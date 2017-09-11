@@ -12,3 +12,27 @@
 .fom{
   font-size: 1.25rem;
 }
+
+.modal{
+  z-index: 10001;
+  margin: auto;
+  max-height: 80%;
+  height: 450px;
+}
+.modal-content{
+ position: absolute;
+}
+agm-map {
+  height: 100%;
+  position: relative;
+}
+#map{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  overflow: hidden;
+}
+.image-upload{
+  --active-color:#ffab00  !important;
+}

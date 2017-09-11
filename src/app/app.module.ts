@@ -8,15 +8,19 @@ import {AgmCoreModule} from '@agm/core';
 import {SharedModule} from './shared/shared.module';
 import { AppComponent } from './app.component';
 import {AppRoutes} from './app.routes';
+import {LoginModule} from './login/login.module';
+import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NaoAutorizadoComponent
     ],
   imports: [
     BrowserModule,
     HttpModule,
     MaterializeModule,
+    LoginModule,
     SharedModule.forRoot(),
     AppRoutes,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyBM3AfwfdqdUA2NYbDrxelJzQBdI80hGwI'})

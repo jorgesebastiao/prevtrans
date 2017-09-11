@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+
+import {AuthService} from '../../shared/seguranca/auth.service';
+import {LogoutService} from '../../shared/seguranca/logout.service';
+import {ErrorHandlerService} from 'app/shared';
 
 declare var jQuery: any;
 @Component({
@@ -9,7 +14,8 @@ declare var jQuery: any;
 
 export class HeaderAdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth: AuthService, private logoutService: LogoutService,
+              private errorHandler: ErrorHandlerService, private router: Router) { }
 
   ngOnInit() {
   this.inicializaNavBar();
@@ -27,5 +33,13 @@ export class HeaderAdminComponent implements OnInit {
         }
       });
     });
+  }
+
+  logout() {
+    this.logoutService.logout()
+      .then(() => {
+        this.router.navigate(['/login']);
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 }

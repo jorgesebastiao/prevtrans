@@ -1,36 +1,82 @@
 <div class="container">
   <div class="row">
-    <form  [formGroup]="acidenteTransitoForm" novalidate>
+    <form [formGroup]="acidenteTransitoForm" novalidate>
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
-            <label class="black-text fom" >Cadastro Acidente de Trânsito</label>
+            <label class="black-text fom">Cadastro Acidente de Trânsito</label>
           </h1>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s6 ">
+        <div class="input-field col s12 m12 l12 ">
           <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
-            <input id="titulo-publicacao"  type="text" formControlName="tituloPublicacao" autocomplete="off">
-            <label class="black-text text-darken-4"  for="titulo-publicacao">Titulo Publicação</label>
+            <input id="titulo-publicacao" type="text" formControlName="tituloPublicacao" autocomplete="off">
+            <label class="black-text text-darken-4" for="titulo-publicacao">Titulo Publicação</label>
           </app-input-container>
         </div>
-        <div class="file-field input-field col s6">
-          <div class="btn">
-            <span>Fotos</span>
-            <input type="file" multiple>
-          </div>
-          <div class="file-path-wrapper" >
-            <input class="file-path validate" type="text" placeholder="Carregar fotos">
-          </div>
-        </div>
-        <div class="input-field col s6 ">
+        <div class="input-field col s12 m12 l12">
           <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 1000 caracteres">
             <textarea id="descricao" formControlName="descricao" class="materialize-textarea"></textarea>
-            <label class="black-text text-darken-4" for="descricao">Descrição Acidente de Trânsito</label>
+            <label class="black-text text-darken-4" for="descricao">Descrição do Acidente de Trânsito</label>
           </app-input-container>
         </div>
       </div>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Localização do Acidente de Trânsito</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <input id="latitude" type="text" formControlName="latitude" autocomplete="off">
+            <label class="black-text text-darken-4" for="latitude">Latitude</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <input id="longitude" type="text" formControlName="longitude" autocomplete="off">
+            <label class="black-text text-darken-4" for="longitude">Longitude</label>
+          </app-input-container>
+        </div>
+        <a (click)="buscaLatitudeLongitude()" class="waves-effect waves-light btn-large"><i class="material-icons left">search</i>Buscar no mapa</a>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Imagens</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <image-upload class="col s12 " url="https://httpbin.org/status/200"
+                      [buttonCaption]="'Selecionar imagens'"
+                      [dropBoxMessage]="'Solte suas imagens aqui!'"
+                      [extensions]="['jpeg','png']"></image-upload>
+      </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal Mapa Busca Acidente de Trânsito -->
+<div id="modal-busca" class="modal">
+  <div class="modal-content">
+    <div materialize id="map">
+      <agm-map class="box" [latitude]="lat" [longitude]="lng" [mapTypeId]="'roadmap'" [zoom]="zoom">
+      <!--  <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
+                    (markerClick)="clickedMarker(acidenteTransito)"
+                    [latitude]="acidenteTransito.latitude"
+                    [longitude]="acidenteTransito.longitude"
+                    [openInfoWindow]="false"></agm-marker>-->
+      </agm-map>
+    </div>
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
   </div>
 </div>

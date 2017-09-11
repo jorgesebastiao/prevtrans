@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {AgmCoreModule} from '@agm/core';
 import {SharedModule} from '../shared/shared.module';
 import {PrevtransPublicoRoutes} from './prevtrans-publico-routing.module';
 import { PrevtransPublicoComponent } from './prevtrans-publico.component';
@@ -11,8 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 @NgModule({
   imports: [
     SharedModule,
-    RouterModule.forChild(PrevtransPublicoRoutes),
-    AgmCoreModule
+    RouterModule.forChild(PrevtransPublicoRoutes)
   ],
   declarations: [ PrevtransPublicoComponent, HeaderComponent, AcidentesMapsComponent, FooterComponent]
 })

@@ -91,7 +91,7 @@ export class CadastroUsuarioComponent implements OnInit {
       celular: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       cep: this.formBuilder.control('', [Validators.required, Validators.pattern(this.cepPattern)]),
       endereco: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      numero: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
+      numero: this.formBuilder.control(''),
       complemento: this.formBuilder.control(''),
       bairro: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       estado: this.formBuilder.control('', [Validators.required, Validators.minLength(2)]),

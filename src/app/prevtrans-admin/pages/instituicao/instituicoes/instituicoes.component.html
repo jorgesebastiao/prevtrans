@@ -1,7 +1,7 @@
 <nav id="menu">
   <div class="nav-wrapper amber darken-1 col s12">
     <ul id="nav-menu" class="left hide-on-med-and-down">
-      <li><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Instituição</a>
+      <li *ngIf="auth.temPermissao('ROLE_CADASTRAR_INSTITUICAO')"><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Instituição</a>
       </li>
       <li>
         <form>
@@ -27,7 +27,7 @@
           <th>Inscrição Municipal</th>
           <th>Inscricao Estadual</th>
           <th>Telefone</th>
-          <th style="text-align: center" >Alterar</th>
+          <th  *ngIf="auth.temPermissao('ROLE_ALTERAR_INSTITUICAO')" style="text-align: center" >Alterar</th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
           <td>{{instituicao.inscricaoEstadual}}</td>
           <td>{{instituicao.telefone}}</td>
           <td style="text-align: center">
-            <a [routerLink]="[instituicao.idInstituicao]"
+            <a *ngIf="auth.temPermissao('ROLE_ALTERAR_INSTITUICAO')" [routerLink]="[instituicao.idInstituicao]"
                class="waves-effect waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
           </td>
         </tr>
@@ -48,6 +48,7 @@
     </div>
   </div>
 </div>
+
 <!--<ul class="pagination">-->
 <!--<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>-->
 <!--<li class="active"><a href="#!">1</a></li>-->

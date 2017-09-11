@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
+import {ToastyService} from 'ng2-toasty';
 
 import {Instituicao} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
@@ -23,12 +24,15 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
+              private router: Router,
               private cepService: CepService,
-              private instituicaoService: InstituicaoService) {
+              private instituicaoService: InstituicaoService,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
     this.inicializaMaterialize();
+    this.inicializaModal();
     this.validaForm();
     const id = this.routes.snapshot.params['id'];
     if (id) {
@@ -40,6 +44,10 @@ export class IncluirInstituicaoComponent implements OnInit {
     return Boolean(this.instituicao.idInstituicao);
   }
 
+  confirma() {
+    jQuery('#modal-instituicao').modal('open');
+  }
+
   salvar(instituicao: Instituicao) {
     console.log(this.instituicaoForm.get('cnpj').value);
     if (this.editando) {
@@ -49,13 +57,14 @@ export class IncluirInstituicaoComponent implements OnInit {
       console.log('salvando');
       this.salvarInstituicao(instituicao);
     }
+    this.addToast();
   }
 
   salvarInstituicao(instituicao: Instituicao) {
     console.log(instituicao);
     this.instituicaoService.postInstituicao(instituicao)
       .subscribe(instituicao => {
-        //  instituicao = instituicao;
+          this.router.navigate(['admin/instituicoes']);
           this.instituicaoForm.patchValue(instituicao);
         }
       );
@@ -66,10 +75,14 @@ export class IncluirInstituicaoComponent implements OnInit {
     console.log(instituicao);
     this.instituicaoService.putInstituicao(instituicao)
       .subscribe(instituicao => {
-        //  instituicao = instituicao;
-          this.instituicaoForm.patchValue(instituicao);
+        this.router.navigate(['admin/instituicoes']);
+        this.instituicaoForm.patchValue(instituicao);
         }
       );
+  }
+
+  cancelar(){
+    this.router.navigate(['admin/instituicoes']);
   }
 
   carregarInstituicao(id: string) {
@@ -113,7 +126,7 @@ export class IncluirInstituicaoComponent implements OnInit {
       celular: this.formBuilder.control(''),
       cep: this.formBuilder.control('', [Validators.required, Validators.pattern(this.cepPattern)]),
       endereco: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      numero: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
+      numero: this.formBuilder.control(''),
       complemento: this.formBuilder.control(''),
       bairro: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       estado: this.formBuilder.control('', [Validators.required, Validators.minLength(2)]),
@@ -121,12 +134,28 @@ export class IncluirInstituicaoComponent implements OnInit {
     });
   }
 
-  static validaCnpj(control: AbstractControl): {[key: string]: boolean} {
+  static validaCnpj(control: AbstractControl): { [key: string]: boolean } {
     return PrevtransCnpjValidator.validate(control);
   }
+
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
+    });
+  }
+
+  inicializaModal() {
+    jQuery(document).ready(function () {
+      jQuery('.modal').modal();
+    });
+  }
+
+  addToast() {
+    this.toastyService.success({
+      title: 'Alteração realizada com sucesso!',
+      showClose: true,
+      timeout: 10000000,
+      theme: 'default'
     });
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-prevtrans-admin',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrevtransAdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+  exibiNavBar(){
+  return this.router.url !== '/admin/login';
   }
 
 }
