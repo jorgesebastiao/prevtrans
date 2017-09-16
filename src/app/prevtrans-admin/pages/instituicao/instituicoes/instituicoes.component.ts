@@ -20,7 +20,7 @@ export class InstituicoesComponent implements OnInit {
 
   constructor(private router: Router,
               private instituicaoService: InstituicaoService,
-              private auth: AuthService,
+              public auth: AuthService,
               private errorHandler: ErrorHandlerService,
               private toastyService: ToastyService) {
   }

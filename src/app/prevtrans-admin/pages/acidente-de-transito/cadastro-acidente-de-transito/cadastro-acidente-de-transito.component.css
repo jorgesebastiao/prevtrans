@@ -20,7 +20,7 @@
   height: 450px;
 }
 .modal-content{
- position: absolute;
+ position: relative;
 }
 agm-map {
   height: 100%;

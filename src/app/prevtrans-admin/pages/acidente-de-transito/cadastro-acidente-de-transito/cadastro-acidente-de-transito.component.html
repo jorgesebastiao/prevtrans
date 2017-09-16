@@ -9,10 +9,22 @@
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s12 m12 l12 ">
+        <div class="input-field col s12 m4 l8 ">
           <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
             <input id="titulo-publicacao" type="text" formControlName="tituloPublicacao" autocomplete="off">
             <label class="black-text text-darken-4" for="titulo-publicacao">Titulo Publicação</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container>
+            <input id="data" formControlName="data" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="data">Data</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container>
+            <input class="timepicker" id="hora" formControlName="hora" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="hora">Hora</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m12 l12">
@@ -30,6 +42,8 @@
         </div>
       </div>
       <div class="row">
+        <a (click)="buscaLatitudeLongitude()" class="col s12 m3 l3 waves-effect waves-light btn-large"><i
+          class="material-icons left">search</i>Buscar no mapa</a>
         <div class="input-field col s12 m3 l3">
           <app-input-container errorMessage="Campo Obrigatório ">
             <input id="latitude" type="text" formControlName="latitude" autocomplete="off">
@@ -42,7 +56,96 @@
             <label class="black-text text-darken-4" for="longitude">Longitude</label>
           </app-input-container>
         </div>
-        <a (click)="buscaLatitudeLongitude()" class="waves-effect waves-light btn-large"><i class="material-icons left">search</i>Buscar no mapa</a>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Cep inválido">
+            <input id="cep" prevtransMask="99999-999" type="text" formControlName="cep" autocomplete="off">
+            <label class="black-text text-darken-4" for="cep">Cep</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l8">
+          <app-input-container errorMessage="Campo Obrigatorio">
+            <input id="endereco" type="text" formControlName="endereco" autocomplete="off">
+            <label class="black-text text-darken-4" for="endereco">Endereço</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l4">
+          <app-input-container>
+            <input id="complemento" type="text" formControlName="complemento" autocomplete="off">
+            <label class="black-text text-darken-4" for="complemento">Complemento</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l5">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="bairro" formControlName="bairro" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="bairro">Bairro</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l5">
+          <app-input-container errorMessage="Campo Obrigatorio">
+            <input id="cidade" formControlName="cidade" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="cidade">Cidade</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container>
+            <input id="estado" formControlName="estado" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="estado">Estado</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Dados Acidente de Trânsito</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m4 l2">
+          <app-input-container>
+            <input id="quantidadeVitimas" formControlName="quantidadeVitimas" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="quantidadeVitimas">Quantidade de Vitimas</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Veiculos Envolvidos</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <a (click)="abreModalVeiculo()" class="col s12 m3 l3 waves-effect waves-light btn-large"><i
+          class="material-icons left">add</i>Adicionar Veiculo</a>
+        <div class="col s12">
+          <table class="striped responsive-table">
+            <thead>
+            <tr>
+              <th>TIPO VEICULO</th>
+              <th>FABRICANTE</th>
+              <th>MARCA</th>
+              <th>PLACA</th>
+              <th>DESCRIÇÃO</th>
+              <th>NUMERO DE OCUPANTES</th>
+              <th style="text-align: center">ALTERAR</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let veiculoT of veiculos">
+              <td>{{veiculoT.tipoVeiculo.tipoVeiculo}}</td>
+              <td>{{veiculoT.fabricante}}</td>
+              <td>{{veiculoT.marca}}</td>
+              <td>{{veiculoT.placa}}</td>
+              <td>{{veiculoT.descricao}}</td>
+              <td>{{veiculoT.numeroOcupantes}}</td>
+              <td style="text-align: center">
+                <a class="waves-effect waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="row">
         <div class="col s12">
@@ -57,6 +160,15 @@
                       [dropBoxMessage]="'Solte suas imagens aqui!'"
                       [extensions]="['jpeg','png']"></image-upload>
       </div>
+      <div class="row">
+        <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
+        </button>
+        <button (click)="salvar(acidenteTransitoForm.value)" [disabled]="!acidenteTransitoForm.valid"
+                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
+          class="material-icons left">done</i>Salvar
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -66,11 +178,11 @@
   <div class="modal-content">
     <div materialize id="map">
       <agm-map class="box" [latitude]="lat" [longitude]="lng" [mapTypeId]="'roadmap'" [zoom]="zoom">
-      <!--  <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
-                    (markerClick)="clickedMarker(acidenteTransito)"
-                    [latitude]="acidenteTransito.latitude"
-                    [longitude]="acidenteTransito.longitude"
-                    [openInfoWindow]="false"></agm-marker>-->
+        <!--  <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
+                      (markerClick)="clickedMarker(acidenteTransito)"
+                      [latitude]="acidenteTransito.latitude"
+                      [longitude]="acidenteTransito.longitude"
+                      [openInfoWindow]="false"></agm-marker>-->
       </agm-map>
     </div>
     <h4>Modal Header</h4>
@@ -78,5 +190,71 @@
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+
+<!-- Modal Mapa Busca Acidente de Trânsito -->
+<div id="modal-veiculo" class="modal">
+  <div class="modal-content">
+    {{veiculoForm.value | json}}
+    <form [formGroup]="veiculoForm" novalidate>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Adicionar Veiculo</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m4 l6 ">
+          <!--<app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+          </app-input-container>-->
+          <select id="tipo-veiculo"  type="text" formControlName="tipoVeiculo" autocomplete="off"[(ngModel)]="tipoVeiculo">
+            <option value="" disabled selected>Selecione Tipo Veiculo</option>
+            <option  *ngFor="let tipoVeiculo of tiposVeiculos " [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}</option>
+          </select>
+          <label class="black-text text-darken-4" for="tipo-veiculo">Tipo Veiculo</label>
+        </div>
+        <div class="input-field col s12 m4 l6 ">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+            <input id="fabricante" type="text" formControlName="fabricante" autocomplete="off">
+            <label class="black-text text-darken-4" for="fabricante">Fabricante</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l6 ">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+            <input id="marca" type="text" formControlName="marca" autocomplete="off">
+            <label class="black-text text-darken-4" for="marca">Marca</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l6 ">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+            <input id="placa" type="text" formControlName="placa" autocomplete="off">
+            <label class="black-text text-darken-4" for="placa">Placa</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l6 ">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+            <input id="descricao" type="text" formControlName="descricao" autocomplete="off">
+            <label class="black-text text-darken-4" for="descricao">Descrição</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l6 ">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+            <input id="numeroOcupantes" type="text" formControlName="numeroOcupantes" autocomplete="off">
+            <label class="black-text text-darken-4" for="numeroOcupantes">Numero Ocupantes</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <button (click)="fechaModalVeiculo()" class="amber accent-4 right waves-effect waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
+        </button>
+        <button (click)="adicionaVeiculo(veiculoForm.value)" [disabled]="!veiculoForm.valid"
+                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
+          class="material-icons left">done</i>Adicionar
+        </button>
+      </div>
+    </form>
   </div>
 </div>

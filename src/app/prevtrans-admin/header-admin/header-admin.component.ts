@@ -14,7 +14,7 @@ declare var jQuery: any;
 
 export class HeaderAdminComponent implements OnInit {
 
-  constructor(private auth: AuthService, private logoutService: LogoutService,
+  constructor(public auth: AuthService, private logoutService: LogoutService,
               private errorHandler: ErrorHandlerService, private router: Router) { }
 
   ngOnInit() {

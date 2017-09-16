@@ -8,7 +8,7 @@ import { Http, RequestOptions } from '@angular/http';
 import {MoneyHttp} from '../shared/seguranca/money-http.service';
 import {AuthService} from '../shared/seguranca/auth.service';
 import {AuthGuard} from '../shared/seguranca/auth.guard';
-import {LogoutService} from "../shared/seguranca/logout.service";
+import {LogoutService} from '../shared/seguranca/logout.service';
 
 export function authHttpServiceFactory(auth: AuthService, http: Http, options: RequestOptions) {
   const config = new AuthConfig({
