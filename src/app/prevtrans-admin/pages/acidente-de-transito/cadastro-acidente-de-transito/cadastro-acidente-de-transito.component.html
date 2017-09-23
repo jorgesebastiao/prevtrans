@@ -155,10 +155,13 @@
         </div>
       </div>
       <div class="row">
-        <image-upload class="col s12 " url="https://httpbin.org/status/200"
+        <image-upload class="col s12 "
                       [buttonCaption]="'Selecionar imagens'"
                       [dropBoxMessage]="'Solte suas imagens aqui!'"
-                      [extensions]="['jpeg','png']"></image-upload>
+                      [extensions]="['jpeg','png']"
+                      (onFileUploadFinish)="imageUploaded($event)"
+                      (onRemove)="imageRemoved($event)"
+                      (isPending)="disableSendButton($event)"></image-upload>
       </div>
       <div class="row">
         <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i

@@ -3,6 +3,8 @@ import {Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 import {AcidenteTransito, Veiculo} from '../../../../shared/models';
 import {TipoVeiculo} from '../../../../shared/models/tipoVeiculo.model';
+import {PREVTRANS_API} from '../../../../app.api';
+import {AcidenteTransitoService} from '../../../../shared/services/acidente-transito.service';
 
 declare var jQuery: any;
 declare var Materialize: any;
@@ -46,7 +48,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     }
   ];
   veiculo : Veiculo;
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private acidenteTransitoService: AcidenteTransitoService) { }
 
   lat:  number=  -27.900756;
   lng:  number=  -50.756954;
@@ -147,5 +149,22 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.veiculo.tipoVeiculo = this.veiculoForm.get('tipoVeiculo').value
     console.log(this.veiculo.tipoVeiculo);
   //  this.veiculos = this.veiculos.concat(this.veiculo);Tracks
+  }
+  imageUploaded(event){
+   this.acidenteTransitoService.uploadImagem(event).then(
+     () => {
+      alert('upload realizado com sucesso!');
+     }
+   )
+     .catch(erro => {
+      console.log(erro);
+     });
+  }
+
+  imageRemoved(event){
+    console.log(event);
+  }
+  disableSendButton(event){
+
   }
 }

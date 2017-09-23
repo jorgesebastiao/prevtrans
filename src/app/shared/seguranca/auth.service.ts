@@ -3,7 +3,7 @@ import { Http, Headers } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import {AUTH_LOGIN } from './../../app.api';
-import {JwtHelper} from "angular2-jwt";
+import {JwtHelper} from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
