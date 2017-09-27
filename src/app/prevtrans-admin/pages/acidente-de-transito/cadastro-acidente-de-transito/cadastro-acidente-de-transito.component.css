@@ -21,6 +21,7 @@
 }
 .modal-content{
  position: relative;
+ height: 75%;
 }
 agm-map {
   height: 100%;
