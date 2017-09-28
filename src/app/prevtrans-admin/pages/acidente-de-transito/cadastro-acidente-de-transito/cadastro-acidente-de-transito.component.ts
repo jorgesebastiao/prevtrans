@@ -3,13 +3,12 @@ import {Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 import {AcidenteTransito, Veiculo} from '../../../../shared/models';
 import {TipoVeiculo} from '../../../../shared/models/tipoVeiculo.model';
-import {PREVTRANS_API} from '../../../../app.api';
 import {AcidenteTransitoService} from '../../../../shared/services/acidente-transito.service';
-import {LatLngLiteral, MapsAPILoader} from '@agm/core';
+import {GoogleMapsService} from '../../../../shared/services/google-maps.service';
+import {Localizacao} from '../../../../shared/models/localizacao.model';
 
 declare var jQuery: any;
 declare var Materialize: any;
-declare var google: any;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -18,7 +17,7 @@ declare var google: any;
 })
 export class CadastroAcidenteDeTransitoComponent implements OnInit {
   cepPattern = /^[0-9]{8}$/;
-
+  localizacao: Localizacao;
   acidenteTransitoForm: FormGroup;
   veiculoForm: FormGroup;
   acidenteTransito: AcidenteTransito;
@@ -55,7 +54,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private acidenteTransitoService: AcidenteTransitoService,
-              private loader: MapsAPILoader) {
+              private googleMapsService: GoogleMapsService) {
   }
 
   lat: number = -27.900756;
@@ -66,6 +65,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.veiculo = new Veiculo();
     this.tipoVeiculo = new TipoVeiculo();
     this.acidenteTransito = new AcidenteTransito();
+    this.localizacao= new Localizacao();
     this.validaForm();
     this.inicializaMaterialize();
     this.inicializaModal();
@@ -197,40 +197,20 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   mapClicked(event) {
-    console.log(event);
-    const latLng: LatLngLiteral = {
-      lat: event.coords.lat,
-      lng: event.coords.lng
-    };
-    this.loader.load().then(() => {
-      console.log(latLng);
-      const geoCoder = new google.maps.Geocoder();
-      geoCoder.geocode({'location': latLng}, (results, status) => {
-        if (status === google.maps.GeocoderStatus.OK) {
-          const localizacao = results[0].address_components;
-          console.log(localizacao);
-          for (let loc of localizacao) {
-            if (loc.types[0] === 'route') {
-              console.log(loc);
-            }
-            if (loc.types[0] === 'sublocality_level_1') {
-              console.log(loc);
-            }
-            if (loc.types[0] === 'administrative_area_level_2') {
-              console.log(loc);
-            }
-            if (loc.types[0] === 'administrative_area_level_1') {
-              console.log(loc);
-            }
-            if (loc.types[0] === 'country') {
-              console.log(loc);
-            }
-            if (loc.types[0] === '"postal_code"') {
-              console.log(loc);
-            }
-          }
+    this.googleMapsService.localizacaoAcidente(event.coords.lat, event.coords.lng)
+      .subscribe(
+        localizacao => {
+          this.localizacao = localizacao;
+          console.log('ok'+ localizacao);
         }
-      });
-    });
+      );
+  }
+  fechaMapaBusca(){
+    jQuery('#modal-busca').modal('close');
+  }
+  adicionaLocalizacao(){
+    this.acidenteTransitoForm.patchValue(this.localizacao);
+    jQuery('#modal-busca').modal('close');
+    this.inicializaMaterialize();
   }
 }

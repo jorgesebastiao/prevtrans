@@ -11,7 +11,8 @@ import {AcidenteTransitoService,
 InstituicaoService,
 PessoaService,
 CepService,
-UsuarioService} from './services';
+UsuarioService,
+GoogleMapsService} from './services';
 import {AuthService} from './seguranca/auth.service';
 import {ErrorHandlerService} from './error-handler.service';
 
@@ -39,6 +40,7 @@ export class SharedModule {
         InstituicaoService,
         PessoaService,
         CepService,
+        GoogleMapsService,
         UsuarioService,
         AuthService,
         JwtHelper]

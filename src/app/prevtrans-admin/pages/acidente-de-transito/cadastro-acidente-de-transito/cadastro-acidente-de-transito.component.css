@@ -19,13 +19,13 @@
   max-height: 80%;
   height: 450px;
 }
-.modal-content{
- position: relative;
- height: 75%;
-}
+
 agm-map {
   height: 100%;
   position: relative;
+}
+.mapa-content{
+  padding: 0!important;
 }
 #map{
   width: 100%;

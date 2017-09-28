@@ -4,6 +4,7 @@ export  * from './cidade.model';
 export  * from './dadosAcidenteTransito.model';
 export  * from './estado.model';
 export  * from './instituicao.model';
+export  * from './localizacao.model';
 export  * from './pessoa.model';
 export  * from './tipoVeiculo.model';
 export  * from './usuario.model';
