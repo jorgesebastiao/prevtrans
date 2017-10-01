@@ -155,10 +155,14 @@
         </div>
       </div>
       <div class="row">
-        <img class="materialboxed col s12 m3 l3" src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
-        <img class="materialboxed col s12 m3 l3" src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
-        <img class="materialboxed col s12 m3 l3" src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
-        <img class="materialboxed col s12 m3 l3" src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
+        <img class="materialboxed col s12 m3 l3"
+             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
+        <img class="materialboxed col s12 m3 l3"
+             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
+        <img class="materialboxed col s12 m3 l3"
+             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
+        <img class="materialboxed col s12 m3 l3"
+             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
       </div>
       <div class="row">
         <image-upload class="col s12 "
@@ -184,26 +188,22 @@
 
 <!-- Modal Mapa Busca Acidente de Trânsito -->
 <div id="modal-busca" class="modal  modal-fixed-footer mapa-busca">
-  <div class="modal-content mapa-content ">
-    <div materialize id="map">
-      <agm-map [latitude]="lat"
-               [longitude]="lng"
-               [mapTypeId]="'roadmap'"
-               [zoom]="zoom"
-               (mapClick)="mapClicked($event)">
-         <agm-marker [latitude]="localizacao.latitude"
-                     [longitude]="localizacao.longitude" ></agm-marker>-->
-      </agm-map>
+  <div class="modal-content">
+    <div class="row map-container">
+      <div materialize class="col s12" id="map">
+          <agm-map [latitude]="lat"
+                   [longitude]="lng"
+                   [mapTypeId]="'roadmap'"
+                   [zoom]="zoom"
+                   (mapClick)="mapClicked($event)">
+            <agm-marker [latitude]="localizacao.latitude"
+                        [longitude]="localizacao.longitude"></agm-marker>
+          </agm-map>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
     <div class="row">
-      <!--<div class="input-field col s12 m4 l6 ">
-        <select id="cidade-busca"  type="text" formControlName="cidadeBusca" autocomplete="off">
-          <option value="" disabled selected>Selecione Cidade</option>
-        </select>
-        <label class="black-text text-darken-4" for="cidade-busca">Cidade</label>
-      </div>-->
       <button (click)="fechaMapaBusca()" class="amber accent-4 right waves-effect waves-yellow btn"><i
         class="material-icons left">clear</i>Cancelar
       </button>
@@ -231,9 +231,11 @@
         <div class="input-field col s12 m4 l6 ">
           <!--<app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
           </app-input-container>-->
-          <select id="tipo-veiculo"  type="text" formControlName="tipoVeiculo" autocomplete="off"[(ngModel)]="tipoVeiculo">
+          <select id="tipo-veiculo" type="text" formControlName="tipoVeiculo" autocomplete="off"
+                  [(ngModel)]="tipoVeiculo">
             <option value="" disabled selected>Selecione Tipo Veiculo</option>
-            <option  *ngFor="let tipoVeiculo of tiposVeiculos " [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}</option>
+            <option *ngFor="let tipoVeiculo of tiposVeiculos " [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}
+            </option>
           </select>
           <label class="black-text text-darken-4" for="tipo-veiculo">Tipo Veiculo</label>
         </div>
