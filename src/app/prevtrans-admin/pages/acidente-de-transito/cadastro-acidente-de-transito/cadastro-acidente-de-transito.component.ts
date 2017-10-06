@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
   FormGroup, FormBuilder, Validators, AbstractControl, FormControl
@@ -9,8 +9,9 @@ import {AcidenteTransitoService} from '../../../../shared/services/acidente-tran
 import {GoogleMapsService} from '../../../../shared/services/google-maps.service';
 import {Localizacao} from '../../../../shared/models/localizacao.model';
 import {AgmMap} from '@agm/core';
-import {ToastyService} from "ng2-toasty";
-import {TipoVeiculoService} from "../../../../shared/services/tipo-veiculo.service";
+import {ToastyService} from 'ng2-toasty';
+import {TipoVeiculoService} from '../../../../shared/services/tipo-veiculo.service';
+import {MaterializeAction} from 'angular2-materialize';
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -34,9 +35,11 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   veiculo: Veiculo;
   tiposVeiculos: TipoVeiculo[];
 
+  modalActions = new EventEmitter<string | MaterializeAction>();
+
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private routes: ActivatedRoute,
+              private activeRoute: ActivatedRoute,
               private toastyService: ToastyService,
               private acidenteTransitoService: AcidenteTransitoService,
               private googleMapsService: GoogleMapsService,
@@ -46,15 +49,15 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   ngOnInit() {
     this.veiculo = new Veiculo();
     this.acidenteTransito = new AcidenteTransito();
-    this.acidenteTransito.urlFotos= new Array<String>();
+    this.acidenteTransito.urlFotos = new Array<String>();
     this.localizacao = new Localizacao();
     this.validaForm();
     this.inicializaMaterialize();
-    this.inicializaModal();
-    this.inilializaTime();
+    // this.inicializaModal();
+    // this.inilializaTime();
     this.inicializaMaterialBox();
     this.listaTiposVeiculos();
-    const id = this.routes.snapshot.params['id'];
+    const id = this.activeRoute.snapshot.params['id'];
     if (id) {
       this.carregarAcidenteTransito(id);
     }
@@ -103,7 +106,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
       .then(() => this.myMap._mapsWrapper.setCenter({lat: this.lat, lng: this.lng}));
   }
 
-  private selectMap() {
+  selectMap() {
+    console.log('erros rend map');
     this.redrawMap();
   }
 
@@ -129,6 +133,16 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   buscaLatitudeLongitude() {
     this.selectMap();
     jQuery('#modal-busca').modal('open');
+  }
+
+  openModal() {
+    this.selectMap();
+    this.modalActions.emit({action: 'modal', params: ['open']});
+    this.selectMap();
+  }
+
+  closeModal() {
+    this.modalActions.emit({action: 'modal', params: ['close']});
   }
 
   get editando() {
@@ -165,7 +179,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   alterarAcidenteTransito(acidenteTransito: AcidenteTransito) {
-    acidenteTransito.idAcidenteTransito=this.acidenteTransito.idAcidenteTransito;
+    acidenteTransito.idAcidenteTransito = this.acidenteTransito.idAcidenteTransito;
     this.acidenteTransitoService.putAcidenteDeTransito(acidenteTransito)
       .subscribe(acidenteTransito => {
         this.acidenteTransitoForm.patchValue(acidenteTransito);
@@ -239,18 +253,13 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.veiculos.push(this.veiculo);
   }
 
-  /*
-    byIdTipoVeiculo(item1: TipoVeiculo, item2: TipoVeiculo) {
-      return item1.idTipoVeiculo === item2.idTipoVeiculo;
-    }*/
-
   imageUploaded(event) {
     const formData: FormData = new FormData();
     formData.append('file', event.file);
     this.acidenteTransitoService.upload(formData).subscribe(url => {
       console.log(url);
-    this.acidenteTransito.urlFotos.push(url);
-    console.log(this.acidenteTransito.urlFotos);
+      this.acidenteTransito.urlFotos.push(url);
+      console.log(this.acidenteTransito.urlFotos);
     });
   }
 
