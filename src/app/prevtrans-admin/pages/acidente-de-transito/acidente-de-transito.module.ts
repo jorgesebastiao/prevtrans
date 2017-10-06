@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import {SharedModule} from '../../../shared/shared.module';
 import { AcidenteDeTransitoRoutingModule } from './acidente-de-transito-routing.module';
 import {AcidentesDeTransitosComponent} from './acidentes-de-transitos/acidentes-de-transitos.component';

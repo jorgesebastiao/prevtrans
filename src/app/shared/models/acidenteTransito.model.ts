@@ -13,6 +13,6 @@ export class AcidenteTransito {
               public veiculos?: Veiculo[],
               public dadosAcidenteTransitos?: DadosAcidenteTransito[],
               public instituicao?: Instituicao,
-              public  urlFotos?: string) {
+              public  urlFotos?: Array<String>) {
   }
 }

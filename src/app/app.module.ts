@@ -1,9 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule,  LOCALE_ID } from '@angular/core';
 import { HttpModule } from '@angular/http';
-
-import 'materialize-css';
-import {MaterializeModule} from 'angular2-materialize';
 import {AgmCoreModule} from '@agm/core';
 import {SharedModule} from './shared/shared.module';
 import { AppComponent } from './app.component';
@@ -19,7 +16,6 @@ import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.componen
   imports: [
     BrowserModule,
     HttpModule,
-    MaterializeModule,
     LoginModule,
     SharedModule.forRoot(),
     AppRoutes,

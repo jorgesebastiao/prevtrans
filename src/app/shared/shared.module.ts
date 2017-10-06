@@ -1,34 +1,41 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {LOCALE_ID, ModuleWithProviders, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {InputComponent} from './input/input.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtHelper} from 'angular2-jwt';
-import { ToastyModule } from 'ng2-toasty';
+import {ToastyModule} from 'ng2-toasty';
 import {CepPipe, CpnjPipe, TelefonePipe} from './pipes';
 import {PrevtransMaskDirective} from './directives/prevtrans-mask.directive';
 import {AgmCoreModule} from '@agm/core';
-import {AcidenteTransitoService,
-InstituicaoService,
-PessoaService,
-CepService,
-UsuarioService,
-GoogleMapsService} from './services';
+import {
+  AcidenteTransitoService,
+  CepService,
+  GoogleMapsService,
+  InstituicaoService,
+  PessoaService,
+  TipoVeiculoService,
+  UsuarioService
+} from './services';
 import {AuthService} from './seguranca/auth.service';
 import {ErrorHandlerService} from './error-handler.service';
+import 'materialize-css';
+import {MaterializeModule} from 'angular2-materialize';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    MaterializeModule.forRoot(),
     ToastyModule.forRoot(),
     AgmCoreModule,
     ReactiveFormsModule
   ],
-  declarations: [InputComponent, CepPipe, CpnjPipe, TelefonePipe, PrevtransMaskDirective],
-  exports:  [ ToastyModule, InputComponent,
+  declarations: [InputComponent, CepPipe,
+    CpnjPipe, TelefonePipe, PrevtransMaskDirective],
+  exports: [MaterializeModule, ToastyModule, InputComponent,
     CepPipe, CpnjPipe, TelefonePipe,
-    PrevtransMaskDirective, CommonModule,
-    FormsModule, AgmCoreModule, ReactiveFormsModule]
+    PrevtransMaskDirective, CommonModule, FormsModule,
+    AgmCoreModule, ReactiveFormsModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
@@ -37,13 +44,16 @@ export class SharedModule {
       providers: [
         ErrorHandlerService,
         AcidenteTransitoService,
-        InstituicaoService,
-        PessoaService,
         CepService,
         GoogleMapsService,
+        InstituicaoService,
+        PessoaService,
+        TipoVeiculoService,
         UsuarioService,
         AuthService,
-        JwtHelper]
+        JwtHelper,
+        {provide: LOCALE_ID, useValue: 'pt-BR'}
+      ]
     }
   }
 }

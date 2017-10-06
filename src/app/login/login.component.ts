@@ -27,8 +27,6 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log(this.loginForm.get('usuario').value);
-    console.log(this.loginForm.get('senha').value);
     this.auth.login(this.loginForm.get('usuario').value, this.loginForm.get('senha').value).then(
       () => {
         this.loginForm.patchValue({

@@ -1,14 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {
+  FormGroup, FormBuilder, Validators, AbstractControl, FormControl
+} from '@angular/forms';
 import {AcidenteTransito, Veiculo} from '../../../../shared/models';
 import {TipoVeiculo} from '../../../../shared/models/tipoVeiculo.model';
 import {AcidenteTransitoService} from '../../../../shared/services/acidente-transito.service';
 import {GoogleMapsService} from '../../../../shared/services/google-maps.service';
 import {Localizacao} from '../../../../shared/models/localizacao.model';
+import {AgmMap} from '@agm/core';
+import {ToastyService} from "ng2-toasty";
+import {TipoVeiculoService} from "../../../../shared/services/tipo-veiculo.service";
 
-declare var jQuery: any;
-declare var Materialize: any;
+declare const jQuery: any;
+declare const Materialize: any;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -16,71 +21,45 @@ declare var Materialize: any;
   styleUrls: ['./cadastro-acidente-de-transito.component.css']
 })
 export class CadastroAcidenteDeTransitoComponent implements OnInit {
+
+  lat: number = -27.900756;
+  lng: number = -50.756954;
+  zoom = 15;
   cepPattern = /^[0-9]{8}$/;
   localizacao: Localizacao;
   acidenteTransitoForm: FormGroup;
   veiculoForm: FormGroup;
   acidenteTransito: AcidenteTransito;
-  tiposVeiculos: TipoVeiculo[] = [
-    {
-      idTipoVeiculo: 1,
-      siglaTipoVeiculo: 'A',
-      tipoVeiculo: 'AutoMotor'
-    },
-    {
-      idTipoVeiculo: 2,
-      siglaTipoVeiculo: 'B',
-      tipoVeiculo: 'Automovel'
-    }
-  ];
-  tipoVeiculo: TipoVeiculo;
-  veiculos: Veiculo[] = [
-    {
-      idVeiculo: 1,
-      fabricante: 'reno',
-      marca: 'sandeiro',
-      placa: '1234-asd',
-      descricao: 'bravo',
-      numeroOcupantes: 1,
-      tipoVeiculo: {
-        idTipoVeiculo: 1,
-        siglaTipoVeiculo: 'A',
-        tipoVeiculo: 'AutoMotor'
-      }
-    }
-  ];
+  veiculos: Array<Veiculo> = new Array<Veiculo>();
   veiculo: Veiculo;
+  tiposVeiculos: TipoVeiculo[];
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
+              private routes: ActivatedRoute,
+              private toastyService: ToastyService,
               private acidenteTransitoService: AcidenteTransitoService,
-              private googleMapsService: GoogleMapsService) {
+              private googleMapsService: GoogleMapsService,
+              private tipoVeiculoService: TipoVeiculoService) {
   }
-
-  lat: number = -27.900756;
-  lng: number = -50.756954;
-  zoom = 15;
 
   ngOnInit() {
     this.veiculo = new Veiculo();
-    this.tipoVeiculo = new TipoVeiculo();
     this.acidenteTransito = new AcidenteTransito();
-    this.localizacao= new Localizacao();
+    this.acidenteTransito.urlFotos= new Array<String>();
+    this.localizacao = new Localizacao();
     this.validaForm();
     this.inicializaMaterialize();
     this.inicializaModal();
     this.inilializaTime();
-    this.inicializaSelect();
     this.inicializaMaterialBox();
+    this.listaTiposVeiculos();
+    const id = this.routes.snapshot.params['id'];
+    if (id) {
+      this.carregarAcidenteTransito(id);
+    }
   }
 
-  salvar(acidenteTransito: AcidenteTransito) {
-
-  }
-
-  cancelar() {
-    this.router.navigate(['admin/acidentes-de-transitos']);
-  }
 
   validaForm() {
     this.acidenteTransitoForm = this.formBuilder.group(
@@ -102,7 +81,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     );
     this.veiculoForm = this.formBuilder.group(
       {
-        tipoVeiculo: [''],
+        tipoVeiculo: [[''], Validators.required],
         fabricante: this.formBuilder.control('', [Validators.required]),
         marca: this.formBuilder.control('', [Validators.required]),
         placa: this.formBuilder.control('', [Validators.required]),
@@ -110,6 +89,93 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
         numeroOcupantes: this.formBuilder.control('', [Validators.required])
       }
     );
+  }
+
+  @ViewChild(AgmMap) private myMap: any;
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event) {
+    this.redrawMap();
+  }
+
+  private redrawMap() {
+    this.myMap.triggerResize()
+      .then(() => this.myMap._mapsWrapper.setCenter({lat: this.lat, lng: this.lng}));
+  }
+
+  private selectMap() {
+    this.redrawMap();
+  }
+
+  mapClicked(event) {
+    this.googleMapsService.localizacaoAcidente(event.coords.lat, event.coords.lng)
+      .subscribe(
+        localizacao => {
+          this.localizacao = localizacao;
+        }
+      );
+  }
+
+  fechaMapaBusca() {
+    jQuery('#modal-busca').modal('close');
+  }
+
+  adicionaLocalizacao() {
+    this.acidenteTransitoForm.patchValue(this.localizacao);
+    jQuery('#modal-busca').modal('close');
+    this.inicializaMaterialize();
+  }
+
+  buscaLatitudeLongitude() {
+    this.selectMap();
+    jQuery('#modal-busca').modal('open');
+  }
+
+  get editando() {
+    return Boolean(this.acidenteTransito.idAcidenteTransito);
+  }
+
+  carregarAcidenteTransito(id: string) {
+    this.acidenteTransitoService.getAcidenteTransito(id)
+      .subscribe(acidenteTransito => {
+        if (acidenteTransito) {
+          this.acidenteTransito = acidenteTransito;
+          this.acidenteTransitoForm.patchValue(this.acidenteTransito);
+          this.inicializaMaterialize();
+        } else {
+          this.addToast();
+          this.router.navigate(['/admin/acidentes-de-transitos']);
+        }
+      });
+  }
+
+  salvar(acidenteTransito: AcidenteTransito) {
+    if (this.editando) {
+    } else {
+    }
+  }
+
+  cadastrarAcidenteTransito(acidenteTransito: AcidenteTransito) {
+    this.acidenteTransitoService.postAcidenteDeTransito(acidenteTransito)
+      .subscribe(() => {
+        this.acidenteTransitoForm.patchValue(acidenteTransito);
+        this.veiculos = new Array(this.acidenteTransito.veiculos);
+        this.router.navigate(['/admin/acidentes-de-transitos']);
+      });
+  }
+
+  alterarAcidenteTransito(acidenteTransito: AcidenteTransito) {
+    acidenteTransito.idAcidenteTransito=this.acidenteTransito.idAcidenteTransito;
+    this.acidenteTransitoService.putAcidenteDeTransito(acidenteTransito)
+      .subscribe(acidenteTransito => {
+        this.acidenteTransitoForm.patchValue(acidenteTransito);
+        this.veiculos = new Array(this.acidenteTransito.veiculos);
+        this.router.navigate(['/admin/acidentes-de-transitos']);
+      });
+  }
+
+  cancelar() {
+    this.router.navigate(['admin/acidentes-de-transitos']);
   }
 
   inicializaMaterialize() {
@@ -142,21 +208,18 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     });
   }
 
-  inicializaSelect() {
-    jQuery(document).ready(function () {
-      jQuery('select').material_select();
-    });
-
-  }
-
   inicializaMaterialBox() {
     jQuery(document).ready(function () {
       jQuery('.materialboxed').materialbox();
     });
   }
 
-  buscaLatitudeLongitude() {
-    jQuery('#modal-busca').modal('open');
+  listaTiposVeiculos() {
+    this.tipoVeiculoService.tiposVeiculos().subscribe(tiposVeiculos => {
+      if (tiposVeiculos) {
+        this.tiposVeiculos = tiposVeiculos;
+      }
+    });
   }
 
   abreModalVeiculo() {
@@ -170,21 +233,24 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   adicionaVeiculo(veiculo: Veiculo) {
     this.veiculo = veiculo;
-    console.log(this.veiculo);
-    console.log(this.veiculoForm.get('tipoVeiculo').value);
     this.veiculo.tipoVeiculo = this.veiculoForm.get('tipoVeiculo').value;
-    console.log(this.veiculo.tipoVeiculo);
-    //  this.veiculos = this.veiculos.concat(this.veiculo);Tracks
+    console.log(this.veiculo);
+    console.log(this.veiculos);
+    this.veiculos.push(this.veiculo);
   }
 
+  /*
+    byIdTipoVeiculo(item1: TipoVeiculo, item2: TipoVeiculo) {
+      return item1.idTipoVeiculo === item2.idTipoVeiculo;
+    }*/
+
   imageUploaded(event) {
-    console.log(event);
     const formData: FormData = new FormData();
-    console.log('arquivo' + event.file);
     formData.append('file', event.file);
-    console.log(formData);
     this.acidenteTransitoService.upload(formData).subscribe(url => {
       console.log(url);
+    this.acidenteTransito.urlFotos.push(url);
+    console.log(this.acidenteTransito.urlFotos);
     });
   }
 
@@ -196,21 +262,12 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   }
 
-  mapClicked(event) {
-    this.googleMapsService.localizacaoAcidente(event.coords.lat, event.coords.lng)
-      .subscribe(
-        localizacao => {
-          this.localizacao = localizacao;
-          console.log('ok'+ localizacao);
-        }
-      );
-  }
-  fechaMapaBusca(){
-    jQuery('#modal-busca').modal('close');
-  }
-  adicionaLocalizacao(){
-    this.acidenteTransitoForm.patchValue(this.localizacao);
-    jQuery('#modal-busca').modal('close');
-    this.inicializaMaterialize();
+  addToast() {
+    this.toastyService.success({
+      title: 'Alteração realizada com sucesso!',
+      showClose: true,
+      timeout: 10000000,
+      theme: 'default'
+    });
   }
 }

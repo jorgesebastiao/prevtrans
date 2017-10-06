@@ -181,45 +181,48 @@
                 class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
         </button>
+        <button (click)="addToast()" class="amber accent-4 right waves-effect waves-yellow btn"
+                style="margin-right: 10px; "><i
+          class="material-icons left">done</i>TOAST
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal Mapa Busca Acidente de Trânsito -->
+<div id="modal-busca" class="modal" materialize="modal">
+  <div class="modal-content">
+    <form>
+      <div class="row map-container">
+        <div materialize class="col s12" id="map">
+          <agm-map [latitude]="lat"
+                   [longitude]="lng"
+                   [mapTypeId]="'roadmap'"
+                   [zoom]="zoom"
+                   id="myMap"
+                   (mapClick)="mapClicked($event)">
+            <agm-marker [latitude]="localizacao.latitude"
+                        [longitude]="localizacao.longitude"></agm-marker>
+          </agm-map>
+        </div>
+      </div>
+      <div class="row">
+        <button (click)="fechaMapaBusca()" class="amber accent-4 right waves-effect waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
+        </button>
+        <button (click)="adicionaLocalizacao()"
+                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
+          class="material-icons left">done</i>Adicionar
+        </button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Modal Mapa Busca Acidente de Trânsito -->
-<div id="modal-busca" class="modal  modal-fixed-footer mapa-busca">
-  <div class="modal-content">
-    <div class="row map-container">
-      <div materialize class="col s12" id="map">
-          <agm-map [latitude]="lat"
-                   [longitude]="lng"
-                   [mapTypeId]="'roadmap'"
-                   [zoom]="zoom"
-                   (mapClick)="mapClicked($event)">
-            <agm-marker [latitude]="localizacao.latitude"
-                        [longitude]="localizacao.longitude"></agm-marker>
-          </agm-map>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <div class="row">
-      <button (click)="fechaMapaBusca()" class="amber accent-4 right waves-effect waves-yellow btn"><i
-        class="material-icons left">clear</i>Cancelar
-      </button>
-      <button (click)="adicionaLocalizacao()"
-              class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
-        class="material-icons left">done</i>Adicionar
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Mapa Busca Acidente de Trânsito -->
+<!-- Modal cadastra veiculo-->
 <div id="modal-veiculo" class="modal">
   <div class="modal-content">
-    {{veiculoForm.value | json}}
-    <form [formGroup]="veiculoForm" novalidate>
+    <form materialize [formGroup]="veiculoForm" novalidate>
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
@@ -229,15 +232,14 @@
       </div>
       <div class="row">
         <div class="input-field col s12 m4 l6 ">
-          <!--<app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
-          </app-input-container>-->
-          <select id="tipo-veiculo" type="text" formControlName="tipoVeiculo" autocomplete="off"
-                  [(ngModel)]="tipoVeiculo">
-            <option value="" disabled selected>Selecione Tipo Veiculo</option>
-            <option *ngFor="let tipoVeiculo of tiposVeiculos " [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}
-            </option>
-          </select>
-          <label class="black-text text-darken-4" for="tipo-veiculo">Tipo Veiculo</label>
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select formControlName="tipoVeiculo" materialize="material_select"
+                    [materializeSelectOptions]="tiposVeiculos">
+              <option value="">Selecione o Tipo de Veiculo</option>
+              <option *ngFor="let tipoVeiculo  of tiposVeiculos" [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}
+            </select>
+            <label class="black-text text-darken-4">Tipo Veiculo</label>
+          </app-input-container>
         </div>
         <div class="input-field col s12 m4 l6 ">
           <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">

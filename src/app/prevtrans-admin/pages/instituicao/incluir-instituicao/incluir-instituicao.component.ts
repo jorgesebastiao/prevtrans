@@ -61,7 +61,6 @@ export class IncluirInstituicaoComponent implements OnInit {
   }
 
   salvarInstituicao(instituicao: Instituicao) {
-    console.log(instituicao);
     this.instituicaoService.postInstituicao(instituicao)
       .subscribe(instituicao => {
           this.router.navigate(['admin/instituicoes']);
@@ -72,11 +71,9 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   alterarInstituicao(instituicao: Instituicao) {
     instituicao.idInstituicao = this.instituicao.idInstituicao;
-    console.log(instituicao);
     this.instituicaoService.putInstituicao(instituicao)
       .subscribe(instituicao => {
         this.router.navigate(['admin/instituicoes']);
-        this.instituicaoForm.patchValue(instituicao);
         }
       );
   }
