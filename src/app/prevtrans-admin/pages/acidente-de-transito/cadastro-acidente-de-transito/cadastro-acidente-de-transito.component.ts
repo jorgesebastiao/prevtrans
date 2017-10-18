@@ -1,8 +1,6 @@
 import {Component, EventEmitter, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {
-  FormGroup, FormBuilder, Validators, AbstractControl, FormControl
-} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AcidenteTransito, Veiculo} from '../../../../shared/models';
 import {TipoVeiculo} from '../../../../shared/models/tipoVeiculo.model';
 import {AcidenteTransitoService} from '../../../../shared/services/acidente-transito.service';
@@ -34,7 +32,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   veiculos: Array<Veiculo> = new Array<Veiculo>();
   veiculo: Veiculo;
   tiposVeiculos: TipoVeiculo[];
-
+  images: any[];
   modalActions = new EventEmitter<string | MaterializeAction>();
 
   constructor(private formBuilder: FormBuilder,
@@ -47,6 +45,14 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.images = [];
+    for (let i = 1; i <= 5; i++) {
+      this.images.push({
+        source: 'https://s3-sa-east-1.amazonaws.com/auttur-imagens/pontos-turisticos/catedral_'+ i +'.JPG',
+        alt: 'Description for Image ' + i,
+        title: 'Title ' + i
+      });
+    }
     this.veiculo = new Veiculo();
     this.acidenteTransito = new AcidenteTransito();
     this.acidenteTransito.urlFotos = new Array<String>();

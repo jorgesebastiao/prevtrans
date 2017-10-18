@@ -17,7 +17,8 @@
         </div>
         <div class="input-field col s12 m4 l2">
           <app-input-container>
-            <input id="data" formControlName="data" name="datepicker"   materialize="pickadate" [materializeParams]="[{format: 'dd/mm/yyyy'}]" type="text" autocomplete="off">
+            <input id="data" formControlName="data" name="datepicker" materialize="pickadate"
+                   [materializeParams]="[{format: 'dd/mm/yyyy'}]" type="text" autocomplete="off">
             <label class="black-text text-darken-4" for="data">Data</label>
           </app-input-container>
         </div>
@@ -42,7 +43,7 @@
         </div>
       </div>
       <div class="row">
-        <a (click)="buscaLatitudeLongitude()" class="col s12 m3 l3 waves-effect waves-light btn-large" ><i
+        <a (click)="buscaLatitudeLongitude()" class="col s12 m3 l3  waves-light btn-large"><i
           class="material-icons left">search</i>Buscar no mapa</a>
         <div class="input-field col s12 m3 l3">
           <app-input-container errorMessage="Campo Obrigatório ">
@@ -155,15 +156,9 @@
         </div>
       </div>
       <div class="row">
-        <img class="materialboxed col s12 m3 l3"
-             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
-        <img class="materialboxed col s12 m3 l3"
-             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
-        <img class="materialboxed col s12 m3 l3"
-             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
-        <img class="materialboxed col s12 m3 l3"
-             src="https://s3-sa-east-1.amazonaws.com/prevtrans-imagens/acidentes-transito/simbolo-da-biologia-2_xl.png">
+        <p-galleria class="col s12"[showCaption]="false" [images]="images" panelWidth="1000" panelHeight="600" [showCaption]="true"></p-galleria>
       </div>
+
       <div class="row">
         <image-upload class="col s12 "
                       [buttonCaption]="'Selecionar imagens'"
@@ -174,14 +169,14 @@
                       (isPending)="disableSendButton($event)"></image-upload>
       </div>
       <div class="row">
-        <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i
+        <button (click)="cancelar()" class="amber accent-4 right waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
         </button>
         <button (click)="salvar(acidenteTransitoForm.value)" [disabled]="!acidenteTransitoForm.valid"
-                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
+                class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
         </button>
-        <button (click)="addToast()" class="amber accent-4 right waves-effect waves-yellow btn"
+        <button (click)="addToast()" class="amber accent-4 right waves-yellow btn"
                 style="margin-right: 10px; "><i
           class="material-icons left">done</i>TOAST
         </button>
@@ -190,7 +185,7 @@
   </div>
 </div>
 <!-- Modal Mapa Busca Acidente de Trânsito -->
-<div id="modal-busca" class="modal"  materialize="modal">
+<div id="modal-busca" class="modal modal-fixed-footer" materialize="modal">
   <div class="modal-content">
     <form>
       <div class="row map-container">
@@ -206,16 +201,16 @@
           </agm-map>
         </div>
       </div>
-      <div class="row">
-        <button (click)="fechaMapaBusca()" class="amber accent-4 right waves-effect waves-yellow btn"><i
-          class="material-icons left">clear</i>Cancelar
-        </button>
-        <button (click)="adicionaLocalizacao()"
-                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
-          class="material-icons left">done</i>Adicionar
-        </button>
-      </div>
     </form>
+  </div>
+  <div class="modal-footer">
+    <button (click)="fechaMapaBusca()" class="amber accent-4 right  waves-yellow btn"><i
+      class="material-icons left">clear</i>Cancelar
+    </button>
+    <button (click)="adicionaLocalizacao()"
+            class="amber accent-4 right  waves-yellow btn" style="margin-right: 10px; "><i
+      class="material-icons left">done</i>Adicionar
+    </button>
   </div>
 </div>
 
@@ -235,7 +230,7 @@
           <app-input-container errorMessage="Campo Obrigatório ">
             <select formControlName="tipoVeiculo" materialize="material_select"
                     [materializeSelectOptions]="tiposVeiculos">
-              <option value="">Selecione o Tipo de Veiculo</option>
+              <option value="" disabled selected>Selecione o Tipo de Veiculo</option>
               <option *ngFor="let tipoVeiculo  of tiposVeiculos" [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}
             </select>
             <label class="black-text text-darken-4">Tipo Veiculo</label>
@@ -277,7 +272,7 @@
           class="material-icons left">clear</i>Cancelar
         </button>
         <button (click)="adicionaVeiculo(veiculoForm.value)" [disabled]="!veiculoForm.valid"
-                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
+                class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Adicionar
         </button>
       </div>
