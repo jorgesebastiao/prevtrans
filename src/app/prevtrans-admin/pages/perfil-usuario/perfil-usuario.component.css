@@ -1,0 +1,15 @@
+.container {
+  margin-top: 24px;
+}
+
+.divisor {
+  border-bottom: 1px solid #cccccc;
+  font-size: 0;
+  margin: 0;
+  line-height: 110%;
+  height: 15px;
+}
+
+.fom {
+  font-size: 1.25rem;
+}

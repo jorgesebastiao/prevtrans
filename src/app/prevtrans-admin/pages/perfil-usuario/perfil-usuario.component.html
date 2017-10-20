@@ -1,0 +1,94 @@
+<div class="container">
+  <form materialize [formGroup]="perfilUsuarioForm" novalidate>
+    <div class="row">
+      <div class="col s12">
+        <h1 class="divisor">
+          <label class="black-text fom">{{titulo}}</label>
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12 m12 l12 ">
+        <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+          <input id="nome-completo" type="text" formControlName="nome" autocomplete="off">
+          <label class="black-text text-darken-4" for="nome-completo">Nome Completo</label>
+        </app-input-container>
+      </div>
+      <div class="input-field col s12 m12 l12 ">
+        <app-input-container errorMessage="usuário inválido">
+          <input id="login" type="text" formControlName="login" autocomplete="off">
+          <label class="black-text text-darken-4" for="login">Login</label>
+        </app-input-container>
+      </div>
+      <div class="input-field col s12 m12 l12 ">
+        <app-input-container errorMessage="email inválido">
+          <input id="email" type="text" formControlName="email" autocomplete="off">
+          <label class="black-text text-darken-4" for="email">Email</label>
+        </app-input-container>
+      </div>
+    </div>
+    <div class="row">
+      <button (click)="cancelar()" class="indigo accent-4 right waves-yellow btn"><i
+        class="material-icons left">clear</i>Cancelar
+      </button>
+      <button (click)="salvar(perfilUsuarioForm.value)" [disabled]="!perfilUsuarioForm.valid"
+              class="indigo accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
+        class="material-icons left">done</i>Salvar
+      </button>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <h1 class="divisor">
+          <label class="black-text fom"></label>
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <button (click)="alterarSenha()" class=" col s3 indigo accent-4 left waves-yellow btn"><i
+        class="material-icons left">edit</i>Alterar Senha
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="modal " materialize="modal" [materializeActions]="alteraSenhaAction">
+  <div class="modal-content">
+    <form materialize [formGroup]="senhaForm" novalidate>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Alterar Senha</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6 m6 l6 ">
+          <app-input-container errorMessage="senha inválida">
+            <input id="senha" type="password" formControlName="senha" autocomplete="off">
+            <label class="black-text text-darken-4" for="senha">Senha</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s6 m6 l6 ">
+          <app-input-container errorMessage="senha invalida">
+            <input id="verifica-senha" type="password" formControlName="verificaSenha" autocomplete="off">
+            <label class="black-text text-darken-4" for="verifica-senha">Verifica Senha</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <div *ngIf="senhaForm.hasError('senhaNotMatch')" class="error-msg cols 12 center-align">
+          Senhas não Conferem!!
+        </div>
+      </div>
+      <div class="row">
+        <button (click)="fechaModalSenha()" class="indigo accent-4 right waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
+        </button>
+        <button (click)="salvarSenha(senhaForm.get('senha').value)" [disabled]="!senhaForm.valid"
+                class="indigo accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
+          class="material-icons left">done</i>Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

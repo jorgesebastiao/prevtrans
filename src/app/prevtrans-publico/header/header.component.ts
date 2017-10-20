@@ -16,7 +16,6 @@ export class HeaderComponent implements OnInit {
   }
   inicializaNavBar(){
     jQuery( document ).ready(function(){
-      //  inicializa o jQuery
       jQuery('.button-collapse').sideNav();
       //  Função fechar ao clicar em link
       jQuery('.side-nav li a').on('click', function(e) {

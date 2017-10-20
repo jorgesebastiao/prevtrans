@@ -9,3 +9,4 @@ export  * from './pessoa.model';
 export  * from './tipoVeiculo.model';
 export  * from './usuario.model';
 export  * from './veiculo.model';
+export  * from './UsuarioPermissao.model';

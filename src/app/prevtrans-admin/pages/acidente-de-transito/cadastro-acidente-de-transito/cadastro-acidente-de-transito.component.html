@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="row">
-        <a (click)="buscaLatitudeLongitude()" class="col s12 m3 l3  waves-light btn-large"><i
+        <a (click)="buscaLatitudeLongitude()" class="col s12 m3 l3   btn-large"><i
           class="material-icons left">search</i>Buscar no mapa</a>
         <div class="input-field col s12 m3 l3">
           <app-input-container errorMessage="Campo Obrigatório ">
@@ -117,7 +117,7 @@
         </div>
       </div>
       <div class="row">
-        <a (click)="abreModalVeiculo()" class="col s12 m3 l3 waves-effect waves-light btn-large"><i
+        <a (click)="abreModalVeiculo()" class="col s12 m3 l3  waves-light btn-large"><i
           class="material-icons left">add</i>Adicionar Veiculo</a>
         <div class="col s12">
           <table class="striped responsive-table">
@@ -156,7 +156,7 @@
         </div>
       </div>
       <div class="row">
-        <p-galleria class="col s12"[showCaption]="false" [images]="images" panelWidth="1000" panelHeight="600" [showCaption]="true"></p-galleria>
+        <p-galleria class="col s12"[showCaption]="false" [images]="images" panelWidth="980" panelHeight="600" [showCaption]="true"></p-galleria>
       </div>
 
       <div class="row">
@@ -268,7 +268,7 @@
         </div>
       </div>
       <div class="row">
-        <button (click)="fechaModalVeiculo()" class="amber accent-4 right waves-effect waves-yellow btn"><i
+        <button (click)="fechaModalVeiculo()" class="amber accent-4 right  waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
         </button>
         <button (click)="adicionaVeiculo(veiculoForm.value)" [disabled]="!veiculoForm.valid"

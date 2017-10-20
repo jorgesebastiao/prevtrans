@@ -2,14 +2,12 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 
-import { ToastyService } from 'ng2-toasty';
 import {NotAuthenticatedError} from './seguranca/money-http.service';
 
 @Injectable()
 export class ErrorHandlerService {
 
   constructor(
-    private toasty: ToastyService,
     private router: Router
   ) { }
 
@@ -44,8 +42,6 @@ export class ErrorHandlerService {
       msg = 'Erro ao processar serviço remoto. Tente novamente.';
       console.error('Ocorreu um erro', errorResponse);
     }
-
-    this.toasty.error(msg);
   }
 
 }

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
-import {ToastyService} from 'ng2-toasty';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Instituicao} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
@@ -26,8 +25,7 @@ export class IncluirInstituicaoComponent implements OnInit {
               private routes: ActivatedRoute,
               private router: Router,
               private cepService: CepService,
-              private instituicaoService: InstituicaoService,
-              private toastyService: ToastyService) {
+              private instituicaoService: InstituicaoService) {
   }
 
   ngOnInit() {
@@ -71,14 +69,14 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   alterarInstituicao(instituicao: Instituicao) {
     instituicao.idInstituicao = this.instituicao.idInstituicao;
-    this.instituicaoService.putInstituicao(instituicao)
+    this.instituicaoService.putInstituicao(this.instituicao.idInstituicao, instituicao)
       .subscribe(instituicao => {
-        this.router.navigate(['admin/instituicoes']);
+          this.router.navigate(['admin/instituicoes']);
         }
       );
   }
 
-  cancelar(){
+  cancelar() {
     this.router.navigate(['admin/instituicoes']);
   }
 
@@ -148,11 +146,6 @@ export class IncluirInstituicaoComponent implements OnInit {
   }
 
   addToast() {
-    this.toastyService.success({
-      title: 'Alteração realizada com sucesso!',
-      showClose: true,
-      timeout: 10000000,
-      theme: 'default'
-    });
+
   }
 }

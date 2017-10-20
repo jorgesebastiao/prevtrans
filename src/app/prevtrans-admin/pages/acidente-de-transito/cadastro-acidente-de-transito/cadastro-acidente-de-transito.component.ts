@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AcidenteTransito, Veiculo} from '../../../../shared/models';
@@ -7,7 +7,6 @@ import {AcidenteTransitoService} from '../../../../shared/services/acidente-tran
 import {GoogleMapsService} from '../../../../shared/services/google-maps.service';
 import {Localizacao} from '../../../../shared/models/localizacao.model';
 import {AgmMap} from '@agm/core';
-import {ToastyService} from 'ng2-toasty';
 import {TipoVeiculoService} from '../../../../shared/services/tipo-veiculo.service';
 import {MaterializeAction} from 'angular2-materialize';
 
@@ -38,7 +37,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private activeRoute: ActivatedRoute,
-              private toastyService: ToastyService,
               private acidenteTransitoService: AcidenteTransitoService,
               private googleMapsService: GoogleMapsService,
               private tipoVeiculoService: TipoVeiculoService) {
@@ -186,7 +184,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   alterarAcidenteTransito(acidenteTransito: AcidenteTransito) {
     acidenteTransito.idAcidenteTransito = this.acidenteTransito.idAcidenteTransito;
-    this.acidenteTransitoService.putAcidenteDeTransito(acidenteTransito)
+    this.acidenteTransitoService.putAcidenteDeTransito(this.acidenteTransito.idAcidenteTransito, acidenteTransito)
       .subscribe(acidenteTransito => {
         this.acidenteTransitoForm.patchValue(acidenteTransito);
         this.veiculos = new Array(this.acidenteTransito.veiculos);
@@ -195,7 +193,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   cancelar() {
-    this.router.navigate(['admin/acidentes-de-transitos']);
+   this.router.navigate(['admin/acidentes-de-transitos']);
   }
 
   inicializaMaterialize() {
@@ -278,11 +276,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   addToast() {
-    this.toastyService.success({
-      title: 'Alteração realizada com sucesso!',
-      showClose: true,
-      timeout: 10000000,
-      theme: 'default'
-    });
+    console.log('ng2 toasty');
   }
 }

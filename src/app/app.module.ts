@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import {AppRoutes} from './app.routes';
 import {LoginModule} from './login/login.module';
 import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -15,9 +16,10 @@ import { NaoAutorizadoComponent } from './nao-autorizado/nao-autorizado.componen
     ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
-    LoginModule,
     SharedModule.forRoot(),
+    LoginModule,
     AppRoutes,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyBM3AfwfdqdUA2NYbDrxelJzQBdI80hGwI'})
   ],

@@ -45,8 +45,8 @@ export class InstituicaoService {
       });
   }
 
-  putInstituicao(instituicao: Instituicao): Observable<String> {
-    return this.http.put(`${PREVTRANS_API}/instituicoes`,
+  putInstituicao(id: string, instituicao: Instituicao): Observable<String> {
+    return this.http.put(`${PREVTRANS_API}/instituicoes/${id}`,
       JSON.stringify(instituicao))
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);

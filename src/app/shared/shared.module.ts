@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {InputComponent} from './input/input.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtHelper} from 'angular2-jwt';
-import {ToastyModule} from 'ng2-toasty';
 import {CepPipe, CpnjPipe, TelefonePipe} from './pipes';
 import {PrevtransMaskDirective} from './directives/prevtrans-mask.directive';
 import {AgmCoreModule} from '@agm/core';
@@ -26,13 +25,12 @@ import {MaterializeModule} from 'angular2-materialize';
     CommonModule,
     FormsModule,
     MaterializeModule.forRoot(),
-    ToastyModule.forRoot(),
     AgmCoreModule,
     ReactiveFormsModule
   ],
   declarations: [InputComponent, CepPipe,
     CpnjPipe, TelefonePipe, PrevtransMaskDirective],
-  exports: [MaterializeModule, ToastyModule, InputComponent,
+  exports: [MaterializeModule, InputComponent,
     CepPipe, CpnjPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
     AgmCoreModule, ReactiveFormsModule]

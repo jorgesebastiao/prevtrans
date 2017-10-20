@@ -77,10 +77,10 @@ export class AcidenteTransitoService {
       });
   }
 
-  putAcidenteDeTransito(acidenteTransito: AcidenteTransito): Observable<String> {
+  putAcidenteDeTransito(id: string, acidenteTransito: AcidenteTransito): Observable<String> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.authHttp.put(`${PREVTRANS_API}/acidentes-de-transito`,
+    return this.authHttp.put(`${PREVTRANS_API}/acidentes-de-transito/${id}`,
       JSON.stringify(acidenteTransito))
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);

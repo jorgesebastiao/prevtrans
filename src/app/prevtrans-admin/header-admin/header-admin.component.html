@@ -9,7 +9,10 @@
         [routerLink]="['instituicoes']">Instituições<i class="material-icons left">account_balance</i></a></li>
       <li *ngIf="auth.temPermissao('ROLE_LISTA_USUARIO')" routerLinkActive="active"><a [routerLink]="['usuarios']">Usuários<i
         class="material-icons left">account_circle</i></a></li>
-      <li (click)="logout()"><a>Sair <i class="material-icons left"></i></a></li>
+      <li routerLinkActive="active"><a [routerLink]="['perfil-usuario']">Perfil Usuário<i
+        class="material-icons left white-text">account_circle</i></a>
+      </li>
+      <li (click)="logout()"><a>Sair <i class="material-icons left white-text">exit_to_app</i></a></li>
     </ul>
     <ul class="side-nav amber  darken-1" id="mobile-demo">
       <li routerLinkActive="active">
@@ -33,7 +36,14 @@
               </span>
         </a>
       </li>
-      <li (click)="logout()"><a>Sair <i class="material-icons left"></i></a></li>
+      <li routerLinkActive="active"><a [routerLink]="['perfil-usuario']"><i
+        class="material-icons left white-text">account_circle</i>
+        <span class="white-text"> Perfil Usuário
+              </span></a>
+      </li>
+      <li (click)="logout()"><a><i class="material-icons left white-text">exit_to_app</i>
+        <span class="white-text">Sair
+              </span></a></li>
     </ul>
   </div>
 </nav>
