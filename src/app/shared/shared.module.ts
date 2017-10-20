@@ -5,7 +5,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtHelper} from 'angular2-jwt';
 import {CepPipe, CpnjPipe, TelefonePipe} from './pipes';
 import {PrevtransMaskDirective} from './directives/prevtrans-mask.directive';
+import 'materialize-css';
+import {MaterializeModule} from 'angular2-materialize';
 import {AgmCoreModule} from '@agm/core';
+import {AgmJsMarkerClustererModule, ClusterManager} from '@agm/js-marker-clusterer';
+import {ErrorHandlerService} from './error-handler.service';
 import {
   AcidenteTransitoService,
   CepService,
@@ -16,9 +20,6 @@ import {
   UsuarioService
 } from './services';
 import {AuthService} from './seguranca/auth.service';
-import {ErrorHandlerService} from './error-handler.service';
-import 'materialize-css';
-import {MaterializeModule} from 'angular2-materialize';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import {MaterializeModule} from 'angular2-materialize';
     FormsModule,
     MaterializeModule.forRoot(),
     AgmCoreModule,
+    AgmJsMarkerClustererModule,
     ReactiveFormsModule
   ],
   declarations: [InputComponent, CepPipe,
@@ -33,7 +35,7 @@ import {MaterializeModule} from 'angular2-materialize';
   exports: [MaterializeModule, InputComponent,
     CepPipe, CpnjPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
-    AgmCoreModule, ReactiveFormsModule]
+    AgmCoreModule, AgmJsMarkerClustererModule, ReactiveFormsModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
@@ -50,6 +52,7 @@ export class SharedModule {
         UsuarioService,
         AuthService,
         JwtHelper,
+        ClusterManager,
         {provide: LOCALE_ID, useValue: 'pt-BR'}
       ]
     }

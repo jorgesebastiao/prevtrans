@@ -1,15 +1,17 @@
 <div materialize class="col s12" id="map">
   <agm-map class="box" [latitude]="lat" [longitude]="lng" [mapTypeId]="'roadmap'" [zoom]="zoom">
-    <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
-                (markerClick)="clickedMarker(acidenteTransito)"
-                [latitude]="acidenteTransito.latitude"
-                [longitude]="acidenteTransito.longitude"
-                [openInfoWindow]="false"></agm-marker>
+    <agm-marker-cluster
+      imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+      <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
+                  (markerClick)="clickedMarker(acidenteTransito)"
+                  [latitude]="acidenteTransito.latitude"
+                  [longitude]="acidenteTransito.longitude"
+                  [openInfoWindow]="false"></agm-marker>
+    </agm-marker-cluster>
   </agm-map>
 </div>
 
-
-<div  id="exibe-informacao" class="modal scrollbar">
+<div id="exibe-informacao" class="modal scrollbar">
   <div class="modal-content">
     <h4>{{acidenteTransito.tituloPublicacao}}</h4>
     <div class="slider">
@@ -26,6 +28,6 @@
     <p>{{acidenteTransito.descricao}}</p>
   </div>
   <div class="modal-footer">
-    <a  class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+    <a class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
   </div>
 </div>
