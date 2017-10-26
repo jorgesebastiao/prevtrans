@@ -44,3 +44,9 @@ agm-map {
 .image-upload{
   --active-color:#ffab00  !important;
 }
+.excluir{
+  display: none;
+  position: absolute;
+  top: 16px;
+}
+

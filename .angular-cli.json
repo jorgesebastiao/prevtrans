@@ -20,12 +20,14 @@
       "prefix": "app",
       "styles": [
         "../node_modules/materialize-css/dist/css/materialize.css",
+        "../node_modules/pgwslideshow/pgwslideshow.min.css",
         "styles.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/hammerjs/hammer.js",
-        "../node_modules/materialize-css/dist/js/materialize.min.js"
+        "../node_modules/materialize-css/dist/js/materialize.min.js",
+        "../node_modules/pgwslideshow/pgwslideshow.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

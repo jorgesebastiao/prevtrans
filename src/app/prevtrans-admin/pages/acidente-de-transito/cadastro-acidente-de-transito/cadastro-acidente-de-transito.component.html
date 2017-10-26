@@ -156,7 +156,15 @@
         </div>
       </div>
       <div class="row">
-        <p-galleria class="col s12"[showCaption]="false" [images]="images" panelWidth="980" panelHeight="600" [showCaption]="true"></p-galleria>
+        <div class="col s12">
+        <ul class="pgwSlideshow">
+          <li *ngFor="let image of images">
+            <a target="_blank"><img src={{image.source}} alt={{image.title}}>
+            </a>
+            <span (click)="imageRemoved($event)" class="btn excluir material-icons">delete</span>
+          </li>
+        </ul>
+        </div>
       </div>
 
       <div class="row">
@@ -175,10 +183,6 @@
         <button (click)="salvar(acidenteTransitoForm.value)" [disabled]="!acidenteTransitoForm.valid"
                 class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
-        </button>
-        <button (click)="addToast()" class="amber accent-4 right waves-yellow btn"
-                style="margin-right: 10px; "><i
-          class="material-icons left">done</i>TOAST
         </button>
       </div>
     </form>

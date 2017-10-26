@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, EventEmitter, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AcidenteTransito, Veiculo} from '../../../../shared/models';
@@ -46,7 +46,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.images = [];
     for (let i = 1; i <= 5; i++) {
       this.images.push({
-        source: 'https://s3-sa-east-1.amazonaws.com/auttur-imagens/pontos-turisticos/catedral_'+ i +'.JPG',
+        source: 'https://lorempixel.com/800/400/food/1',
         alt: 'Description for Image ' + i,
         title: 'Title ' + i
       });
@@ -59,6 +59,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.inicializaMaterialize();
     // this.inicializaModal();
     // this.inilializaTime();
+    this.inicializaCarousel();
     this.inicializaMaterialBox();
     this.listaTiposVeiculos();
     const id = this.activeRoute.snapshot.params['id'];
@@ -119,6 +120,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.googleMapsService.localizacaoAcidente(event.coords.lat, event.coords.lng)
       .subscribe(
         localizacao => {
+          this.lat = localizacao.latitude;
+          this.lng = localizacao.longitude;
           this.localizacao = localizacao;
         }
       );
@@ -193,7 +196,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   cancelar() {
-   this.router.navigate(['admin/acidentes-de-transitos']);
+    this.router.navigate(['admin/acidentes-de-transitos']);
   }
 
   inicializaMaterialize() {
@@ -229,6 +232,12 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   inicializaMaterialBox() {
     jQuery(document).ready(function () {
       jQuery('.materialboxed').materialbox();
+    });
+  }
+
+  inicializaCarousel() {
+    jQuery(document).ready(function() {
+      jQuery('.pgwSlideshow').pgwSlideshow();
     });
   }
 
