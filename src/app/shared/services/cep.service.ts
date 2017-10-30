@@ -6,14 +6,13 @@ import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {CEP_API} from '../../app.api';
 import {PrevtransAdminHerrorHandler} from '../../prevtrans-admin/prevtrans-admin-herror-handler';
-import {Cep} from '../models';
 
 @Injectable()
 export class CepService {
 
   constructor(private http: Http) { }
 
-  consultaCep( cep: string): Observable<Cep>{
+  consultaCep( cep: string): Observable<any>{
     return this.http.get(`${CEP_API}/${cep}/json`)
       .map(response => response.json())
       .catch(PrevtransAdminHerrorHandler.handleError);

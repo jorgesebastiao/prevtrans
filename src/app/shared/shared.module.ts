@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {InputComponent} from './input/input.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtHelper} from 'angular2-jwt';
-import {CepPipe, CpnjPipe, TelefonePipe} from './pipes';
+import {CepPipe, CpnjPipe, CpfPipe, TelefonePipe} from './pipes';
 import {PrevtransMaskDirective} from './directives/prevtrans-mask.directive';
 import 'materialize-css';
 import {MaterializeModule} from 'angular2-materialize';
@@ -15,7 +15,6 @@ import {
   CepService,
   GoogleMapsService,
   InstituicaoService,
-  PessoaService,
   TipoVeiculoService,
   UsuarioService
 } from './services';
@@ -31,9 +30,9 @@ import {AuthService} from './seguranca/auth.service';
     ReactiveFormsModule
   ],
   declarations: [InputComponent, CepPipe,
-    CpnjPipe, TelefonePipe, PrevtransMaskDirective],
+    CpnjPipe, TelefonePipe, PrevtransMaskDirective, CpfPipe],
   exports: [MaterializeModule, InputComponent,
-    CepPipe, CpnjPipe, TelefonePipe,
+    CepPipe, CpnjPipe, CpfPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
     AgmCoreModule, AgmJsMarkerClustererModule, ReactiveFormsModule]
 })
@@ -47,7 +46,6 @@ export class SharedModule {
         CepService,
         GoogleMapsService,
         InstituicaoService,
-        PessoaService,
         TipoVeiculoService,
         UsuarioService,
         AuthService,

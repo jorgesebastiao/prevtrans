@@ -158,10 +158,10 @@
       <div class="row">
         <div class="col s12">
         <ul class="pgwSlideshow">
-          <li *ngFor="let image of images">
-            <a target="_blank"><img src={{image.source}} alt={{image.title}}>
+          <li *ngFor="let url of urlFotos">
+            <a target="_blank"><img src={{url.url}} alt={{url.titulo}}>
+              <span (click)="imageRemoved($event)" class="botao-excluir"><i class="material-icons">delete</i></span>
             </a>
-            <span (click)="imageRemoved($event)" class="btn excluir material-icons">delete</span>
           </li>
         </ul>
         </div>

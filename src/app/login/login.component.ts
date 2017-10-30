@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
   inicializaloginForm() {
     this.loginForm = this.formBuilder.group({
       usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(5)])
+      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)])
     });
   }
 }

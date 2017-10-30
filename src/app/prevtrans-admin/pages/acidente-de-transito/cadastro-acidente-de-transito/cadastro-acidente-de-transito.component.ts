@@ -1,17 +1,25 @@
 import {Component, EventEmitter, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AcidenteTransito, Veiculo} from '../../../../shared/models';
-import {TipoVeiculo} from '../../../../shared/models/tipoVeiculo.model';
-import {AcidenteTransitoService} from '../../../../shared/services/acidente-transito.service';
-import {GoogleMapsService} from '../../../../shared/services/google-maps.service';
-import {Localizacao} from '../../../../shared/models/localizacao.model';
 import {AgmMap} from '@agm/core';
-import {TipoVeiculoService} from '../../../../shared/services/tipo-veiculo.service';
 import {MaterializeAction} from 'angular2-materialize';
+import {
+  AcidenteTransitoService,
+  GoogleMapsService,
+  TipoVeiculoService
+} from '../../../../shared/services';
+import {
+  AcidenteTransito,
+  Localizacao,
+  TipoVeiculo,
+  Veiculo,
+  UrlFotos
+} from '../../../../shared/models';
+
 
 declare const jQuery: any;
 declare const Materialize: any;
+var pgwSlideshow;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -29,9 +37,9 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   veiculoForm: FormGroup;
   acidenteTransito: AcidenteTransito;
   veiculos: Array<Veiculo> = new Array<Veiculo>();
+  urlFotos: UrlFotos[];
   veiculo: Veiculo;
   tiposVeiculos: TipoVeiculo[];
-  images: any[];
   modalActions = new EventEmitter<string | MaterializeAction>();
 
   constructor(private formBuilder: FormBuilder,
@@ -43,25 +51,24 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.images = [];
-    for (let i = 1; i <= 5; i++) {
-      this.images.push({
-        source: 'https://lorempixel.com/800/400/food/1',
-        alt: 'Description for Image ' + i,
-        title: 'Title ' + i
+    this.urlFotos = [];
+    for (let i = 1; i <= 3; i++) {
+      this.urlFotos.push({
+        url: 'https://lorempixel.com/800/400/food/1',
+        titulo: 'Description for Image ' + i,
+        idUrl: 'Title ' + i
       });
     }
+    console.log(this.urlFotos);
     this.veiculo = new Veiculo();
     this.acidenteTransito = new AcidenteTransito();
-    this.acidenteTransito.urlFotos = new Array<String>();
+    this.acidenteTransito.urlFotos = [];
     this.localizacao = new Localizacao();
     this.validaForm();
+    this.inicializaToolTipe();
     this.inicializaMaterialize();
-    // this.inicializaModal();
-    // this.inilializaTime();
-    this.inicializaCarousel();
-    this.inicializaMaterialBox();
     this.listaTiposVeiculos();
+    this.inicializaPsw();
     const id = this.activeRoute.snapshot.params['id'];
     if (id) {
       this.carregarAcidenteTransito(id);
@@ -235,12 +242,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     });
   }
 
-  inicializaCarousel() {
-    jQuery(document).ready(function() {
-      jQuery('.pgwSlideshow').pgwSlideshow();
-    });
-  }
-
   listaTiposVeiculos() {
     this.tipoVeiculoService.tiposVeiculos().subscribe(tiposVeiculos => {
       if (tiposVeiculos) {
@@ -270,9 +271,9 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     const formData: FormData = new FormData();
     formData.append('file', event.file);
     this.acidenteTransitoService.upload(formData).subscribe(url => {
+      this.urlFotos.push(url);
       console.log(url);
-      this.acidenteTransito.urlFotos.push(url);
-      console.log(this.acidenteTransito.urlFotos);
+      this.reloadPsw();
     });
   }
 
@@ -286,5 +287,26 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   addToast() {
     console.log('ng2 toasty');
+  }
+
+  inicializaToolTipe() {
+    jQuery(document).ready(function () {
+      jQuery('.tooltipped').tooltip({delay: 50});
+    });
+  }
+
+  inicializaPsw() {
+    jQuery(document).ready(function () {
+      pgwSlideshow = jQuery('.pgwSlideshow').pgwSlideshow();
+    });
+  }
+
+  reloadPsw() {
+    jQuery(document).ready(function () {
+      pgwSlideshow.reload({
+        transitionEffect: 'fading',
+        adaptiveDuration: 4000
+      });
+    });
   }
 }

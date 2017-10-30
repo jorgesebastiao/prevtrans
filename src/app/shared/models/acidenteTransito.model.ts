@@ -1,6 +1,7 @@
 import {Veiculo} from './veiculo.model';
 import {DadosAcidenteTransito} from './dadosAcidenteTransito.model';
 import {Instituicao} from './instituicao.model';
+import {UrlFotos} from './UrlFotos.model';
 
 export class AcidenteTransito {
   constructor(public idAcidenteTransito?: string,
@@ -13,6 +14,6 @@ export class AcidenteTransito {
               public veiculos?: Veiculo[],
               public dadosAcidenteTransitos?: DadosAcidenteTransito[],
               public instituicao?: Instituicao,
-              public  urlFotos?: Array<String>) {
+              public  urlFotos?: UrlFotos[]) {
   }
 }

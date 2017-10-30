@@ -21,16 +21,44 @@
         <thead>
         <tr>
           <th>ID</th>
+          <th>Titulo publicação</th>
+          <th>latitude</th>
+          <th>Longitude</th>
+          <th *ngIf="auth.temPermissao('ROLE_ALTERAR_ACIDENTE_DE_TRANSITO')">Alterar</th>
+          <th *ngIf="auth.temPermissao('ROLE_REMOVER_ACIDENTE_DE_TRANSITO')">Excluir</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let acidenteTransito of acidentesTransitos">
           <td>{{acidenteTransito.idAcidenteTransito}}</td>
-          <a (click)="selecionaAcidenteTransito(acidenteTransito)" [routerLink]="[':id']" class="waves-effect waves-yellow btn-flat"><i class="material-icons">mode_edit</i></a>
+          <td>{{acidenteTransito.tituloPublicacao}}</td>
+          <td>{{acidenteTransito.latitude}}</td>
+          <td>{{acidenteTransito.longitude}}</td>
+          <td>{{acidenteTransito.idAcidenteTransito}}</td>
+          <td *ngIf="auth.temPermissao('ROLE_ALTERAR_ACIDENTE_DE_TRANSITO')">
+            <a [routerLink]="[acidenteTransito.idAcidenteTransito]" class="indigo accent-4 white-text  btn-flat"><i
+              class="material-icons">mode_edit</i></a>
+          </td>
+          <td *ngIf="auth.temPermissao('ROLE_REMOVER_ACIDENTE_DE_TRANSITO')">
+            <a (click)="confirmaModal(acidenteTransito.idAcidenteTransito)" class="indigo accent-4 white-text  btn-flat"><i
+              class="material-icons">delete</i></a>
+          </td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
+
+<div class="modal" materialize="modal" [materializeActions]="modalActions" [materializeParams]="[{dismissible: false}]">
+  <div class="modal-content">
+    <h4>Comfirmação</h4>
+    <p>Deseja realmente excluir Acidente de Trânsito?</p>
+  </div>
+  <div class="modal-footer">
+    <a (click)="confirmaExcluir(true)" class="amber accent-4  white-text btn-flat">Sim</a>
+    <a (click)="fechaModal()" class="amber accent-4  white-text btn-flat">Não</a>
+  </div>
+</div>
+
 

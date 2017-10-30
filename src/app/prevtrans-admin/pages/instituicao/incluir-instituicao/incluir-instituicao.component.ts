@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {Instituicao} from '../../../../shared/models';
+import {Instituicao, Usuario} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
 import {PrevtransCnpjValidator} from '../../../../shared/validators/prevtrans-cnpj-validator';
 
@@ -20,7 +20,7 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   instituicao = new Instituicao();
   instituicaoForm: FormGroup;
-
+  usuarios: Usuario[];
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
@@ -29,6 +29,7 @@ export class IncluirInstituicaoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.usuarios = [];
     this.inicializaMaterialize();
     this.inicializaModal();
     this.validaForm();
@@ -47,20 +48,16 @@ export class IncluirInstituicaoComponent implements OnInit {
   }
 
   salvar(instituicao: Instituicao) {
-    console.log(this.instituicaoForm.get('cnpj').value);
     if (this.editando) {
-      console.log('alterando');
       this.alterarInstituicao(instituicao);
     } else {
-      console.log('salvando');
       this.salvarInstituicao(instituicao);
     }
-    this.addToast();
   }
 
   salvarInstituicao(instituicao: Instituicao) {
     this.instituicaoService.postInstituicao(instituicao)
-      .subscribe(instituicao => {
+      .subscribe( instituicao => {
           this.router.navigate(['admin/instituicoes']);
           this.instituicaoForm.patchValue(instituicao);
         }
@@ -91,7 +88,6 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   consultaCep() {
     let cepBusca = this.instituicaoForm.get('cep').value;
-    console.log(cepBusca);
     if (cepBusca && (cepBusca !== this.instituicao.cep)) {
       this.instituicao.cep = cepBusca;
       this.cepService.consultaCep(cepBusca)
@@ -144,8 +140,7 @@ export class IncluirInstituicaoComponent implements OnInit {
       jQuery('.modal').modal();
     });
   }
-
-  addToast() {
+  adicionarUsuario(){
 
   }
 }

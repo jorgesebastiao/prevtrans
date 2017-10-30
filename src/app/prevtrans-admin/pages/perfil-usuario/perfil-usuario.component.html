@@ -16,8 +16,8 @@
       </div>
       <div class="input-field col s12 m12 l12 ">
         <app-input-container errorMessage="usuário inválido">
-          <input id="login" type="text" formControlName="login" autocomplete="off">
-          <label class="black-text text-darken-4" for="login">Login</label>
+          <input id="usuario" type="text" formControlName="usuario" autocomplete="off">
+          <label class="black-text text-darken-4" for="usuario">Usuario</label>
         </app-input-container>
       </div>
       <div class="input-field col s12 m12 l12 ">
@@ -63,13 +63,13 @@
       </div>
       <div class="row">
         <div class="input-field col s6 m6 l6 ">
-          <app-input-container errorMessage="senha inválida">
+          <app-input-container errorMessage="senha inválida, minimo 8 caracteres">
             <input id="senha" type="password" formControlName="senha" autocomplete="off">
             <label class="black-text text-darken-4" for="senha">Senha</label>
           </app-input-container>
         </div>
         <div class="input-field col s6 m6 l6 ">
-          <app-input-container errorMessage="senha invalida">
+          <app-input-container errorMessage="senha invalida, minimo 8 caracteres">
             <input id="verifica-senha" type="password" formControlName="verificaSenha" autocomplete="off">
             <label class="black-text text-darken-4" for="verifica-senha">Verifica Senha</label>
           </app-input-container>

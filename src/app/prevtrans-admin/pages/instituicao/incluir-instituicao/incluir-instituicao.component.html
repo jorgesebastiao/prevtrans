@@ -110,6 +110,36 @@
         </div>
       </div>
       <div class="row">
+        <a (click)="adicionarUsuario()" class="col s12 m3 l3 amber accent-4 waves-light btn-large"><i
+          class="material-icons left">add</i>Adicionar Usuário</a>
+        <div class="col s12">
+          <table class="striped responsive-table">
+            <thead>
+            <tr>
+              <th>NOME</th>
+              <th>CPF</th>
+              <th>USUARIO</th>
+              <th>ALTERAR</th>
+              <th>EXCLUIR</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let usuarioT of usuarios">
+              <td>{{usuarioT.nome}}</td>
+              <td>{{usuarioT.cpf}}</td>
+              <td>{{usuarioT.usuario}}</td>
+              <td style="text-align: center">
+                <a class="waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+              </td>
+              <td >
+                <a class="waves-yellow btn-flat center"> <i class="material-icons">delete</i></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+        <div class="row">
         <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i class="material-icons left">clear</i>Cancelar</button>
         <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid" class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i class="material-icons left">done</i>Salvar </button>
       </div>

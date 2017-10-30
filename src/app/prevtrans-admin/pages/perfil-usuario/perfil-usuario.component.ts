@@ -39,14 +39,14 @@ export class PerfilUsuarioComponent implements OnInit {
     this.perfilUsuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
     //  login: this.formBuilder.control('', [Validators.required, Validators.pattern(this.LOGIN_REGEX)]),
-      login: this.formBuilder.control('', Validators.compose([Validators.required,
+      usuario: this.formBuilder.control('', Validators.compose([Validators.required,
          Validators.pattern(this.LOGIN_REGEX)])),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.EMAIL_REGEX)])
     });
 
     this.senhaForm = this.formBuilder.group({
-      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
-      verificaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)])
+      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
+      verificaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)])
     }, {validator: PerfilUsuarioComponent.equalsTo});
   }
   /*

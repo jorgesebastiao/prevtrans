@@ -11,6 +11,7 @@ import {AcidenteTransito} from '../models/acidenteTransito.model';
 import {AuthHttp} from 'angular2-jwt';
 import {ErrorHandlerService} from '../error-handler.service';
 import {AuthService} from '../seguranca/auth.service';
+import {UrlFotos} from '../models/UrlFotos.model';
 
 @Injectable()
 export class AcidenteTransitoService {
@@ -52,7 +53,7 @@ export class AcidenteTransitoService {
       });
   }
 
-  upload(formdata: any): Observable<String> {
+  upload(formdata: any): Observable<UrlFotos> {
     const headers = new Headers();
     this.auth.obterNovoAccessToken();
     const token = localStorage.getItem('tokenPrevtrans');
@@ -86,5 +87,10 @@ export class AcidenteTransitoService {
         this.hand.handle(error);
         return Observable.of<String>();
       });
+  }
+
+  deleteAcidenteTransito(id: string): Observable<String> {
+    return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
+      .map(response => response.text() ? response.json() : response );
   }
 }

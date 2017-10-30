@@ -24,7 +24,6 @@ export class InstituicoesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('carregando instituicoes');
     this.instituicaoService.instituicoes()
       .subscribe(instituicoes =>  this.instituicoes = instituicoes);
   }

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Pessoa, Usuario} from '../../../../shared/models';
-import {CepService, PessoaService, UsuarioService} from '../../../../shared/services';
+import {Usuario, UsuarioPermissao} from '../../../../shared/models';
+import {CepService, UsuarioService} from '../../../../shared/services';
 import {PrevtransCpfValidator} from '../../../../shared/validators/prevtrans-cpf-validator';
+import {AuthService} from "../../../../shared/seguranca/auth.service";
 
 declare var jQuery: any;
 declare var Materialize: any;
@@ -15,121 +16,114 @@ declare var Materialize: any;
 })
 export class CadastroUsuarioComponent implements OnInit {
 
-  cepPattern = /^[0-9]{8}$/;
+  titulo: string;
+  LOGIN_REGEX = /^[_'.@A-Za-z0-9-]*$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  pessoa = new Pessoa();
   usuarioForm: FormGroup;
-
+  usuario: Usuario;
+  permissoes: UsuarioPermissao [];
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
+              private router: Router,
               private cepService: CepService,
-              private pessoaService: PessoaService,
-              private usuarioService: UsuarioService) {
+              private usuarioService: UsuarioService,
+              public auth: AuthService) {
   }
 
   ngOnInit() {
-    this.inicializaDataPick();
+    this.usuarioService.permissoes().subscribe(
+      permissoes => {
+        this.permissoes = permissoes;
+      }
+    );
     this.inicializaMaterialize();
     this.validaForm();
+    this.usuario = new Usuario();
     const id = this.routes.snapshot.params['id'];
     if (id) {
+      this.titulo = 'Alterar Usuário';
       this.carregarUsuario(id);
+    }else{
+      this.titulo = 'Cadastrar Usuário';
     }
   }
 
   get editando() {
-    return Boolean(this.pessoa.usuario.idUsuario);
-  }
-
-  salvar(pessoa: Pessoa) {
-    if (this.editando) {
-      this.alterarUsuario(pessoa);
-    } else {
-      this.salvarUsuario(pessoa);
-    }
-  }
-
-  salvarUsuario(pessoa: Pessoa) {
-
-  }
-
-  alterarUsuario(pessoa: Pessoa) {
-
+    return Boolean(this.usuario.idUsuario);
   }
 
   carregarUsuario(id: string) {
-    this.inicializaMaterialize();
+    this.usuarioService.getUsuario(id).subscribe(usuario => {
+      this.usuario = usuario;
+      this.usuarioForm.patchValue(usuario);
+      for (let i = 0; i < this.permissoes.length; i++) {
+        for (let j = 0; j < usuario.usuarioPermissoes.length; j++) {
+          if (this.permissoes[i].permissao === usuario.usuarioPermissoes[j].permissao) {
+            this.permissoes[i] = usuario.usuarioPermissoes[j];
+          }
+        }
+      }
+      this.inicializaMaterialize();
+    });
+    this.usuarioForm.get('senha').clearValidators();
+    this.usuarioForm.get('senha').clearAsyncValidators();
+    this.usuarioForm.get('confirmaSenha').clearValidators();
+    this.usuarioForm.get('confirmaSenha').clearAsyncValidators();
   }
 
-  consultaCep() {
-    let cepBusca = this.usuarioForm.get('cep').value;
-    console.log(cepBusca);
-    if (cepBusca && (cepBusca !== this.pessoa.cep)) {
-      this.pessoa.cep = cepBusca;
-      this.cepService.consultaCep(cepBusca)
-        .subscribe(dados => {
-          this.usuarioForm.patchValue({
-            endereco: dados.logradouro,
-            complemento: dados.complemento,
-            bairro: dados.bairro,
-            estado: dados.uf,
-            cidade: dados.localidade
-          });
-          this.inicializaMaterialize();
-        });
+  salvar(usuario: Usuario) {
+    if (this.editando) {
+      this.alterarUsuario(usuario);
+    } else {
+      this.cadastrarUsuario(usuario);
     }
   }
 
-  validaForm() {
-    this.usuarioForm = this.formBuilder.group({
-      cpf: this.formBuilder.control(null, [Validators.required,  Validators.compose([
-        Validators.required, CadastroUsuarioComponent.validaCpf])]),
-      nome: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-      dataNascimento: this.formBuilder.control(null, [Validators.required, Validators.minLength(1)]),
-      email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
-      telefone: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-      celular: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-      cep: this.formBuilder.control('', [Validators.required, Validators.pattern(this.cepPattern)]),
-      endereco: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      numero: this.formBuilder.control(''),
-      complemento: this.formBuilder.control(''),
-      bairro: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      estado: this.formBuilder.control('', [Validators.required, Validators.minLength(2)]),
-      cidade: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      confirmaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
+  alterarUsuario(usuario: Usuario) {
+    usuario.idUsuario = this.usuario.idUsuario;
+    this.usuarioService.putUsuario( this.usuario.idUsuario, usuario).subscribe(usuario => {
+      this.router.navigate(['admin/usuarios']);
     });
   }
 
-  static validaCpf(control: AbstractControl): {[key: string]: boolean} {
-    return PrevtransCpfValidator.validate(control);
+  cadastrarUsuario(usuario: Usuario) {
+    console.log(usuario);
+    this.usuarioService.postUsuario(usuario).subscribe(
+      usuario => {
+        this.router.navigate(['admin/usuarios']);
+      }
+    );
+  }
+  cancelar(){
+    this.usuarioForm.reset();
+  this.router.navigate(['admin/usuarios']);
+  }
+  validaForm() {
+    this.usuarioForm = this.formBuilder.group({
+      nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
+      email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
+      usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
+      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
+      confirmaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
+      usuarioPermissoes: this.formBuilder.control('',[Validators.required, Validators.minLength(1)]),
+      ativo: ['']
+    },{validator: CadastroUsuarioComponent.equalsTo});
   }
 
+  static equalsTo(group: AbstractControl): { [key: string]: boolean } {
+    const senha = group.get('senha');
+    const confirmaSenha = group.get('confirmaSenha');
+    if (!senha || !confirmaSenha) {
+      return undefined;
+    }
+    if (senha.value !== confirmaSenha.value) {
+      return {senhaNotMatch: true}
+    }
+    return undefined;
+  }
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
-    });
-  }
-
-  inicializaDataPick() {
-    jQuery(document).ready(function () {
-      jQuery('.datepicker').pickadate({
-        monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-        monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabádo'],
-        weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-        today: '',
-        clear: 'Limpar',
-        close: 'Pronto',
-        labelMonthNext: 'Próximo mês',
-        labelMonthPrev: 'Mês anterior',
-        labelMonthSelect: 'Selecione um mês',
-        labelYearSelect: 'Selecione um ano',
-        selectMonths: true,
-        selectYears: 15,
-        format: 'dd/mm/yyyy'
-      });
     });
   }
 }

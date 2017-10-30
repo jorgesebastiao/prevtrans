@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {AcidenteTransito} from '../../../../shared/models/acidenteTransito.model';
+import {MaterializeAction} from "angular2-materialize";
+import {AuthService} from "../../../../shared/seguranca/auth.service";
+import {AcidenteTransitoService} from "../../../../shared/services/acidente-transito.service";
 
 @Component({
   selector: 'app-acidentes-de-transitos',
@@ -7,23 +10,42 @@ import {AcidenteTransito} from '../../../../shared/models/acidenteTransito.model
   styleUrls: ['./acidentes-de-transitos.component.css']
 })
 export class AcidentesDeTransitosComponent implements OnInit {
-
-  acidentesTransitos: AcidenteTransito[]=[
-    {
-      idAcidenteTransito: '1'
-    },
-    {
-    idAcidenteTransito: '2'
-    }
-    ];
-  acidenteTransito: AcidenteTransito;
-  constructor() { }
+  confirma: boolean = false;
+  idAcidenteTransito: string;
+  modalActions = new EventEmitter<MaterializeAction>();
+  acidentesTransitos: AcidenteTransito[];
+  constructor(public auth: AuthService, private acidenteTransitoService: AcidenteTransitoService) { }
 
   ngOnInit() {
 
   }
 
-  selecionaAcidenteTransito(acidenteTransito: AcidenteTransito){
-      this.acidenteTransito=  acidenteTransito;
+  confirmaModal(idAcidenteTransito: string) {
+    this.idAcidenteTransito = idAcidenteTransito;
+    this.modalActions.emit({action: 'modal', params: ['open']});
+  }
+
+  confirmaExcluir(confirma: boolean) {
+    if (confirma && this.idAcidenteTransito) {
+      this.acidenteTransitoService.deleteAcidenteTransito(this.idAcidenteTransito).subscribe(
+        () => {
+          let index = this.acidentesTransitos.findIndex(p => p.idAcidenteTransito === this.idAcidenteTransito);
+          this.acidentesTransitos.splice(index, 1);
+          this.fechaModal();
+        }
+      );
+    }
+  }
+
+  fechaModal() {
+    this.modalActions.emit({action: 'modal', params: ['close']});
+  }
+
+  carregaAcidenteTransito() {
+    this.acidenteTransitoService.acidentesTransito().subscribe(
+      acidentesTransitos => {
+        this.acidentesTransitos = acidentesTransitos;
+      }
+    );
   }
 }

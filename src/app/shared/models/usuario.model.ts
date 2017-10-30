@@ -1,9 +1,13 @@
+import {UsuarioPermissao} from './UsuarioPermissao.model';
+
 export class Usuario {
 
-  constructor(public idUsuario?: number,
-              public login?: string,
+  constructor(public idUsuario?: string,
+              public nome?: string,
+              public usuario?: string,
               public email?: string,
               public senha?: string,
-              public telefone?: string) {
+              public ativo?: boolean,
+              public usuarioPermissoes?: UsuarioPermissao[]) {
   }
 }

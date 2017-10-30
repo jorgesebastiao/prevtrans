@@ -20,26 +20,76 @@
       <table class="striped responsive-table">
         <thead>
         <tr>
+          <th>ID</th>
           <th>Nome</th>
-          <th>Cpf</th>
-          <th>Data de Nascimento</th>
           <th>Usuário</th>
-          <th style="text-align: center">Alterar</th>
+          <th>Ativo</th>
+          <th>Alterar</th>
+          <th>Alterar Senha</th>
+          <th>Excluir</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let pessoa of pessoas">
-          <td>{{pessoa.nome}}</td>
-          <td>{{pessoa.cpf}}</td>
-          <td>{{pessoa.dataNascimento}}</td>
-          <td>{{pessoa.usuario.login}}</td>
-          <td style="text-align: center">
-            <a [routerLink]="[pessoa.usuario.idUsuario]"
-               class="waves-effect waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{usuario.idUsuario}}</td>
+          <td>{{usuario.nome}}</td>
+          <td>{{usuario.usuario}}</td>
+          <td>{{usuario.ativo}}</td>
+          <td >
+            <a [routerLink]="[usuario.idUsuario]"
+               class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></a>
+          </td>
+          <td >
+            <a (click)="alterarSenha(usuario.idUsuario)" class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">lock</i></a>
+          </td>
+          <td>
+            <a class="amber waves-yellow btn-flat center"><i class="material-icons white-text">delete</i></a>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+
+<div class="modal " materialize="modal" [materializeActions]="alteraSenhaAction">
+  <div class="modal-content">
+    <form materialize [formGroup]="senhaForm" novalidate>
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Alterar Senha</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6 m6 l6 ">
+          <app-input-container errorMessage="senha inválida, minimo 8 caracteres">
+            <input id="senha" type="password" formControlName="senha" autocomplete="off">
+            <label class="black-text text-darken-4" for="senha">Senha</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s6 m6 l6 ">
+          <app-input-container errorMessage="senha invalida, minimo 8 caracteres">
+            <input id="verifica-senha" type="password" formControlName="verificaSenha" autocomplete="off">
+            <label class="black-text text-darken-4" for="verifica-senha">Verifica Senha</label>
+          </app-input-container>
+        </div>
+      </div>
+      <div class="row">
+        <div *ngIf="senhaForm.hasError('senhaNotMatch')" class="error-msg cols 12 center-align">
+          Senhas não Conferem!!
+        </div>
+      </div>
+      <div class="row">
+        <button (click)="fechaModalSenha()" class="amber accent-4 right waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
+        </button>
+        <button (click)="salvarSenha(senhaForm.get('senha').value)" [disabled]="!senhaForm.valid"
+                class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
+          class="material-icons left">done</i>Salvar
+        </button>
+      </div>
+    </form>
   </div>
 </div>
