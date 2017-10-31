@@ -6,8 +6,8 @@ import {MaterializeAction} from 'angular2-materialize';
 import {UsuarioService} from '../../../shared/services/usuario.service';
 import {Router} from '@angular/router';
 
-declare var jQuery: any;
-declare var Materialize: any;
+declare const jQuery: any;
+declare const Materialize: any;
 
 @Component({
   selector: 'app-perfil-usuario',

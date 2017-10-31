@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {AcidenteTransito} from '../../../../shared/models/acidenteTransito.model';
-import {MaterializeAction} from "angular2-materialize";
-import {AuthService} from "../../../../shared/seguranca/auth.service";
-import {AcidenteTransitoService} from "../../../../shared/services/acidente-transito.service";
+import {MaterializeAction} from 'angular2-materialize';
+import {AuthService} from '../../../../shared/seguranca/auth.service';
+import {AcidenteTransitoService} from '../../../../shared/services';
 
 @Component({
   selector: 'app-acidentes-de-transitos',

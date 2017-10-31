@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AcidenteTransito} from '../../shared/models/acidenteTransito.model';
 import {AcidenteTransitoService} from '../../shared/services/acidente-transito.service';
 
@@ -11,12 +11,12 @@ declare var jQuery: any;
 
 export class AcidentesMapsComponent implements OnInit {
   acidentesTransito: AcidenteTransito[];
-  acidenteTransito : AcidenteTransito;
+  acidenteTransito: AcidenteTransito;
 
   constructor(private acidenteTransitoService: AcidenteTransitoService) { }
 
   ngOnInit() {
-    this.acidenteTransito= new AcidenteTransito;
+    this.acidenteTransito = new AcidenteTransito;
     this.inicializaJquery();
     this.acidenteTransitoService.acidentesTransito()
       .subscribe(acidentesTransito =>  this.acidentesTransito = acidentesTransito);
@@ -31,7 +31,7 @@ export class AcidentesMapsComponent implements OnInit {
     jQuery('#exibe-informacao').modal('open');
   }
   // inicializa Jquery Materialize
-  inicializaJquery(){
+  inicializaJquery() {
     jQuery(document).ready(function(){
       jQuery('.modal').modal();
       jQuery('.slider').slider();

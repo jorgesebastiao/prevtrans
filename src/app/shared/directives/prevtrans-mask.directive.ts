@@ -69,8 +69,8 @@ export class PrevtransMaskDirective implements ControlValueAccessor {
   /**
    * Aplica a máscara a determinado valor.
    *
-   * @param string valor
-   * @return string
+   * param string valor
+   * return string
    */
   aplicarMascara(valor: string): string {
     valor = valor.replace(/\D/g, '');
@@ -80,7 +80,7 @@ export class PrevtransMaskDirective implements ControlValueAccessor {
 
     valor = '';
     for (let i = 0; i < this.prevtransMask.length; i++) {
-      if (isNaN(parseInt(this.prevtransMask.charAt(i)))) {
+      if (isNaN( parseInt(this.prevtransMask.charAt(i)))) {
         valor += this.prevtransMask.charAt(i);
       } else {
         valor += valorMask[valorMaskPos++];

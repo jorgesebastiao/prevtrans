@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
 
-import { AuthConfig, AuthHttp, JwtHelper } from 'angular2-jwt';
+import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from './auth.service';
@@ -57,7 +57,7 @@ export class MoneyHttp extends AuthHttp {
           if (this.auth.isAccessTokenInvalido()) {
             console.log('NotAuthenticated');
             throw new NotAuthenticatedError();
-          }else{
+          }else {
             console.log('token válido')
           }
           return fn().toPromise();

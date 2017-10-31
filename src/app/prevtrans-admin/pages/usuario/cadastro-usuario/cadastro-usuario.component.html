@@ -57,11 +57,12 @@
       <div class="row">
         <div class="input-field col s12 m12 l12 ">
           <app-input-container errorMessage="Selecione no minimo 1 permissão de acesso">
-            <select id="selectId" multiple formControlName="usuarioPermissoes"
+            <select id="permissoes-usuarios" multiple formControlName="usuarioPermissoes"
                     materialize="material_select" [materializeSelectOptions]="permissoes">
               <option value="" disabled selected>Selecione as Permissões do Usuário</option>
               <option *ngFor="let permissao of permissoes " [ngValue]="permissao">{{permissao.permissao}}</option>
             </select>
+            <label for="permissoes-usuarios" class="black-text text-darken-4">Permissões de Usuários</label>
           </app-input-container>
         </div>
         <div class="col s12 ">

@@ -1,5 +1,5 @@
-export class UrlFotos{
+export class UrlFotos {
   constructor(public idUrl?: string,
               public url?: string,
-              public titulo?: string){}
+              public titulo?: string) {}
 }

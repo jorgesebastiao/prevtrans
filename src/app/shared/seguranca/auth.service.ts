@@ -30,9 +30,9 @@ export class AuthService {
       })
       .catch(response => {
         console.log(response);
-        if(response.status === 400){
-         const falha= response.json();
-          if(falha.error==='invalid_grant'){
+        if (response.status === 400) {
+         const falha = response.json();
+          if (falha.error === 'invalid_grant') {
             return Promise.reject('usuario ou senha inválidos!!!')
           }
           return Promise.reject(response);

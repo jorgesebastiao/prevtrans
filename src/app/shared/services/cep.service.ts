@@ -12,7 +12,7 @@ export class CepService {
 
   constructor(private http: Http) { }
 
-  consultaCep( cep: string): Observable<any>{
+  consultaCep( cep: string): Observable<any> {
     return this.http.get(`${CEP_API}/${cep}/json`)
       .map(response => response.json())
       .catch(PrevtransAdminHerrorHandler.handleError);

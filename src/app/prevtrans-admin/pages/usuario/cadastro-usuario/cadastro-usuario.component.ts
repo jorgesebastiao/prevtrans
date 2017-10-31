@@ -3,11 +3,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario, UsuarioPermissao} from '../../../../shared/models';
 import {CepService, UsuarioService} from '../../../../shared/services';
-import {PrevtransCpfValidator} from '../../../../shared/validators/prevtrans-cpf-validator';
-import {AuthService} from "../../../../shared/seguranca/auth.service";
+import {AuthService} from '../../../../shared/seguranca/auth.service';
 
-declare var jQuery: any;
-declare var Materialize: any;
+declare const jQuery: any;
+declare const Materialize: any;
 
 @Component({
   selector: 'app-cadastro-usuario',
@@ -22,6 +21,7 @@ export class CadastroUsuarioComponent implements OnInit {
   usuarioForm: FormGroup;
   usuario: Usuario;
   permissoes: UsuarioPermissao [];
+
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
@@ -43,7 +43,7 @@ export class CadastroUsuarioComponent implements OnInit {
     if (id) {
       this.titulo = 'Alterar Usuário';
       this.carregarUsuario(id);
-    }else{
+    } else {
       this.titulo = 'Cadastrar Usuário';
     }
   }
@@ -81,7 +81,7 @@ export class CadastroUsuarioComponent implements OnInit {
 
   alterarUsuario(usuario: Usuario) {
     usuario.idUsuario = this.usuario.idUsuario;
-    this.usuarioService.putUsuario( this.usuario.idUsuario, usuario).subscribe(usuario => {
+    this.usuarioService.putUsuario(this.usuario.idUsuario, usuario).subscribe(usuario => {
       this.router.navigate(['admin/usuarios']);
     });
   }
@@ -94,10 +94,12 @@ export class CadastroUsuarioComponent implements OnInit {
       }
     );
   }
-  cancelar(){
+
+  cancelar() {
     this.usuarioForm.reset();
-  this.router.navigate(['admin/usuarios']);
+    this.router.navigate(['admin/usuarios']);
   }
+
   validaForm() {
     this.usuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
@@ -105,9 +107,9 @@ export class CadastroUsuarioComponent implements OnInit {
       usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
       senha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
       confirmaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      usuarioPermissoes: this.formBuilder.control('',[Validators.required, Validators.minLength(1)]),
+      usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       ativo: ['']
-    },{validator: CadastroUsuarioComponent.equalsTo});
+    }, {validator: CadastroUsuarioComponent.equalsTo});
   }
 
   static equalsTo(group: AbstractControl): { [key: string]: boolean } {
@@ -121,6 +123,7 @@ export class CadastroUsuarioComponent implements OnInit {
     }
     return undefined;
   }
+
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();

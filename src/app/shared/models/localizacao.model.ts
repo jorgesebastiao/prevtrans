@@ -7,6 +7,6 @@ export class Localizacao {
               public cidade?: string,
               public estado?: string,
               public pais?: string,
-              public cep?: string){
+              public cep?: string) {
   }
 }

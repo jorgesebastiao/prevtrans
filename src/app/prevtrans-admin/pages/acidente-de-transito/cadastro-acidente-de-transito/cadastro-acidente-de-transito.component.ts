@@ -36,7 +36,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   acidenteTransitoForm: FormGroup;
   veiculoForm: FormGroup;
   acidenteTransito: AcidenteTransito;
-  veiculos: Array<Veiculo> = new Array<Veiculo>();
+  veiculos: Veiculo[];
   urlFotos: UrlFotos[];
   veiculo: Veiculo;
   tiposVeiculos: TipoVeiculo[];
@@ -61,6 +61,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     }
     console.log(this.urlFotos);
     this.veiculo = new Veiculo();
+    this.veiculo = [];
     this.acidenteTransito = new AcidenteTransito();
     this.acidenteTransito.urlFotos = [];
     this.localizacao = new Localizacao();
@@ -232,7 +233,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
       autoclose: false, // automatic close timepicker
       ampmclickable: false, // make AM PM clickable
       aftershow: function () {
-      } //Function for after opening timepicker
+      } // Function for after opening timepicker
     });
   }
 

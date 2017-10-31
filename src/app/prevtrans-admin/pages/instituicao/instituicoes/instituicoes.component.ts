@@ -5,7 +5,7 @@ import {InstituicaoService} from '../../../../shared/services';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
 import {ErrorHandlerService} from '../../../../shared/error-handler.service';
 
-declare var jQuery;
+declare const jQuery;
 
 @Component({
   selector: 'app-instituicoes',

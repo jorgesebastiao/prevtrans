@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   this.inicializaNavBar();
   }
-  inicializaNavBar(){
+  inicializaNavBar() {
     jQuery( document ).ready(function(){
       jQuery('.button-collapse').sideNav();
       //  Função fechar ao clicar em link

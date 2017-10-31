@@ -3,7 +3,7 @@ import {LatLngLiteral, MapsAPILoader} from '@agm/core';
 import {Localizacao} from '../models/localizacao.model';
 import {Observable} from 'rxjs/Observable';
 
-declare var google: any;
+declare const google: any;
 
 @Injectable()
 export class GoogleMapsService {

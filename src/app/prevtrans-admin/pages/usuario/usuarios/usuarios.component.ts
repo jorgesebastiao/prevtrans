@@ -3,10 +3,10 @@ import {UsuarioService} from '../../../../shared/services';
 import {Usuario} from '../../../../shared/models/usuario.model';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MaterializeAction} from 'angular2-materialize';
-import {AuthService} from "../../../../shared/seguranca/auth.service";
+import {AuthService} from '../../../../shared/seguranca/auth.service';
 
-declare var jQuery: any;
-declare var Materialize: any;
+declare const jQuery: any;
+declare const Materialize: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -78,7 +78,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  setAtivo(id: string, ativo: boolean){
+  setAtivo(id: string, ativo: boolean) {
     this.usuarioService.ativo(id, ativo).subscribe(
       (response) => {
         if (response.status === 200) {

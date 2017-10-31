@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../shared/seguranca/auth.service';
-import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ErrorHandlerService} from '../shared/error-handler.service';
 
-declare var Materialize: any;
-declare var jQuery: any;
+declare const Materialize: any;
+declare const jQuery: any;
 
 @Component({
   selector: 'app-login',
@@ -44,10 +44,7 @@ export class LoginComponent implements OnInit {
   }
 
   valida() {
-    if (this.erro) {
-      return true;
-    }
-    return false;
+    return !!this.erro;
   }
 
   inicializaloginForm() {

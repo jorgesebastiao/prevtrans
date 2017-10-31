@@ -232,12 +232,12 @@
       <div class="row">
         <div class="input-field col s12 m4 l6 ">
           <app-input-container errorMessage="Campo Obrigatório ">
-            <select formControlName="tipoVeiculo" materialize="material_select"
+            <select id="tipo-veiculo" formControlName="tipoVeiculo" materialize="material_select"
                     [materializeSelectOptions]="tiposVeiculos">
               <option value="" disabled selected>Selecione o Tipo de Veiculo</option>
               <option *ngFor="let tipoVeiculo  of tiposVeiculos" [ngValue]="tipoVeiculo">{{tipoVeiculo.tipoVeiculo}}
             </select>
-            <label class="black-text text-darken-4">Tipo Veiculo</label>
+            <label for="tipo-veiculo" class="black-text text-darken-4">Tipo de Veiculo</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l6 ">
@@ -260,8 +260,8 @@
         </div>
         <div class="input-field col s12 m4 l6 ">
           <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
-            <input id="descricao" type="text" formControlName="descricao" autocomplete="off">
-            <label class="black-text text-darken-4" for="descricao">Descrição</label>
+            <input id="descricao-veiculo" type="text" formControlName="descricao" autocomplete="off">
+            <label class="black-text text-darken-4" for="descricao-veiculo">Descrição</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l6 ">

@@ -6,8 +6,8 @@ import {Instituicao, Usuario} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
 import {PrevtransCnpjValidator} from '../../../../shared/validators/prevtrans-cnpj-validator';
 
-declare var jQuery: any;
-declare var Materialize: any;
+declare const jQuery: any;
+declare const Materialize: any;
 
 @Component({
   selector: 'app-incluir-instituicao',
