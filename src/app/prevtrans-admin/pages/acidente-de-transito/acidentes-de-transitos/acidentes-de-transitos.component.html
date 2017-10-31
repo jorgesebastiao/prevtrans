@@ -36,11 +36,11 @@
           <td>{{acidenteTransito.longitude}}</td>
           <td>{{acidenteTransito.idAcidenteTransito}}</td>
           <td *ngIf="auth.temPermissao('ROLE_ALTERAR_ACIDENTE_DE_TRANSITO')">
-            <a [routerLink]="[acidenteTransito.idAcidenteTransito]" class="indigo accent-4 white-text  btn-flat"><i
+            <a [routerLink]="[acidenteTransito.idAcidenteTransito]" class="amber accent-4 white-text  btn-flat"><i
               class="material-icons">mode_edit</i></a>
           </td>
           <td *ngIf="auth.temPermissao('ROLE_REMOVER_ACIDENTE_DE_TRANSITO')">
-            <a (click)="confirmaModal(acidenteTransito.idAcidenteTransito)" class="indigo accent-4 white-text  btn-flat"><i
+            <a (click)="confirmaModal(acidenteTransito.idAcidenteTransito)" class="amber accent-4 white-text  btn-flat"><i
               class="material-icons">delete</i></a>
           </td>
         </tr>

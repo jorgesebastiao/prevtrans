@@ -76,4 +76,10 @@ export class UsuarioService {
     return this.http.put(`${PREVTRANS_API}/usuarios/${id}/senha`, senha)
       .map(response => response.text() ? response.json() : response);
   }
+
+  deleteUsuario(id: string): Observable<String> {
+    return this.http.delete(`${PREVTRANS_API}/usuarios/${id}`)
+      .map(response => response.text() ? response.json() : response );
+  }
+
 }

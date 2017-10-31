@@ -17,7 +17,7 @@ export class AcidentesDeTransitosComponent implements OnInit {
   constructor(public auth: AuthService, private acidenteTransitoService: AcidenteTransitoService) { }
 
   ngOnInit() {
-
+  this.carregaAcidenteTransito();
   }
 
   confirmaModal(idAcidenteTransito: string) {

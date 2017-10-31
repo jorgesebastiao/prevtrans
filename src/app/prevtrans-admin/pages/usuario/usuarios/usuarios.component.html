@@ -38,7 +38,8 @@
             <div class="switch">
               <label  class="black-text">
                 INATIVO
-                <input  (change)="setAtivo(usuario)" [(ngModel)]="usuario.ativo" [disabled]="auth.jwtPayload.user_name == usuario.usuario" type="checkbox">
+                <input  (change)="setAtivo(usuario)" [(ngModel)]="usuario.ativo"
+                        [disabled]="auth.jwtPayload.user_name == usuario.usuario" type="checkbox">
                 <span class="amber lever"></span>
                 ATIVO
               </label>
@@ -49,10 +50,12 @@
                class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>
           </td>
           <td >
-            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario"  (click)="alterarSenha(usuario.idUsuario)" class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">lock</i></button>
+            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario"  (click)="alterarSenha(usuario.idUsuario)"
+                    class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">lock</i></button>
           </td>
           <td>
-            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario"  class="amber waves-yellow btn-flat center"><i class="material-icons white-text">delete</i></button>
+            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" (click)="confirmaModal(usuario.idUsuario)"
+                    class="amber waves-yellow btn-flat center"><i class="material-icons white-text">delete</i></button>
           </td>
         </tr>
         </tbody>
@@ -100,5 +103,16 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal" materialize="modal" [materializeActions]="removerUsuarioAction" [materializeParams]="[{dismissible: false}]">
+  <div class="modal-content">
+    <h4>Comfirmação</h4>
+    <p>Deseja realmente excluir esse Usuário?</p>
+  </div>
+  <div class="modal-footer">
+    <a (click)="confirmaExcluir(true)" class="amber accent-4  white-text btn-flat">Sim</a>
+    <a (click)="fechaModal()" class="amber accent-4  white-text btn-flat">Não</a>
   </div>
 </div>

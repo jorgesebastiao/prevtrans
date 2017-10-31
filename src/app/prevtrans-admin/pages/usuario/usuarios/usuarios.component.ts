@@ -18,6 +18,7 @@ export class UsuariosComponent implements OnInit {
   usuarios: Usuario[];
   senhaForm: FormGroup;
   alteraSenhaAction = new EventEmitter<string | MaterializeAction>();
+  removerUsuarioAction = new EventEmitter<MaterializeAction>();
 
   constructor(public auth: AuthService, private usuarioService: UsuarioService, private formBuilder: FormBuilder) {
   }
@@ -55,6 +56,16 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
+  setAtivo(usuario: Usuario) {
+    usuario.ativo ? usuario.ativo = true : usuario.ativo = false;
+    this.usuarioService.ativo(usuario.idUsuario, usuario.ativo).subscribe(
+      (response) => {
+        if (response.status === 200) {
+        }
+      }
+    );
+  }
+
   alterarSenha(id: string) {
     this.idUsuario = id;
     this.alteraSenhaAction.emit({action: 'modal', params: ['open']});
@@ -78,13 +89,24 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  setAtivo(usuario: Usuario) {
-    usuario.ativo ? usuario.ativo = true : usuario.ativo = false;
-    this.usuarioService.ativo(usuario.idUsuario, usuario.ativo).subscribe(
-      (response) => {
-        if (response.status === 200) {
+  confirmaModal(idUsuario: string) {
+    this.idUsuario = idUsuario;
+    this.removerUsuarioAction.emit({action: 'modal', params: ['open']});
+  }
+
+  confirmaExcluir(confirma: boolean) {
+    if (confirma && this.idUsuario) {
+      this.usuarioService.deleteUsuario(this.idUsuario).subscribe(
+        () => {
+          let index = this.usuarios.findIndex(u => u.idUsuario === this.idUsuario);
+          this.usuarios.splice(index, 1);
+          this.fechaModal();
         }
-      }
-    );
+      );
+    }
+  }
+
+  fechaModal() {
+    this.removerUsuarioAction.emit({action: 'modal', params: ['close']});
   }
 }
