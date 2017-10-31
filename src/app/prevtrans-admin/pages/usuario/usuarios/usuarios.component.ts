@@ -3,6 +3,7 @@ import {UsuarioService} from '../../../../shared/services';
 import {Usuario} from '../../../../shared/models/usuario.model';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MaterializeAction} from 'angular2-materialize';
+import {AuthService} from "../../../../shared/seguranca/auth.service";
 
 declare var jQuery: any;
 declare var Materialize: any;
@@ -18,7 +19,7 @@ export class UsuariosComponent implements OnInit {
   senhaForm: FormGroup;
   alteraSenhaAction = new EventEmitter<string | MaterializeAction>();
 
-  constructor(private usuarioService: UsuarioService, private formBuilder: FormBuilder) {
+  constructor(public auth: AuthService, private usuarioService: UsuarioService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -66,7 +67,7 @@ export class UsuariosComponent implements OnInit {
   salvarSenha(senha: string) {
     this.usuarioService.alterarSenha(this.idUsuario, senha)
       .subscribe(() => {
-
+        this.fechaModalSenha();
         }
       );
   }

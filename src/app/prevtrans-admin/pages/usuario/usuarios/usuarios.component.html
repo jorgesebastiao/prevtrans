@@ -34,16 +34,20 @@
           <td>{{usuario.idUsuario}}</td>
           <td>{{usuario.nome}}</td>
           <td>{{usuario.usuario}}</td>
-          <td>{{usuario.ativo}}</td>
+          <td>
+            <button class="amber waves-yellow btn-flat center white-text" *ngIf="!usuario.ativo">Inativo</button>
+            <button class="amber waves-yellow btn-flat center white-text" *ngIf="usuario.ativo"
+                    [disabled]="auth.jwtPayload.user_name == usuario.usuario" >ativo</button>
+           </td>
           <td >
-            <a [routerLink]="[usuario.idUsuario]"
-               class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></a>
+            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" [routerLink]="[usuario.idUsuario]"
+               class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>
           </td>
           <td >
-            <a (click)="alterarSenha(usuario.idUsuario)" class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">lock</i></a>
+            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario"  (click)="alterarSenha(usuario.idUsuario)" class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">lock</i></button>
           </td>
           <td>
-            <a class="amber waves-yellow btn-flat center"><i class="material-icons white-text">delete</i></a>
+            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario"  class="amber waves-yellow btn-flat center"><i class="material-icons white-text">delete</i></button>
           </td>
         </tr>
         </tbody>

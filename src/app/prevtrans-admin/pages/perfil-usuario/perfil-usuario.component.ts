@@ -38,7 +38,6 @@ export class PerfilUsuarioComponent implements OnInit {
   validaForm() {
     this.perfilUsuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-    //  login: this.formBuilder.control('', [Validators.required, Validators.pattern(this.LOGIN_REGEX)]),
       usuario: this.formBuilder.control('', Validators.compose([Validators.required,
          Validators.pattern(this.LOGIN_REGEX)])),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.EMAIL_REGEX)])
@@ -80,11 +79,12 @@ export class PerfilUsuarioComponent implements OnInit {
       .subscribe(user => {
         this.perfilUsuarioForm.patchValue(user);
         this.inicializaMaterialize();
+        this.router.navigate(['admin']);
       });
   }
 
   cancelar() {
-
+    this.router.navigate(['admin']);
   }
 
   alterarSenha() {
