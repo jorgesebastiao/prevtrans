@@ -77,4 +77,14 @@ export class UsuariosComponent implements OnInit {
       Materialize.updateTextFields();
     });
   }
+
+  setAtivo(id: string, ativo: boolean){
+    this.usuarioService.ativo(id, ativo).subscribe(
+      (response) => {
+        if (response.status === 200) {
+          this.carregarUsuarios();
+        }
+      }
+    );
+  }
 }

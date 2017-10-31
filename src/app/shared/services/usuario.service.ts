@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -13,7 +13,8 @@ import {UsuarioPermissao} from '../models/UsuarioPermissao.model';
 @Injectable()
 export class UsuarioService {
 
-  constructor(private http: AuthHttp, private hand: ErrorHandlerService) { }
+  constructor(private http: AuthHttp, private hand: ErrorHandlerService) {
+  }
 
   permissoes(): Observable<UsuarioPermissao[]> {
     return this.http.get(`${PREVTRANS_API}/usuarios/permissoes`)
@@ -61,6 +62,11 @@ export class UsuarioService {
       .map(response => response.json());
   }
 
+  ativo(id: string, ativo: boolean): Observable<any> {
+    return this.http.put(`${PREVTRANS_API}/usuarios/${id}/ativo`, ativo)
+      .map(response => response.text() ? response.json() : response);
+  }
+
   alterarPerfil(id: string, usuario: Usuario): Observable<any> {
     return this.http.put(`${PREVTRANS_API}/usuarios/${id}/perfil`, JSON.stringify(usuario))
       .map(response => response.json());
@@ -68,6 +74,6 @@ export class UsuarioService {
 
   alterarSenha(id: string, senha: string): Observable<any> {
     return this.http.put(`${PREVTRANS_API}/usuarios/${id}/senha`, senha)
-      .map(response => response.text() ? response.json() : response );
+      .map(response => response.text() ? response.json() : response);
   }
 }

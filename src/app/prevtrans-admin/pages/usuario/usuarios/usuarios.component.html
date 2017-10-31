@@ -35,8 +35,8 @@
           <td>{{usuario.nome}}</td>
           <td>{{usuario.usuario}}</td>
           <td>
-            <button class="amber waves-yellow btn-flat center white-text" *ngIf="!usuario.ativo">Inativo</button>
-            <button class="amber waves-yellow btn-flat center white-text" *ngIf="usuario.ativo"
+            <button (click)="setAtivo(usuario.idUsuario, true)" class="amber waves-yellow btn-flat center white-text" *ngIf="!usuario.ativo">Inativo</button>
+            <button (click)="setAtivo(usuario.idUsuario, false)" class="amber waves-yellow btn-flat center white-text" *ngIf="usuario.ativo"
                     [disabled]="auth.jwtPayload.user_name == usuario.usuario" >ativo</button>
            </td>
           <td >
