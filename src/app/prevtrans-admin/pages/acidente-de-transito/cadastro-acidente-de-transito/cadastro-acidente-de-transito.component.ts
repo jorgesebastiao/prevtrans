@@ -61,7 +61,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     }
     console.log(this.urlFotos);
     this.veiculo = new Veiculo();
-    this.veiculo = [];
+    this.veiculos = [];
     this.acidenteTransito = new AcidenteTransito();
     this.acidenteTransito.urlFotos = [];
     this.localizacao = new Localizacao();

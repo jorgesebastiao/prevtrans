@@ -61,3 +61,10 @@ input.header-search-input:focus {
 :-ms-input-placeholder{
   color: white;
 }
+
+th{
+  text-align: center;
+}
+td{
+  text-align: center;
+}

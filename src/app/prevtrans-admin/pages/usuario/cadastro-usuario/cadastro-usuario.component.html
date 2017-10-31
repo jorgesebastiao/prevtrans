@@ -66,10 +66,14 @@
           </app-input-container>
         </div>
         <div class="col s12 ">
-          <p>
-            <input formControlName="ativo" type="checkbox" id="ativo"/>
-            <label for="ativo">Ativo</label>
-          </p>
+          <div class="switch">
+            <label class="black-text">
+              INATIVO
+              <input   id="ativo" formControlName="ativo" type="checkbox">
+              <span class="lever"></span>
+              ATIVO
+            </label>
+          </div>
         </div>
       </div>
       <div class="row">

@@ -35,10 +35,15 @@
           <td>{{usuario.nome}}</td>
           <td>{{usuario.usuario}}</td>
           <td>
-            <button (click)="setAtivo(usuario.idUsuario, true)" class="amber waves-yellow btn-flat center white-text" *ngIf="!usuario.ativo">Inativo</button>
-            <button (click)="setAtivo(usuario.idUsuario, false)" class="amber waves-yellow btn-flat center white-text" *ngIf="usuario.ativo"
-                    [disabled]="auth.jwtPayload.user_name == usuario.usuario" >ativo</button>
-           </td>
+            <div class="switch">
+              <label  class="black-text">
+                INATIVO
+                <input  (change)="setAtivo(usuario)" [(ngModel)]="usuario.ativo" [disabled]="auth.jwtPayload.user_name == usuario.usuario" type="checkbox">
+                <span class="amber lever"></span>
+                ATIVO
+              </label>
+            </div>
+          </td>
           <td >
             <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" [routerLink]="[usuario.idUsuario]"
                class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>

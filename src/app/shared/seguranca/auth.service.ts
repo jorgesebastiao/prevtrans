@@ -25,7 +25,6 @@ export class AuthService {
       { headers, withCredentials: true })
       .toPromise()
       .then(response => {
-        console.log(response);
         this.armazenarToken(response.json().access_token);
       })
       .catch(response => {

@@ -67,7 +67,7 @@ export class UsuariosComponent implements OnInit {
   salvarSenha(senha: string) {
     this.usuarioService.alterarSenha(this.idUsuario, senha)
       .subscribe(() => {
-        this.fechaModalSenha();
+          this.fechaModalSenha();
         }
       );
   }
@@ -78,11 +78,11 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  setAtivo(id: string, ativo: boolean) {
-    this.usuarioService.ativo(id, ativo).subscribe(
+  setAtivo(usuario: Usuario) {
+    usuario.ativo ? usuario.ativo = true : usuario.ativo = false;
+    this.usuarioService.ativo(usuario.idUsuario, usuario.ativo).subscribe(
       (response) => {
         if (response.status === 200) {
-          this.carregarUsuarios();
         }
       }
     );
