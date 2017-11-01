@@ -304,10 +304,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   reloadPsw() {
     jQuery(document).ready(function () {
-      pgwSlideshow.reload({
-        transitionEffect: 'fading',
-        adaptiveDuration: 4000
-      });
+      pgwSlideshow.reload();
     });
   }
 }
