@@ -269,13 +269,23 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   imageUploaded(event) {
+    for (let i = 1; i <= 3; i++) {
+      this.urlFotos.push({
+        url: 'https://lorempixel.com/800/400/food/1',
+        titulo: 'Description for Image ' + i,
+        idUrl: 'Title ' + i
+      });
+    }
+    this.reloadPsw();
+    /*
     const formData: FormData = new FormData();
     formData.append('file', event.file);
     this.acidenteTransitoService.upload(formData).subscribe(url => {
       this.urlFotos.push(url);
+      console.log('url imagem'+ url);
       console.log(url);
       this.reloadPsw();
-    });
+    });*/
   }
 
   imageRemoved(event) {
@@ -304,7 +314,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   reloadPsw() {
     jQuery(document).ready(function () {
-      pgwSlideshow.reload();
+      pgwSlideshow.reload(true);
     });
   }
 }
