@@ -1,10 +1,7 @@
-
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
-
-import { AuthConfig, AuthHttp } from 'angular2-jwt';
+import { AuthConfig, AuthHttp, JwtHelper } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from './auth.service';
 
 export class NotAuthenticatedError {}
@@ -50,23 +47,17 @@ export class MoneyHttp extends AuthHttp {
 
   private fazerRequisicao(fn: Function): Observable<Response> {
     if (this.auth.isAccessTokenInvalido()) {
-      console.log('Requisição HTTP com access token inválido. Obtendo novo token...');
-
       const chamadaNovoAccessToken = this.auth.obterNovoAccessToken()
         .then(() => {
           if (this.auth.isAccessTokenInvalido()) {
-            console.log('NotAuthenticated');
             throw new NotAuthenticatedError();
-          }else {
-            console.log('token válido')
+          }else{
           }
           return fn().toPromise();
         });
-
       return Observable.fromPromise(chamadaNovoAccessToken);
     } else {
       return fn();
     }
   }
-
 }

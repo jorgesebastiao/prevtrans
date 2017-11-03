@@ -25,7 +25,6 @@
           <th>Usuário</th>
           <th>Ativo</th>
           <th>Alterar</th>
-          <th>Alterar Senha</th>
           <th>Excluir</th>
         </tr>
         </thead>
@@ -48,10 +47,6 @@
           <td >
             <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" [routerLink]="[usuario.idUsuario]"
                class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>
-          </td>
-          <td >
-            <button [disabled]="auth.jwtPayload.user_name == usuario.usuario"  (click)="alterarSenha(usuario.idUsuario)"
-                    class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">lock</i></button>
           </td>
           <td>
             <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" (click)="confirmaModal(usuario.idUsuario)"

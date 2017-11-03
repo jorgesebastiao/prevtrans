@@ -65,10 +65,6 @@ export class CadastroUsuarioComponent implements OnInit {
       }
       this.inicializaMaterialize();
     });
-    this.usuarioForm.get('senha').clearValidators();
-    this.usuarioForm.get('senha').clearAsyncValidators();
-    this.usuarioForm.get('confirmaSenha').clearValidators();
-    this.usuarioForm.get('confirmaSenha').clearAsyncValidators();
   }
 
   salvar(usuario: Usuario) {
@@ -105,8 +101,6 @@ export class CadastroUsuarioComponent implements OnInit {
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
       usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
-      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      confirmaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
       usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       ativo: ['']
     }, {validator: CadastroUsuarioComponent.equalsTo});

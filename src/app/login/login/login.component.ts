@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../shared/seguranca/auth.service';
+import {AuthService} from '../../shared/seguranca/auth.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {ErrorHandlerService} from '../shared/error-handler.service';
+import {ErrorHandlerService} from '../../shared/error-handler.service';
 
 declare const Materialize: any;
 declare const jQuery: any;
@@ -34,8 +34,7 @@ export class LoginComponent implements OnInit {
         });
         this.router.navigate(['/admin']);
       }
-    )
-      .catch(erro => {
+    ).catch(erro => {
         this.loginForm.patchValue({
           senha: ''
         });

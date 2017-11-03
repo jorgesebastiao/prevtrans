@@ -32,6 +32,19 @@ export class AcidenteTransitoService {
       });
   }
 
+  acidenteTransitoPublico(): Observable<AcidenteTransito[]> {
+    return this.http.get(`${PREVTRANS_API}/acidentes-de-transito`)
+      .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
+  }
+
+  getAcidenteTransitoPublico(id: string): Observable<AcidenteTransito> {
+    return this.http.get(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
+      .map(response => response.json()).catch(error => {
+        this.hand.handle(error);
+        return Observable.of<AcidenteTransito>();
+      });
+  }
+
   uploadImagem(formdata: any): Promise<void> {
     const headers = new Headers();
     /** No need to include Content-Type in Angular 4 */
@@ -91,6 +104,6 @@ export class AcidenteTransitoService {
 
   deleteAcidenteTransito(id: string): Observable<String> {
     return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
-      .map(response => response.text() ? response.json() : response );
+      .map(response => response.text() ? response.json() : response);
   }
 }

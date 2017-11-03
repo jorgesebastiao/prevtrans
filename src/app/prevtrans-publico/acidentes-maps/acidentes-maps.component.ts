@@ -18,7 +18,7 @@ export class AcidentesMapsComponent implements OnInit {
   ngOnInit() {
     this.acidenteTransito = new AcidenteTransito;
     this.inicializaJquery();
-    this.acidenteTransitoService.acidentesTransito()
+    this.acidenteTransitoService.acidenteTransitoPublico()
       .subscribe(acidentesTransito =>  this.acidentesTransito = acidentesTransito);
   }
   lat:  number=  -27.900756;

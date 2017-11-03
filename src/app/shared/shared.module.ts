@@ -18,7 +18,7 @@ import {
   TipoVeiculoService,
   UsuarioService
 } from './services';
-import {AuthService} from './seguranca/auth.service';
+import {AuthService, RecuperarSenhaService} from './seguranca';
 
 @NgModule({
   imports: [
@@ -49,6 +49,7 @@ export class SharedModule {
         TipoVeiculoService,
         UsuarioService,
         AuthService,
+        RecuperarSenhaService,
         JwtHelper,
         ClusterManager,
         {provide: LOCALE_ID, useValue: 'pt-BR'}

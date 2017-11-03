@@ -13,8 +13,6 @@ export class AuthService {
   }
 
   login(usuario: string, senha: string): Promise<void> {
-    console.log(usuario);
-    console.log(senha);
     const headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Authorization', 'Basic cHJldnRyYW5zYW5ndWxhcjpwcjN2dHJAbnNAbmd1bEBy==');
@@ -97,6 +95,5 @@ export class AuthService {
   limparAccessToken() {
     localStorage.removeItem('tokenPrevtrans');
     this.jwtPayload = null;
-    console.log(this.jwtPayload);
   }
 }

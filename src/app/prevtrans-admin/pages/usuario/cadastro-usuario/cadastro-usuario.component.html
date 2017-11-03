@@ -28,25 +28,6 @@
           </app-input-container>
         </div>
       </div>
-      <div *ngIf="!editando" class="row">
-        <div *ngIf="!editando" class="input-field col s12 m6 l6">
-          <app-input-container errorMessage="senha inválida, minimo 8 caracteres">
-            <input id="senha" type="password" formControlName="senha" autocomplete="off">
-            <label class="black-text text-darken-4" for="senha">Senha</label>
-          </app-input-container>
-        </div>
-        <div *ngIf="!editando" class="input-field col s12 m6 l6">
-          <app-input-container errorMessage="senha inválida, minimo 8 caracteres">
-            <input id="confirmaSenha" type="password" formControlName="confirmaSenha" autocomplete="off">
-            <label class="black-text text-darken-4" for="confirmaSenha">Confirma Senha</label>
-          </app-input-container>
-        </div>
-      </div>
-      <div *ngIf="!editando" class="row">
-        <div *ngIf="usuarioForm.hasError('senhaNotMatch')" class="error-msg col s12 center-align">
-          Senhas não Conferem!!
-        </div>
-      </div>
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
