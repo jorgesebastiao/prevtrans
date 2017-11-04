@@ -1,7 +1,7 @@
 <nav id="menu">
   <div class="nav-wrapper amber darken-1 col s12">
     <ul id="nav-menu" class="left hide-on-med-and-down">
-      <li><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Acidente de Trânsito</a></li>
+      <li *ngIf="auth.temPermissao('ROLE_CADASTRAR_ACIDENTE_DE_TRANSITO')" ><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Acidente de Trânsito</a></li>
       <li>
         <form>
           <div class="header-search-wrapper">
@@ -34,7 +34,6 @@
           <td>{{acidenteTransito.tituloPublicacao}}</td>
           <td>{{acidenteTransito.latitude}}</td>
           <td>{{acidenteTransito.longitude}}</td>
-          <td>{{acidenteTransito.idAcidenteTransito}}</td>
           <td *ngIf="auth.temPermissao('ROLE_ALTERAR_ACIDENTE_DE_TRANSITO')">
             <a [routerLink]="[acidenteTransito.idAcidenteTransito]" class="amber accent-4 white-text  btn-flat"><i
               class="material-icons">mode_edit</i></a>

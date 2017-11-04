@@ -3,11 +3,11 @@
     <a [routerLink]="['/admin']" class="brand-logo">Prevtrans</a>
     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
-      <li routerLinkActive="active"><a [routerLink]="['acidentes-de-transitos']">Acidentes de Trânsito<i
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_ACIDENTE_DE_TRANSITO','ROLE_ALTERAR_ACIDENTE_DE_TRANSITO','ROLE_REMOVER_ACIDENTE_DE_TRANSITO'])" routerLinkActive="active"><a [routerLink]="['acidentes-de-transitos']">Acidentes de Trânsito<i
         class="material-icons left">drive_eta</i></a></li>
-      <li *ngIf="auth.temPermissao('ROLE_LISTA_INSTITUICAO')" routerLinkActive="active"><a
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_INSTITUICAO','ROLE_ALTERAR_INSTITUICAO'])" routerLinkActive="active"><a
         [routerLink]="['instituicoes']">Instituições<i class="material-icons left">account_balance</i></a></li>
-      <li *ngIf="auth.temPermissao('ROLE_LISTA_USUARIO')" routerLinkActive="active"><a [routerLink]="['usuarios']">Usuários<i
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_USUARIO','ROLE_ALTERAR_USUARIO','ROLE_REMOVER_USUARIO'])" routerLinkActive="active"><a [routerLink]="['usuarios']">Usuários<i
         class="material-icons left">group</i></a></li>
       <li routerLinkActive="active"><a [routerLink]="['perfil-usuario']">Perfil Usuário<i
         class="material-icons left white-text">account_circle</i></a>
@@ -15,21 +15,21 @@
       <li (click)="logout()"><a>Sair <i class="material-icons left white-text">exit_to_app</i></a></li>
     </ul>
     <ul class="side-nav amber  darken-1" id="mobile-demo">
-      <li routerLinkActive="active">
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_ACIDENTE_DE_TRANSITO','ROLE_ALTERAR_ACIDENTE_DE_TRANSITO','ROLE_REMOVER_ACIDENTE_DE_TRANSITO'])"  routerLinkActive="active">
         <a [routerLink]="['acidentes-de-transitos']">
           <i class="material-icons left  white-text ">drive_eta</i>
           <span class="white-text"> Acidentes de Trânsito
               </span>
         </a>
       </li>
-      <li *ngIf="auth.temPermissao('ROLE_LISTA_INSTITUICAO')" routerLinkActive="active">
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_INSTITUICAO','ROLE_ALTERAR_INSTITUICAO'])" routerLinkActive="active">
         <a [routerLink]="['instituicoes']">
           <i class="material-icons white-text">account_balance</i>
           <span class="white-text"> Instituições
               </span>
         </a>
       </li>
-      <li *ngIf="auth.temPermissao('ROLE_LISTA_USUARIO')" routerLinkActive="active">
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_USUARIO','ROLE_ALTERAR_USUARIO','ROLE_REMOVER_USUARIO'])" routerLinkActive="active">
         <a [routerLink]="['usuarios']">
           <i class="material-icons left  white-text ">group</i>
           <span class="white-text"> Usuários
