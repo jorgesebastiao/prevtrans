@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="row">
-        <a (click)="buscaLatitudeLongitude()" class="col s12 m3 l3   btn-large"><i
+        <a (click)="buscaLatitudeLongitude()" class="amber accent-4 col s12 m3 l3   btn-large"><i
           class="material-icons left">search</i>Buscar no mapa</a>
         <div class="input-field col s12 m3 l3">
           <app-input-container errorMessage="Campo Obrigatório ">
@@ -117,7 +117,7 @@
         </div>
       </div>
       <div class="row">
-        <a (click)="abreModalVeiculo()" class="col s12 m3 l3  waves-light btn-large"><i
+        <a (click)="abreModalVeiculo()" class="amber accent-4 col s12 m3 l3  waves-light btn-large"><i
           class="material-icons left">add</i>Adicionar Veiculo</a>
         <div class="col s12">
           <table class="striped responsive-table">
@@ -141,7 +141,7 @@
               <td>{{veiculoT.descricao}}</td>
               <td>{{veiculoT.numeroOcupantes}}</td>
               <td style="text-align: center">
-                <a class="waves-effect waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+                <a class="waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
               </td>
             </tr>
             </tbody>
@@ -219,7 +219,7 @@
 </div>
 
 <!-- Modal cadastra veiculo-->
-<div id="modal-veiculo" class="modal" materialize="modal">
+<div id="modal-veiculo" class="modal" materialize="modal" [materializeActions]="modalVeiculoActions">
   <div class="modal-content">
     <form materialize [formGroup]="veiculoForm" novalidate>
       <div class="row">

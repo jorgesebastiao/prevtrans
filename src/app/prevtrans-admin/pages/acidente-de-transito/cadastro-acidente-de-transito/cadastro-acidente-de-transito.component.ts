@@ -3,23 +3,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AgmMap} from '@agm/core';
 import {MaterializeAction} from 'angular2-materialize';
-import {
-  AcidenteTransitoService,
-  GoogleMapsService,
-  TipoVeiculoService
-} from '../../../../shared/services';
-import {
-  AcidenteTransito,
-  Localizacao,
-  TipoVeiculo,
-  Veiculo,
-  UrlFotos
-} from '../../../../shared/models';
+import {AcidenteTransitoService, GoogleMapsService, TipoVeiculoService} from '../../../../shared/services';
+import {AcidenteTransito, Localizacao, TipoVeiculo, UrlFotos, Veiculo} from '../../../../shared/models';
 
 
 declare const jQuery: any;
 declare const Materialize: any;
-var pgwSlideshow;
+ var pgwSlideshow;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -40,7 +30,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   urlFotos: UrlFotos[];
   veiculo: Veiculo;
   tiposVeiculos: TipoVeiculo[];
-  modalActions = new EventEmitter<string | MaterializeAction>();
+  modalVeiculoActions = new EventEmitter<string | MaterializeAction>();
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -55,8 +45,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     for (let i = 1; i <= 3; i++) {
       this.urlFotos.push({
         url: 'https://lorempixel.com/800/400/food/1',
-        titulo: 'Description for Image ' + i,
-        idUrl: 'Title ' + i
+        titulo: 'Descrição imagem  ' + i,
+        idUrl: 'Titulo ' + i
       });
     }
     console.log(this.urlFotos);
@@ -120,7 +110,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   selectMap() {
-    console.log('erros rend map');
     this.redrawMap();
   }
 
@@ -140,6 +129,9 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   adicionaLocalizacao() {
+    console.log(this.localizacao);
+    this.lat = this.localizacao.latitude;
+    this.lng = this.localizacao.longitude;
     this.acidenteTransitoForm.patchValue(this.localizacao);
     jQuery('#modal-busca').modal('close');
     this.inicializaMaterialize();
@@ -148,16 +140,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   buscaLatitudeLongitude() {
     this.selectMap();
     jQuery('#modal-busca').modal('open');
-  }
-
-  openModal() {
-    this.selectMap();
-    this.modalActions.emit({action: 'modal', params: ['open']});
-    this.selectMap();
-  }
-
-  closeModal() {
-    this.modalActions.emit({action: 'modal', params: ['close']});
   }
 
   get editando() {
@@ -170,6 +152,10 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
         if (acidenteTransito) {
           this.acidenteTransito = acidenteTransito;
           this.acidenteTransitoForm.patchValue(this.acidenteTransito);
+          this.lat = acidenteTransito.latitude;
+          this.lng = acidenteTransito.longitude;
+          this.localizacao.latitude = acidenteTransito.latitude;
+          this.localizacao.longitude = acidenteTransito.longitude;
           this.inicializaMaterialize();
         } else {
           this.addToast();
@@ -188,7 +174,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.acidenteTransitoService.postAcidenteDeTransito(acidenteTransito)
       .subscribe(() => {
         this.acidenteTransitoForm.patchValue(acidenteTransito);
-        this.veiculos = new Array(this.acidenteTransito.veiculos);
+        this.veiculos = this.acidenteTransito.veiculos;
         this.router.navigate(['/admin/acidentes-de-transitos']);
       });
   }
@@ -198,7 +184,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.acidenteTransitoService.putAcidenteDeTransito(this.acidenteTransito.idAcidenteTransito, acidenteTransito)
       .subscribe(acidenteTransito => {
         this.acidenteTransitoForm.patchValue(acidenteTransito);
-        this.veiculos = new Array(this.acidenteTransito.veiculos);
+        this.veiculos = this.acidenteTransito.veiculos;
         this.router.navigate(['/admin/acidentes-de-transitos']);
       });
   }
@@ -210,15 +196,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
-    });
-  }
-
-  inicializaModal() {
-    jQuery(document).ready(function () {
-      jQuery('.modal').modal({
-          dismissible: false
-        }
-      );
     });
   }
 
@@ -252,11 +229,11 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   abreModalVeiculo() {
-    jQuery('#modal-veiculo').modal('open');
+    this.modalVeiculoActions.emit({action: 'modal', params: ['open']});
   }
 
   fechaModalVeiculo() {
-    jQuery('#modal-veiculo').modal('close');
+    this.modalVeiculoActions.emit({action: 'modal', params: ['close']});
     this.veiculoForm.reset();
   }
 
@@ -269,15 +246,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   imageUploaded(event) {
-    for (let i = 1; i <= 3; i++) {
-      this.urlFotos.push({
-        url: 'https://lorempixel.com/800/400/food/1',
-        titulo: 'Description for Image ' + i,
-        idUrl: 'Title ' + i
-      });
-    }
-    this.reloadPsw();
-    /*
     const formData: FormData = new FormData();
     formData.append('file', event.file);
     this.acidenteTransitoService.upload(formData).subscribe(url => {
@@ -285,7 +253,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
       console.log('url imagem'+ url);
       console.log(url);
       this.reloadPsw();
-    });*/
+    });
   }
 
   imageRemoved(event) {

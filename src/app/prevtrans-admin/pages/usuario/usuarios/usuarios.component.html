@@ -1,7 +1,7 @@
 <nav id="menu">
   <div class="nav-wrapper amber darken-1 col s12">
     <ul id="nav-menu" class="left hide-on-med-and-down">
-      <li><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Usuario</a></li>
+      <li *ngIf="auth.temPermissao('ROLE_CADASTRAR_USUARIO')"><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Usuario</a></li>
       <li>
         <form materialize>
           <div class="header-search-wrapper">
@@ -23,9 +23,9 @@
           <th>ID</th>
           <th>Nome</th>
           <th>Usuário</th>
-          <th>Ativo</th>
-          <th>Alterar</th>
-          <th>Excluir</th>
+          <th *ngIf="auth.temPermissao('ROLE_ALTERAR_USUARIO')">Ativo</th>
+          <th *ngIf="auth.temPermissao('ROLE_ALTERAR_USUARIO')" >Alterar</th>
+          <th *ngIf="auth.temPermissao('ROLE_REMOVER_USUARIO')" >Excluir</th>
         </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
           <td>{{usuario.idUsuario}}</td>
           <td>{{usuario.nome}}</td>
           <td>{{usuario.usuario}}</td>
-          <td>
+          <td *ngIf="auth.temPermissao('ROLE_ALTERAR_USUARIO')">
             <div class="switch">
               <label  class="black-text">
                 INATIVO
@@ -44,11 +44,11 @@
               </label>
             </div>
           </td>
-          <td >
+          <td *ngIf="auth.temPermissao('ROLE_ALTERAR_USUARIO')">
             <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" [routerLink]="[usuario.idUsuario]"
                class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>
           </td>
-          <td>
+          <td *ngIf="auth.temPermissao('ROLE_REMOVER_USUARIO')">
             <button [disabled]="auth.jwtPayload.user_name == usuario.usuario" (click)="confirmaModal(usuario.idUsuario)"
                     class="amber waves-yellow btn-flat center"><i class="material-icons white-text">delete</i></button>
           </td>
