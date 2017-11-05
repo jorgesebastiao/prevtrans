@@ -1,0 +1,41 @@
+<div class="container">
+  <div id="login-page" class="row">
+    <div class="col s12 z-depth-4 card-panel">
+      <form materialize [formGroup]="recuperaForm" class="login-form"  action="#">
+        <div class="row">
+          <div class="input-field col s12 center">
+            <img src="images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login">
+            <p class="center login-form-text">Recuperação de Senha Prevtrans</p>
+          </div>
+        </div>
+        <div *ngIf="!confirma">
+        <div class="row margin">
+          <div class="input-field col s12">
+            <app-input-container errorMessage="email inválido">
+              <i class="amber-text darken-4 material-icons prefix">email</i>
+              <input id="email" formControlName="email" autocomplete="off" type="text">
+            <label for="email" class="center-align">Email</label>
+            </app-input-container>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <button type="submit" (click)="recuperarSenha()" [disabled]="!recuperaForm.valid || status"  class="btn amber waves-light col s12">Recuperar Senha</button>
+            <div *ngIf="valida()" class="error-msg center-align">Email não encontrando!!</div>
+          </div>
+        </div>
+        </div>
+        <div *ngIf="confirma">
+          <div class="row margin">
+              <p class="flow-text">Verifique a sua Caixa de Entrada !!</p>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <button [routerLink]="['/login']" class="btn amber waves-light col s12">Voltar Pagina de Login</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

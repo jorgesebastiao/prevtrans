@@ -1,0 +1,32 @@
+.container{
+  margin-top: 24px;
+}
+
+.divisor{
+  border-bottom: 1px solid #cccccc;
+  font-size: 0;
+  margin: 0;
+  line-height: 110%;
+  height: 15px;
+}
+
+.fom{
+  font-size: 1.25rem;
+}
+
+#login-page{
+  width: 362px;
+}
+.margin {
+  margin: 0 !important;
+}
+.login-form {
+  width: 340px;
+}
+.container{
+  margin-top: 64px;
+}
+.container .row {
+  margin-left: auto!important;
+  margin-right: auto!important;
+}
