@@ -4,6 +4,7 @@ import {Usuario} from '../../../../shared/models/usuario.model';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MaterializeAction} from 'angular2-materialize';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
+import {ToastyService} from "ng2-toasty";
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -20,7 +21,10 @@ export class UsuariosComponent implements OnInit {
   alteraSenhaAction = new EventEmitter<string | MaterializeAction>();
   removerUsuarioAction = new EventEmitter<MaterializeAction>();
 
-  constructor(public auth: AuthService, private usuarioService: UsuarioService, private formBuilder: FormBuilder) {
+  constructor(public auth: AuthService,
+              private usuarioService: UsuarioService,
+              private formBuilder: FormBuilder,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -101,6 +105,7 @@ export class UsuariosComponent implements OnInit {
           let index = this.usuarios.findIndex(u => u.idUsuario === this.idUsuario);
           this.usuarios.splice(index, 1);
           this.fechaModal();
+          this.confirmacao('Usuário Removido!!');
         }
       );
     }
@@ -108,5 +113,15 @@ export class UsuariosComponent implements OnInit {
 
   fechaModal() {
     this.removerUsuarioAction.emit({action: 'modal', params: ['close']});
+  }
+
+  confirmacao(msg: string) {
+    this.toastyService.success({
+      title: 'Confirmação',
+      msg: msg,
+      showClose: true,
+      timeout: 10000,
+      theme: 'default'
+    });
   }
 }

@@ -4,6 +4,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Usuario, UsuarioPermissao} from '../../../../shared/models';
 import {CepService, UsuarioService} from '../../../../shared/services';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
+import {ToastyService} from 'ng2-toasty';
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -25,9 +26,9 @@ export class CadastroUsuarioComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
-              private cepService: CepService,
               private usuarioService: UsuarioService,
-              public auth: AuthService) {
+              public auth: AuthService,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -77,16 +78,18 @@ export class CadastroUsuarioComponent implements OnInit {
 
   alterarUsuario(usuario: Usuario) {
     usuario.idUsuario = this.usuario.idUsuario;
-    this.usuarioService.putUsuario(this.usuario.idUsuario, usuario).subscribe(usuario => {
+    this.usuarioService.putUsuario(this.usuario.idUsuario, usuario).subscribe(() => {
       this.router.navigate(['admin/usuarios']);
+      this.confirmacao('Usuário Alterado com Sucesso!!');
     });
   }
 
   cadastrarUsuario(usuario: Usuario) {
     console.log(usuario);
     this.usuarioService.postUsuario(usuario).subscribe(
-      usuario => {
+      () => {
         this.router.navigate(['admin/usuarios']);
+        this.confirmacao('Usuário Cadastrado com Sucesso!!');
       }
     );
   }
@@ -103,24 +106,22 @@ export class CadastroUsuarioComponent implements OnInit {
       usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
       usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       ativo: ['']
-    }, {validator: CadastroUsuarioComponent.equalsTo});
-  }
-
-  static equalsTo(group: AbstractControl): { [key: string]: boolean } {
-    const senha = group.get('senha');
-    const confirmaSenha = group.get('confirmaSenha');
-    if (!senha || !confirmaSenha) {
-      return undefined;
-    }
-    if (senha.value !== confirmaSenha.value) {
-      return {senhaNotMatch: true}
-    }
-    return undefined;
+    });
   }
 
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
+    });
+  }
+
+  confirmacao(msg: string) {
+    this.toastyService.success({
+      title: 'Confirmação',
+      msg: msg,
+      showClose: true,
+      timeout: 10000,
+      theme: 'default'
     });
   }
 }

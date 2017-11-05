@@ -5,6 +5,7 @@ import {AgmMap} from '@agm/core';
 import {MaterializeAction} from 'angular2-materialize';
 import {AcidenteTransitoService, GoogleMapsService, TipoVeiculoService} from '../../../../shared/services';
 import {AcidenteTransito, Localizacao, TipoVeiculo, UrlFotos, Veiculo} from '../../../../shared/models';
+import { ToastyService} from 'ng2-toasty';
 
 
 declare const jQuery: any;
@@ -37,7 +38,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
               private activeRoute: ActivatedRoute,
               private acidenteTransitoService: AcidenteTransitoService,
               private googleMapsService: GoogleMapsService,
-              private tipoVeiculoService: TipoVeiculoService) {
+              private tipoVeiculoService: TipoVeiculoService,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -191,6 +193,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   cancelar() {
     this.router.navigate(['admin/acidentes-de-transitos']);
+    this.addToast();
   }
 
   inicializaMaterialize() {
@@ -265,7 +268,13 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   addToast() {
-    console.log('ng2 toasty');
+       this.toastyService.success({
+           title: 'Confirmação!',
+           msg: 'Cadastro de Acidente de Trânsito Realizado com Sucesso!!',
+           showClose: true,
+           timeout: 10000,
+           theme: 'default'
+        });
   }
 
   inicializaToolTipe() {

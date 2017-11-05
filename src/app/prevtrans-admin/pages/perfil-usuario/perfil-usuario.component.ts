@@ -5,6 +5,7 @@ import {AuthService} from '../../../shared/seguranca/auth.service';
 import {MaterializeAction} from 'angular2-materialize';
 import {UsuarioService} from '../../../shared/services/usuario.service';
 import {Router} from '@angular/router';
+import {ToastyService} from 'ng2-toasty';
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -25,7 +26,8 @@ export class PerfilUsuarioComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private  auth: AuthService,
               private usuarioService: UsuarioService,
-              private  router: Router) {
+              private router: Router,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class PerfilUsuarioComponent implements OnInit {
         this.perfilUsuarioForm.patchValue(user);
         this.inicializaMaterialize();
         this.router.navigate(['admin']);
+        this.confirmacao('Dados do Usuário Alterados com sucesso!!');
       });
   }
 
@@ -98,7 +101,8 @@ export class PerfilUsuarioComponent implements OnInit {
   salvarSenha(senha: string) {
     this.usuarioService.alterarSenha(this.auth.jwtPayload.idUsuario, senha)
       .subscribe(() => {
-
+        this.fechaModalSenha();
+        this.confirmacao('Senha Alterada Com Sucesso!!');
         }
       );
   }
@@ -106,6 +110,15 @@ export class PerfilUsuarioComponent implements OnInit {
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
+    });
+  }
+  confirmacao(msg: string){
+    this.toastyService.success({
+      title: 'Confirmação',
+      msg: msg,
+      showClose: true,
+      timeout: 10000,
+      theme: 'default'
     });
   }
 }

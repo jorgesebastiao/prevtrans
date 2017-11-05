@@ -5,6 +5,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Instituicao, Usuario} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
 import {PrevtransCnpjValidator} from '../../../../shared/validators/prevtrans-cnpj-validator';
+import {ToastyService} from "ng2-toasty";
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -25,7 +26,8 @@ export class IncluirInstituicaoComponent implements OnInit {
               private routes: ActivatedRoute,
               private router: Router,
               private cepService: CepService,
-              private instituicaoService: InstituicaoService) {
+              private instituicaoService: InstituicaoService,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -57,9 +59,9 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   salvarInstituicao(instituicao: Instituicao) {
     this.instituicaoService.postInstituicao(instituicao)
-      .subscribe( instituicao => {
+      .subscribe( () => {
           this.router.navigate(['admin/instituicoes']);
-          this.instituicaoForm.patchValue(instituicao);
+          this.confirmacao('Instiuição cadastrada com sucesso!!');
         }
       );
   }
@@ -67,8 +69,9 @@ export class IncluirInstituicaoComponent implements OnInit {
   alterarInstituicao(instituicao: Instituicao) {
     instituicao.idInstituicao = this.instituicao.idInstituicao;
     this.instituicaoService.putInstituicao(this.instituicao.idInstituicao, instituicao)
-      .subscribe(instituicao => {
+      .subscribe(() => {
           this.router.navigate(['admin/instituicoes']);
+          this.confirmacao('Instiuição alterada com sucesso!!');
         }
       );
   }
@@ -140,7 +143,17 @@ export class IncluirInstituicaoComponent implements OnInit {
       jQuery('.modal').modal();
     });
   }
-  adicionarUsuario(){
+  adicionarUsuario() {
 
+  }
+
+  confirmacao(msg: string){
+    this.toastyService.success({
+      title: 'Confirmação',
+      msg: msg,
+      showClose: true,
+      timeout: 10000,
+      theme: 'default'
+    });
   }
 }

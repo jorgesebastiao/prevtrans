@@ -19,7 +19,6 @@ import {
   UsuarioService
 } from './services';
 import {AuthService, RecuperarSenhaService} from './seguranca';
-import {ToastyModule} from 'ng2-toasty';
 
 @NgModule({
   imports: [
@@ -28,15 +27,14 @@ import {ToastyModule} from 'ng2-toasty';
     MaterializeModule.forRoot(),
     AgmCoreModule,
     AgmJsMarkerClustererModule,
-    ReactiveFormsModule,
-    ToastyModule.forRoot()
+    ReactiveFormsModule
   ],
   declarations: [InputComponent, CepPipe,
     CpnjPipe, TelefonePipe, PrevtransMaskDirective, CpfPipe],
   exports: [MaterializeModule, InputComponent,
     CepPipe, CpnjPipe, CpfPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
-    AgmCoreModule, AgmJsMarkerClustererModule, ReactiveFormsModule, ToastyModule]
+    AgmCoreModule, AgmJsMarkerClustererModule, ReactiveFormsModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

@@ -2,10 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../shared/seguranca/auth.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {ErrorHandlerService} from '../../shared/error-handler.service';
-
-declare const Materialize: any;
-declare const jQuery: any;
 
 @Component({
   selector: 'app-login',
@@ -15,7 +11,7 @@ declare const jQuery: any;
 export class LoginComponent implements OnInit {
 
   constructor(private auth: AuthService, private formBuilder: FormBuilder,
-              private router: Router, private errorHandler: ErrorHandlerService,
+              private router: Router
   ) {
   }
 
