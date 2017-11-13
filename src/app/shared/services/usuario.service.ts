@@ -34,8 +34,8 @@ export class UsuarioService {
       });
   }
 
-  verificaLogin(login: string): Observable<Usuario> {
-    return this.http.get(`${PREVTRANS_API}/usuarios/login/${login}`)
+  verificaUsuario(usuario: string): Observable<Usuario> {
+    return this.http.get(`${PREVTRANS_API}/usuarios/usuario/${usuario}`)
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);
         return Observable.of<Usuario>();

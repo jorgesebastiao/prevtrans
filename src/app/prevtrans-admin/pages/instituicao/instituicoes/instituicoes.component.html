@@ -37,10 +37,10 @@
           <td>{{instituicao.cnpj | cpnj}}</td>
           <td>{{instituicao.inscricaoMunicipal}}</td>
           <td>{{instituicao.inscricaoEstadual}}</td>
-          <td>{{instituicao.telefone}}</td>
+          <td>{{instituicao.telefone |telefone}}</td>
           <td>
-            <a *ngIf="auth.temPermissao('ROLE_ALTERAR_INSTITUICAO')" [routerLink]="[instituicao.idInstituicao]"
-               class="waves-effect waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+            <button *ngIf="auth.temPermissao('ROLE_ALTERAR_INSTITUICAO')" [routerLink]="[instituicao.idInstituicao]"
+               class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>
           </td>
         </tr>
         </tbody>

@@ -21,11 +21,21 @@
             <label class="black-text text-darken-4" for="usuario">Usuário</label>
           </app-input-container>
         </div>
+        <div class="col s12">
+        <!--  <div *ngIf="usuarioForm.hasError('usuarioEmUsoM')" class="error-msg cols 12 center-align">
+            Usuário em uso!!
+          </div>-->
+        </div>
         <div class="input-field col s12 m12 l12">
           <app-input-container errorMessage="E-mail inválido">
             <input id="email" type="text" formControlName="email" autocomplete="off">
             <label class="black-text text-darken-4" for="email">E-mail</label>
           </app-input-container>
+        </div>
+        <div class="col s12">
+          <!-- <div *ngIf="usuarioForm.get('email').hasError('emailEmUso') && usuarioForm.get('email').touched" class="error-msg cols 12 center-align">
+              Email em uso!!
+            </div>-->
         </div>
       </div>
       <div class="row">
@@ -41,7 +51,7 @@
             <select id="permissoes-usuarios" multiple formControlName="usuarioPermissoes"
                     materialize="material_select" [materializeSelectOptions]="permissoes">
               <option value="" disabled selected>Selecione as Permissões do Usuário</option>
-              <option *ngFor="let permissao of permissoes " [ngValue]="permissao">{{permissao.permissao}}</option>
+              <option *ngFor="let permissao of permissoes " [ngValue]="permissao">{{permissao.descricao}}</option>
             </select>
             <label for="permissoes-usuarios" class="black-text text-darken-4">Permissões de Usuários</label>
           </app-input-container>
@@ -58,7 +68,6 @@
         </div>
       </div>
       <div class="row">
-        {{usuarioForm.value | json}}
       </div>
       <div class="row">
         <button (click)="cancelar()" class="amber accent-4 right  waves-yellow btn"><i class="material-icons left">clear</i>Cancelar

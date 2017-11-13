@@ -7,7 +7,7 @@
         class="material-icons left">drive_eta</i></a></li>
       <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_INSTITUICAO','ROLE_ALTERAR_INSTITUICAO'])" routerLinkActive="active"><a
         [routerLink]="['instituicoes']">Instituições<i class="material-icons left">account_balance</i></a></li>
-      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_USUARIO','ROLE_ALTERAR_USUARIO','ROLE_REMOVER_USUARIO'])" routerLinkActive="active"><a [routerLink]="['usuarios']">Usuários<i
+      <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_USUARIO','ROLE_ALTERAR_USUARIO','ROLE_REMOVER_USUARIO'])" routerLinkActive="active"><a [routerLink]="['usuarios']">Usuarios<i
         class="material-icons left">group</i></a></li>
       <li routerLinkActive="active"><a [routerLink]="['perfil-usuario']">Perfil Usuário<i
         class="material-icons left white-text">account_circle</i></a>
@@ -32,7 +32,7 @@
       <li *ngIf="auth.temQualquerPermissao(['ROLE_CADASTRAR_USUARIO','ROLE_ALTERAR_USUARIO','ROLE_REMOVER_USUARIO'])" routerLinkActive="active">
         <a [routerLink]="['usuarios']">
           <i class="material-icons left  white-text ">group</i>
-          <span class="white-text"> Usuários
+          <span class="white-text"> Usuarios
               </span>
         </a>
       </li>

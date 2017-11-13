@@ -64,4 +64,9 @@ agm-map {
   padding-left: 25px;
 }
 
-
+th{
+  text-align: center;
+}
+td{
+  text-align: center;
+}

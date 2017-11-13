@@ -3,14 +3,39 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AgmMap} from '@agm/core';
 import {MaterializeAction} from 'angular2-materialize';
-import {AcidenteTransitoService, GoogleMapsService, TipoVeiculoService} from '../../../../shared/services';
-import {AcidenteTransito, Localizacao, TipoVeiculo, UrlFotos, Veiculo} from '../../../../shared/models';
-import { ToastyService} from 'ng2-toasty';
-
+import {
+  AcidenteTransitoService,
+  GoogleMapsService,
+  TipoVeiculoService,
+  ViaService,
+  TipoAcidenteTransitoService,
+  PistaService,
+  SinalizacaoService,
+  VisibilidadeService,
+  PeriodoDiaService,
+  ClimaService
+} from '../../../../shared/services';
+import {
+  AcidenteTransito,
+  CondicaoDaVia,
+  Localizacao,
+  TipoVeiculo,
+  UrlFotos,
+  TipoVia,
+  Veiculo,
+  Visibilidade,
+  Clima,
+  Pista,
+  PeriodoDia,
+  Sinalizacao,
+  TipoAcidenteTransito
+} from '../../../../shared/models';
+import {ToastyService} from 'ng2-toasty';
+import {forEach} from "@angular/router/src/utils/collection";
 
 declare const jQuery: any;
 declare const Materialize: any;
- var pgwSlideshow;
+var pgwSlideshow;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -18,18 +43,28 @@ declare const Materialize: any;
   styleUrls: ['./cadastro-acidente-de-transito.component.css']
 })
 export class CadastroAcidenteDeTransitoComponent implements OnInit {
-
+  titulo = 'Cadastrar Acidente de Trânsito';
   lat: number = -27.900756;
   lng: number = -50.756954;
   zoom = 15;
   cepPattern = /^[0-9]{8}$/;
+  numberPattern = /^[0-9]*$/;
   localizacao: Localizacao;
   acidenteTransitoForm: FormGroup;
   veiculoForm: FormGroup;
   acidenteTransito: AcidenteTransito;
+  veiculo: Veiculo;
+  condicoesDasVias: CondicaoDaVia[];
+  tiposVias: TipoVia[];
+  visibilidades: Visibilidade[];
+  climas: Clima[];
+  pistas: Pista[];
+  periodosDias: PeriodoDia[];
+  sinalizacoes: Sinalizacao[];
+  tiposAcidentesTransitio: TipoAcidenteTransito[];
+
   veiculos: Veiculo[];
   urlFotos: UrlFotos[];
-  veiculo: Veiculo;
   tiposVeiculos: TipoVeiculo[];
   modalVeiculoActions = new EventEmitter<string | MaterializeAction>();
 
@@ -39,19 +74,26 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
               private acidenteTransitoService: AcidenteTransitoService,
               private googleMapsService: GoogleMapsService,
               private tipoVeiculoService: TipoVeiculoService,
-              private toastyService: ToastyService) {
+              private viaService: ViaService,
+              private toastyService: ToastyService,
+              private tipoAcidenteTransitoService: TipoAcidenteTransitoService,
+              private pistaService: PistaService,
+              private sinalizacaoService: SinalizacaoService,
+              private visibilidadeService: VisibilidadeService,
+              private periodoDiaService: PeriodoDiaService,
+              private climaService: ClimaService) {
   }
 
   ngOnInit() {
     this.urlFotos = [];
-    for (let i = 1; i <= 3; i++) {
-      this.urlFotos.push({
-        url: 'https://lorempixel.com/800/400/food/1',
-        titulo: 'Descrição imagem  ' + i,
-        idUrl: 'Titulo ' + i
-      });
-    }
-    console.log(this.urlFotos);
+    this.condicoesDasVias = [];
+    this.tiposVias = [];
+    this.visibilidades = [];
+    this.climas = [];
+    this.pistas = [];
+    this.periodosDias = [];
+    this.sinalizacoes = [];
+    this.tiposAcidentesTransitio = [];
     this.veiculo = new Veiculo();
     this.veiculos = [];
     this.acidenteTransito = new AcidenteTransito();
@@ -61,21 +103,40 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.inicializaToolTipe();
     this.inicializaMaterialize();
     this.listaTiposVeiculos();
+    this.listaCondicoesDasVias();
+    this.listaTiposVias();
+    this.listaVisibilidades();
+    this.listaClimas();
+    this.listaPistas();
+    this.listaPeriodosDias();
+    this.listaSinalizacoes();
+    this.listaTiposAcidentesTransito();
     this.inicializaPsw();
     const id = this.activeRoute.snapshot.params['id'];
     if (id) {
+      this.titulo = 'Alterar Acidente de Trânsito';
       this.carregarAcidenteTransito(id);
     }
   }
-
 
   validaForm() {
     this.acidenteTransitoForm = this.formBuilder.group(
       {
         tituloPublicacao: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        data: this.formBuilder.control('', [Validators.required]),
-        hora: this.formBuilder.control('', [Validators.required]),
-        descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(1000)]),
+        data: this.formBuilder.control(''),
+        hora: this.formBuilder.control(''),
+        descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(250)]),
+        numeroDeVitimas: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
+        numeroDeMortos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
+        numeroDeFeridos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
+        condicaoDaVia: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        tipoVia: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        visibilidade: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        sinalizacao: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        clima: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        periodoDia: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        tipoAcidenteTransito: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        pista: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
         latitude: this.formBuilder.control('', [Validators.required]),
         longitude: this.formBuilder.control('', [Validators.required]),
         cep: this.formBuilder.control('', [Validators.required, Validators.pattern(this.cepPattern)]),
@@ -83,18 +144,17 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
         complemento: this.formBuilder.control(''),
         bairro: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
         estado: this.formBuilder.control('', [Validators.required, Validators.minLength(2)]),
-        cidade: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-        quantidadeVitimas: this.formBuilder.control('', [Validators.required])
+        cidade: this.formBuilder.control('', [Validators.required, Validators.minLength(3)])
       }
     );
     this.veiculoForm = this.formBuilder.group(
       {
-        tipoVeiculo: [[''], Validators.required],
+        tipoVeiculo: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
         fabricante: this.formBuilder.control('', [Validators.required]),
         marca: this.formBuilder.control('', [Validators.required]),
         placa: this.formBuilder.control('', [Validators.required]),
         descricao: this.formBuilder.control('', [Validators.required]),
-        numeroOcupantes: this.formBuilder.control('', [Validators.required])
+        numeroOcupantes: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)])
       }
     );
   }
@@ -131,7 +191,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   adicionaLocalizacao() {
-    console.log(this.localizacao);
     this.lat = this.localizacao.latitude;
     this.lng = this.localizacao.longitude;
     this.acidenteTransitoForm.patchValue(this.localizacao);
@@ -154,13 +213,53 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
         if (acidenteTransito) {
           this.acidenteTransito = acidenteTransito;
           this.acidenteTransitoForm.patchValue(this.acidenteTransito);
+          for (let i = 0; i < this.pistas.length; i++) {
+            if (this.pistas[i].idPista === acidenteTransito.pista.idPista) {
+              this.pistas[i] = acidenteTransito.pista;
+            }
+          }
+          for (let i = 0; i < this.tiposVias.length; i++) {
+            if (this.tiposVias[i].idTipoVia === acidenteTransito.tipoVia.idTipoVia) {
+              this.tiposVias[i] = acidenteTransito.tipoVia;
+            }
+          }
+          for (let i = 0; i < this.sinalizacoes.length; i++) {
+            if (this.sinalizacoes[i].idSinalizacao === acidenteTransito.sinalizacao.idSinalizacao) {
+              this.sinalizacoes[i] = acidenteTransito.sinalizacao;
+            }
+          }
+          for (let i = 0; i < this.tiposAcidentesTransitio.length; i++) {
+            if (this.tiposAcidentesTransitio[i].idTipoAcidenteTransito === acidenteTransito.tipoAcidenteTransito.idTipoAcidenteTransito) {
+              this.tiposAcidentesTransitio[i] = acidenteTransito.tipoAcidenteTransito;
+            }
+          }
+          for (let i = 0; i < this.climas.length; i++) {
+            if (this.climas[i].idClima === acidenteTransito.clima.idClima) {
+              this.climas[i] = acidenteTransito.clima;
+            }
+          }
+          for (let i = 0; i < this.visibilidades.length; i++) {
+            if (this.visibilidades[i].idVisibilidade === acidenteTransito.visibilidade.idVisibilidade) {
+              this.visibilidades[i] = acidenteTransito.visibilidade;
+            }
+          }
+          for (let i = 0; i < this.condicoesDasVias.length; i++) {
+            if (this.condicoesDasVias[i].idCondicaoDaVia === acidenteTransito.condicaoDaVia.idCondicaoDaVia) {
+              this.condicoesDasVias[i] = acidenteTransito.condicaoDaVia;
+            }
+          }
+          for (let i = 0; i < this.periodosDias.length; i++) {
+            if (this.periodosDias[i].idPeiodoDia === acidenteTransito.periodoDia.idPeiodoDia) {
+              this.periodosDias[i] = acidenteTransito.periodoDia;
+            }
+          }
+          this.veiculos = acidenteTransito.veiculos;
           this.lat = acidenteTransito.latitude;
           this.lng = acidenteTransito.longitude;
           this.localizacao.latitude = acidenteTransito.latitude;
           this.localizacao.longitude = acidenteTransito.longitude;
           this.inicializaMaterialize();
         } else {
-          this.addToast();
           this.router.navigate(['/admin/acidentes-de-transitos']);
         }
       });
@@ -168,32 +267,33 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   salvar(acidenteTransito: AcidenteTransito) {
     if (this.editando) {
+      this.alterarAcidenteTransito(acidenteTransito);
     } else {
+      acidenteTransito.veiculos = this.veiculos;
+      this.cadastrarAcidenteTransito(acidenteTransito);
     }
   }
 
   cadastrarAcidenteTransito(acidenteTransito: AcidenteTransito) {
     this.acidenteTransitoService.postAcidenteDeTransito(acidenteTransito)
       .subscribe(() => {
-        this.acidenteTransitoForm.patchValue(acidenteTransito);
-        this.veiculos = this.acidenteTransito.veiculos;
         this.router.navigate(['/admin/acidentes-de-transitos']);
+        this.confirmacao('Cadastro Realizado com Sucesso!!');
       });
   }
 
   alterarAcidenteTransito(acidenteTransito: AcidenteTransito) {
     acidenteTransito.idAcidenteTransito = this.acidenteTransito.idAcidenteTransito;
     this.acidenteTransitoService.putAcidenteDeTransito(this.acidenteTransito.idAcidenteTransito, acidenteTransito)
-      .subscribe(acidenteTransito => {
-        this.acidenteTransitoForm.patchValue(acidenteTransito);
-        this.veiculos = this.acidenteTransito.veiculos;
+      .subscribe(() => {
         this.router.navigate(['/admin/acidentes-de-transitos']);
+        this.confirmacao('Cadastro Alterado com Sucesso!!');
       });
   }
 
   cancelar() {
     this.router.navigate(['admin/acidentes-de-transitos']);
-    this.addToast();
+    this.confirmacao('Cadastro do acidente de trânsito cancelado!!');
   }
 
   inicializaMaterialize() {
@@ -231,6 +331,53 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     });
   }
 
+  listaCondicoesDasVias() {
+    this.viaService.condicoesDaVia().subscribe(condicoesDasVias => {
+      if (condicoesDasVias) {
+        this.condicoesDasVias = condicoesDasVias;
+      }
+    })
+  }
+
+  listaTiposVias() {
+    this.viaService.tiposVias().subscribe(
+      tiposVias => {
+        if (tiposVias) {
+          this.tiposVias = tiposVias;
+        }
+      }
+    );
+  }
+
+  listaVisibilidades() {
+    this.visibilidadeService.visibilidades().subscribe(
+      visibilidades => {
+        this.visibilidades = visibilidades;
+      }
+    );
+  }
+
+  listaClimas() {
+    this.climaService.climas().subscribe(climas => this.climas = climas);
+  }
+
+  listaPistas() {
+    this.pistaService.pistas().subscribe(pistas => this.pistas = pistas);
+  }
+
+  listaPeriodosDias() {
+    this.periodoDiaService.periodosDias().subscribe(periodosDias => this.periodosDias = periodosDias);
+  }
+
+  listaSinalizacoes() {
+    this.sinalizacaoService.sinalizacoes().subscribe(sinalizacoes => this.sinalizacoes = sinalizacoes);
+  }
+
+  listaTiposAcidentesTransito() {
+    this.tipoAcidenteTransitoService.tiposAcidentesTransito()
+      .subscribe(tiposAcidentesTransitio => this.tiposAcidentesTransitio = tiposAcidentesTransitio);
+  }
+
   abreModalVeiculo() {
     this.modalVeiculoActions.emit({action: 'modal', params: ['open']});
   }
@@ -241,22 +388,22 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   adicionaVeiculo(veiculo: Veiculo) {
-    this.veiculo = veiculo;
-    this.veiculo.tipoVeiculo = this.veiculoForm.get('tipoVeiculo').value;
-    console.log(this.veiculo);
-    console.log(this.veiculos);
-    this.veiculos.push(this.veiculo);
+    this.veiculos.push(veiculo);
+    this.fechaModalVeiculo();
   }
 
   imageUploaded(event) {
-    const formData: FormData = new FormData();
-    formData.append('file', event.file);
-    this.acidenteTransitoService.upload(formData).subscribe(url => {
-      this.urlFotos.push(url);
-      console.log('url imagem'+ url);
-      console.log(url);
-      this.reloadPsw();
-    });
+    /*
+        const formData: FormData = new FormData();
+        formData.append('file', event.file);
+        this.acidenteTransitoService.upload(formData).subscribe(url => {
+          this.urlFotos.push(url);
+          console.log('url imagem'+ url);
+          console.log(url);
+          this.reloadPsw();
+        });*/
+    //  this.reloadPsw();
+    console.log(this.urlFotos);
   }
 
   imageRemoved(event) {
@@ -267,14 +414,14 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   }
 
-  addToast() {
-       this.toastyService.success({
-           title: 'Confirmação!',
-           msg: 'Cadastro de Acidente de Trânsito Realizado com Sucesso!!',
-           showClose: true,
-           timeout: 10000,
-           theme: 'default'
-        });
+  confirmacao(msg: string) {
+    this.toastyService.success({
+      title: 'Confirmação!',
+      msg: msg,
+      showClose: true,
+      timeout: 10000,
+      theme: 'default'
+    });
   }
 
   inicializaToolTipe() {
@@ -290,6 +437,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   reloadPsw() {
+    console.log('iniciando carregamento');
     jQuery(document).ready(function () {
       pgwSlideshow.reload(true);
     });

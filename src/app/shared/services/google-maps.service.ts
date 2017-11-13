@@ -45,6 +45,7 @@ export class GoogleMapsService {
             }
             if (loc.types[0] === 'postal_code') {
               this.localizacao.cep = loc.long_name;
+              this.localizacao.cep = this.localizacao.cep.replace('-', '');
             }
           }
         }
@@ -52,4 +53,20 @@ export class GoogleMapsService {
     });
     return Observable.of(this.localizacao);
   }
+
+  buscaEndereco(address: string){
+    this.loader.load().then(() => {
+    const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+        console.log('chegou aki');
+        console.log(results[0].geometry.location.lat());
+        console.log(results[0].geometry.location.lng());
+        }else{
+
+        }
+      });
+
+    });
+    }
 }

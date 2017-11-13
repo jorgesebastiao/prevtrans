@@ -1,7 +1,8 @@
 <div materialize class="col s12" id="map">
   <agm-map class="box" [latitude]="lat" [longitude]="lng" [mapTypeId]="'roadmap'" [zoom]="zoom">
     <agm-marker-cluster
-      imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+      imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
+      [maxZoom]="15">
       <agm-marker *ngFor="let acidenteTransito of acidentesTransito; let i = index"
                   (markerClick)="clickedMarker(acidenteTransito)"
                   [latitude]="acidenteTransito.latitude"

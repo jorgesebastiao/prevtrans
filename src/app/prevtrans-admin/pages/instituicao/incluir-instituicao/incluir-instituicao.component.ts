@@ -16,6 +16,7 @@ declare const Materialize: any;
   styleUrls: ['./incluir-instituicao.component.css']
 })
 export class IncluirInstituicaoComponent implements OnInit {
+  titulo = 'Cadastrar Instituição';
   cepPattern = /^[0-9]{8}$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
@@ -37,6 +38,7 @@ export class IncluirInstituicaoComponent implements OnInit {
     this.validaForm();
     const id = this.routes.snapshot.params['id'];
     if (id) {
+      this.titulo = 'Alterar Instituição';
       this.carregarInstituicao(id);
     }
   }

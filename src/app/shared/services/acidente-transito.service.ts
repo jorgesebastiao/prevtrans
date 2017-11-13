@@ -82,7 +82,6 @@ export class AcidenteTransitoService {
 
   postAcidenteDeTransito(acidenteTransito: AcidenteTransito): Observable<String> {
     const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
     return this.authHttp.post(`${PREVTRANS_API}/acidentes-de-transito`,
       JSON.stringify(acidenteTransito))
       .map(response => response.json()).catch(error => {
@@ -93,7 +92,6 @@ export class AcidenteTransitoService {
 
   putAcidenteDeTransito(id: string, acidenteTransito: AcidenteTransito): Observable<String> {
     const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
     return this.authHttp.put(`${PREVTRANS_API}/acidentes-de-transito/${id}`,
       JSON.stringify(acidenteTransito))
       .map(response => response.json()).catch(error => {

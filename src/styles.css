@@ -13,3 +13,7 @@
   font-family: "Roboto", sans-serif;
   font-size: 13px;
 }
+
+#toasty .toast{
+  margin: 0 0 40px!important;
+}

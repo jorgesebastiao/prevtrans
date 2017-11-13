@@ -1,3 +1,44 @@
-<p>
-  graficos works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col s12 l6">
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="climaDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="pistaDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="sinalizacaoDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="tipoViaDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="tipoAcidenteTransitoDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+  </div>
+</div>

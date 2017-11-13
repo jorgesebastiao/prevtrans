@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, forwardRef, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Usuario, UsuarioPermissao} from '../../../../shared/models';
 import {CepService, UsuarioService} from '../../../../shared/services';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
@@ -15,7 +15,6 @@ declare const Materialize: any;
   styleUrls: ['./cadastro-usuario.component.css']
 })
 export class CadastroUsuarioComponent implements OnInit {
-
   titulo: string;
   LOGIN_REGEX = /^[_'.@A-Za-z0-9-]*$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -26,19 +25,19 @@ export class CadastroUsuarioComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
-              private usuarioService: UsuarioService,
+              @Inject(forwardRef(() => UsuarioService)) private usuarioService: UsuarioService,
               public auth: AuthService,
               private toastyService: ToastyService) {
   }
 
   ngOnInit() {
+    this.validaForm();
     this.usuarioService.permissoes().subscribe(
       permissoes => {
         this.permissoes = permissoes;
       }
     );
     this.inicializaMaterialize();
-    this.validaForm();
     this.usuario = new Usuario();
     const id = this.routes.snapshot.params['id'];
     if (id) {
@@ -47,6 +46,16 @@ export class CadastroUsuarioComponent implements OnInit {
     } else {
       this.titulo = 'Cadastrar Usuário';
     }
+  }
+
+  validaForm() {
+    this.usuarioForm = this.formBuilder.group({
+      nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl( '', Validators.compose([ Validators.required, Validators.pattern(this.emailPattern)])),
+      usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
+      usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+      ativo: ['']
+    });
   }
 
   get editando() {
@@ -67,6 +76,48 @@ export class CadastroUsuarioComponent implements OnInit {
       this.inicializaMaterialize();
     });
   }
+/*
+  validaUsuario(): { [key: string]: boolean } {
+    let valido: boolean;
+    const buscaUsuario = this.usuarioForm.get('usuario').value;
+    if (buscaUsuario) {
+      this.usuarioService.verificaUsuario(buscaUsuario).subscribe(
+        usuariValido => {
+          if (usuariValido) {
+            console.log('usuario indisponivel' + usuariValido);
+            valido = true;
+          } else {
+            console.log('usuario indisponivel' + usuariValido);
+            valido = false;
+          }
+        }
+      );
+    }
+    if (valido) {
+      return {usuarioEmUsoM: true};
+    }
+    return undefined;
+  }
+
+validaEmail( ) : { [key: string]: boolean } {
+   let valido: boolean;
+  console.log('oj');
+  const email = this.usuarioForm.get('email').value;
+
+  if (email.valid && email.dirty) {
+    this.usuarioService.verificaUsuario(this.usuarioForm.controls['email'].value).subscribe(
+      emailValido => {
+        if (emailValido) {
+          return {emailEmUso: true};
+        }
+      }
+    );
+  if (valido) {
+    return {emailEmUso: true};
+  }
+  return undefined;
+  }
+*/
 
   salvar(usuario: Usuario) {
     if (this.editando) {
@@ -97,16 +148,6 @@ export class CadastroUsuarioComponent implements OnInit {
   cancelar() {
     this.usuarioForm.reset();
     this.router.navigate(['admin/usuarios']);
-  }
-
-  validaForm() {
-    this.usuarioForm = this.formBuilder.group({
-      nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
-      usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
-      usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
-      ativo: ['']
-    });
   }
 
   inicializaMaterialize() {

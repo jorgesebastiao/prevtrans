@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
-            <label class="black-text fom">Cadastro Acidente de Trânsito</label>
+            <label class="black-text fom">{{titulo}}</label>
           </h1>
         </div>
       </div>
@@ -29,12 +29,124 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m12 l12">
-          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 1000 caracteres">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 250 caracteres">
             <textarea id="descricao" formControlName="descricao" class="materialize-textarea"></textarea>
             <label class="black-text text-darken-4" for="descricao">Descrição do Acidente de Trânsito</label>
           </app-input-container>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col s12">
+          <h1 class="divisor">
+            <label class="black-text fom">Dados Acidente de Trânsito</label>
+          </h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório">
+            <select id="condicao-via" formControlName="condicaoDaVia" materialize="material_select"
+                    [materializeSelectOptions]="condicoesDasVias">
+              <option value="" disabled selected></option>
+              <option *ngFor="let condicaoDaVia  of condicoesDasVias" [ngValue]="condicaoDaVia">{{condicaoDaVia.condicao}}
+            </select>
+            <label for="condicao-via" class="black-text text-darken-4">Condição da Via</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="tipo-via" formControlName="tipoVia" materialize="material_select"
+                    [materializeSelectOptions]="tiposVias">
+              <option value="" disabled selected></option>
+              <option *ngFor="let tipoVia  of tiposVias" [ngValue]="tipoVia">{{tipoVia.tipoVia}}
+            </select>
+            <label for="tipo-via" class="black-text text-darken-4">Tipo da Via</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="visibilidade" formControlName="visibilidade" materialize="material_select"
+                    [materializeSelectOptions]="visibilidades">
+              <option value="" disabled selected></option>
+              <option *ngFor="let visibilidade  of visibilidades" [ngValue]="visibilidade">{{visibilidade.visibilidade}}
+            </select>
+            <label for="visibilidade" class="black-text text-darken-4">Visibilidade</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="sinalizacao" formControlName="sinalizacao" materialize="material_select"
+                    [materializeSelectOptions]="sinalizacoes">
+              <option value="" disabled selected></option>
+              <option *ngFor="let sinalizacao  of sinalizacoes" [ngValue]="sinalizacao">{{sinalizacao.sinalizacao}}
+            </select>
+            <label for="sinalizacao" class="black-text text-darken-4">Sinalização</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="clima" formControlName="clima" materialize="material_select"
+                    [materializeSelectOptions]="climas">
+              <option value="" disabled selected></option>
+              <option *ngFor="let clima  of climas" [ngValue]="clima">{{clima.clima}}
+            </select>
+            <label for="clima" class="black-text text-darken-4">Clima</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="periodo-dia" formControlName="periodoDia" materialize="material_select"
+                    [materializeSelectOptions]="periodosDias">
+              <option value="" disabled selected></option>
+              <option *ngFor="let periodoDia  of periodosDias" [ngValue]="periodoDia">{{periodoDia.periodoDia}}
+            </select>
+            <label for="periodo-dia" class="black-text text-darken-4">Período do Dia</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="tipo-acidente-transito" formControlName="tipoAcidenteTransito" materialize="material_select"
+                    [materializeSelectOptions]="tiposAcidentesTransitio">
+              <option value="" disabled selected></option>
+              <option *ngFor="let tipoAcidenteTransito  of tiposAcidentesTransitio" [ngValue]="tipoAcidenteTransito">{{tipoAcidenteTransito.tipoAcidenteTransito}}
+            </select>
+            <label for="tipo-acidente-transito" class="black-text text-darken-4">Tipo de Acidente</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m3 l3">
+          <app-input-container errorMessage="Campo Obrigatório ">
+            <select id="pista" formControlName="pista" materialize="material_select"
+                    [materializeSelectOptions]="pistas">
+              <option value="" disabled selected></option>
+              <option *ngFor="let pista  of pistas" [ngValue]="pista">{{pista.pista}}
+            </select>
+            <label for="pista" class="black-text text-darken-4">Pista </label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+            <input id="numero-de-vitimas" formControlName="numeroDeVitimas" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="numero-de-vitimas">Número de Vitimas</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+            <input id="numero-de-mortos" formControlName="numeroDeMortos" type="text"
+                   autocomplete="off">
+            <label class="black-text text-darken-4" for="numero-de-mortos">Número de Mortos</label>
+          </app-input-container>
+        </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+            <input id="numero-de-feridos" formControlName="numeroDeFeridos" type="text"
+                   autocomplete="off">
+            <label class="black-text text-darken-4" for="numero-de-feridos">Número de Feridos</label>
+          </app-input-container>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
@@ -97,21 +209,6 @@
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
-            <label class="black-text fom">Dados Acidente de Trânsito</label>
-          </h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12 m4 l2">
-          <app-input-container>
-            <input id="quantidadeVitimas" formControlName="quantidadeVitimas" type="text" autocomplete="off">
-            <label class="black-text text-darken-4" for="quantidadeVitimas">Quantidade de Vitimas</label>
-          </app-input-container>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s12">
-          <h1 class="divisor">
             <label class="black-text fom">Veiculos Envolvidos</label>
           </h1>
         </div>
@@ -129,7 +226,8 @@
               <th>PLACA</th>
               <th>DESCRIÇÃO</th>
               <th>NUMERO DE OCUPANTES</th>
-              <th style="text-align: center">ALTERAR</th>
+              <th>ALTERAR</th>
+              <th>EXCLUIR</th>
             </tr>
             </thead>
             <tbody>
@@ -140,42 +238,49 @@
               <td>{{veiculoT.placa}}</td>
               <td>{{veiculoT.descricao}}</td>
               <td>{{veiculoT.numeroOcupantes}}</td>
-              <td style="text-align: center">
-                <a class="waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
+              <td>
+                <a class="amber accent-4  white-text  btn-flat"> <i class="material-icons">mode_edit</i></a>
+              </td>
+              <td>
+                <a class="amber accent-4 white-text  btn-flat"><i class="material-icons">delete</i></a>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div class="row">
-        <div class="col s12">
-          <h1 class="divisor">
-            <label class="black-text fom">Imagens</label>
-          </h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s12">
-        <ul class="pgwSlideshow">
-          <li *ngFor="let url of urlFotos">
-            <a target="_blank"><img src={{url.url}} alt={{url.titulo}}>
-              <span (click)="imageRemoved($event)" class="botao-excluir"><i class="material-icons">delete</i></span>
-            </a>
-          </li>
-        </ul>
-        </div>
-      </div>
+      <!-- Imagem Acidente de Transito-->
+      <!--
+       <div class="row">
+         <div class="col s12">
+           <h1 class="divisor">
+             <label class="black-text fom">Imagens</label>
+           </h1>
+         </div>
+       </div>
 
-      <div class="row">
-        <image-upload class="col s12 "
-                      [buttonCaption]="'Selecionar imagens'"
-                      [dropBoxMessage]="'Solte suas imagens aqui!'"
-                      [extensions]="['jpeg','png']"
-                      (onFileUploadFinish)="imageUploaded($event)"
-                      (onRemove)="imageRemoved($event)"
-                      (isPending)="disableSendButton($event)"></image-upload>
-      </div>
+       <div class="row">
+         <div class="col s12">
+         <ul class="pgwSlideshow">
+           <li *ngFor="let url of urlFotos">
+             <a target="_blank"><img src={{url.url}} alt={{url.titulo}}>
+               <span (click)="imageRemoved($event)" class="botao-excluir"><i class="material-icons">delete</i></span>
+             </a>
+           </li>
+         </ul>
+         </div>
+       </div>
+
+       <div class="row">
+         <image-upload class="col s12 "
+                       [buttonCaption]="'Selecionar imagens'"
+                       [dropBoxMessage]="'Solte suas imagens aqui!'"
+                       [extensions]="['jpeg','png']"
+                       (onFileUploadFinish)="imageUploaded($event)"
+                       (onRemove)="imageRemoved($event)"
+                       (isPending)="disableSendButton($event)"></image-upload>
+       </div>-->
+
       <div class="row">
         <button (click)="cancelar()" class="amber accent-4 right waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
@@ -265,9 +370,9 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l6 ">
-          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+          <app-input-container errorMessage="Campo Obrigatório ,Somente números">
             <input id="numeroOcupantes" type="text" formControlName="numeroOcupantes" autocomplete="off">
-            <label class="black-text text-darken-4" for="numeroOcupantes">Numero Ocupantes</label>
+            <label class="black-text text-darken-4" for="numeroOcupantes">Número Ocupantes</label>
           </app-input-container>
         </div>
       </div>

@@ -20,6 +20,7 @@ export class AcidentesMapsComponent implements OnInit {
     this.inicializaJquery();
     this.acidenteTransitoService.acidenteTransitoPublico()
       .subscribe(acidentesTransito =>  this.acidentesTransito = acidentesTransito);
+
   }
   lat:  number=  -27.900756;
   lng:  number=  -50.756954;

@@ -22,14 +22,14 @@
         "../node_modules/materialize-css/dist/css/materialize.css",
         "../node_modules/ng2-toasty/style-default.css",
         "../node_modules/ng2-toasty/style-material.css",
-        "../node_modules/pgwslideshow/pgwslideshow.min.css",
+        "../node_modules/pgwslideshow/pgwslideshow.css",
         "styles.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/hammerjs/hammer.js",
         "../node_modules/materialize-css/dist/js/materialize.min.js",
-        "../node_modules/pgwslideshow/pgwslideshow.min.js"
+        "../node_modules/pgwslideshow/pgwslideshow.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

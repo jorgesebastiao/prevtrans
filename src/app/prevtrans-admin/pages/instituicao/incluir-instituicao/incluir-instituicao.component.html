@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col s12">
           <h1 class="divisor" >
-            <label class="black-text fom">Dados Instituição</label>
+            <label class="black-text fom">{{titulo}}</label>
           </h1>
         </div>
       </div>
@@ -47,13 +47,13 @@
         </div>
         <div class="input-field col s12 m4 l3">
           <app-input-container errorMessage="Campo Obrigatório">
-            <input id="telefone"  type="text" formControlName="telefone" autocomplete="off">
-            <label class="black-text"  for="telefone">Telefone</label>
+            <input id="telefone"  type="text" formControlName="telefone" prevtransMask="(99)9999-9999" autocomplete="off">
+            <label class="black-text"  for="telefone">Telefone Fixo</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l3">
           <app-input-container >
-            <input id="celular"  type="text" formControlName="celular" autocomplete="off">
+            <input id="celular"  type="text" formControlName="celular" prevtransMask="(99)99999-9999" autocomplete="off">
             <label class="grey-text text-darken-4"  for="celular">Celular</label>
           </app-input-container>
         </div>

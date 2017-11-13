@@ -16,9 +16,18 @@ import {
   GoogleMapsService,
   InstituicaoService,
   TipoVeiculoService,
-  UsuarioService
+  TipoAcidenteTransitoService,
+  UsuarioService,
+  ViaService,
+  VisibilidadeService,
+  SinalizacaoService,
+  PeriodoDiaService,
+  ClimaService,
+  PistaService,
+  AnalisaAcidenteTransitoService
 } from './services';
 import {AuthService, RecuperarSenhaService} from './seguranca';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
@@ -27,14 +36,16 @@ import {AuthService, RecuperarSenhaService} from './seguranca';
     MaterializeModule.forRoot(),
     AgmCoreModule,
     AgmJsMarkerClustererModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxChartsModule
   ],
   declarations: [InputComponent, CepPipe,
     CpnjPipe, TelefonePipe, PrevtransMaskDirective, CpfPipe],
   exports: [MaterializeModule, InputComponent,
     CepPipe, CpnjPipe, CpfPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
-    AgmCoreModule, AgmJsMarkerClustererModule, ReactiveFormsModule]
+    AgmCoreModule, AgmJsMarkerClustererModule,
+    ReactiveFormsModule, NgxChartsModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
@@ -43,11 +54,19 @@ export class SharedModule {
       providers: [
         ErrorHandlerService,
         AcidenteTransitoService,
+        AnalisaAcidenteTransitoService,
         CepService,
         GoogleMapsService,
         InstituicaoService,
         TipoVeiculoService,
+        TipoAcidenteTransitoService,
         UsuarioService,
+        ViaService,
+        VisibilidadeService,
+        SinalizacaoService,
+        PeriodoDiaService,
+        ClimaService,
+        PistaService,
         AuthService,
         RecuperarSenhaService,
         JwtHelper,
