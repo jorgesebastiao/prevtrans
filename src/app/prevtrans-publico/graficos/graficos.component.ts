@@ -10,12 +10,13 @@ import {DataGraficos} from '../../shared/models/dataGraficos.model';
 export class GraficosComponent implements OnInit {
 
   climaDados: DataGraficos[];
+  condicaoDaViaDados: DataGraficos[];
+  periodoDiaDados: DataGraficos[];
   pistaDados: DataGraficos[];
   sinalizacaoDados: DataGraficos[];
-  visibilidadeDados: DataGraficos[];
   tipoViaDados: DataGraficos[];
   tipoAcidenteTransitoDados: DataGraficos[];
-
+  visibilidadeDados: DataGraficos[];
   colorScheme = {
     domain: ['#2980b9', '#f1c40f', '#34495e', '#d35400']
   };
@@ -25,16 +26,21 @@ export class GraficosComponent implements OnInit {
 
   ngOnInit() {
     this.climaDados = [];
+    this.condicaoDaViaDados = [];
+    this.periodoDiaDados = [];
     this.pistaDados = [];
     this.sinalizacaoDados = [];
-    this.visibilidadeDados = [];
-    this.tipoViaDados = [];
     this.tipoAcidenteTransitoDados = [];
+    this.tipoViaDados = [];
+    this.visibilidadeDados = [];
     this.listaDadosClima();
+    this.listaDadosCondicaoDaVia();
+    this.listaDadosPeriodoDia();
     this.listaDadosPista();
     this.listaDadosSinalizacao();
     this.listaDadosTipoAcidenteTransito();
     this.listaDadosTipoVia();
+    this.listaDadosVisibilidade();
   }
   onSelect(event) {
     console.log(event);
@@ -43,6 +49,14 @@ export class GraficosComponent implements OnInit {
   listaDadosClima(){
     this.analisaAcidenteTransitoService.dadosClima()
       .subscribe(climaDados => this.climaDados = climaDados);
+  }
+  listaDadosCondicaoDaVia(){
+    this.analisaAcidenteTransitoService.dadosCondicaoDaVia()
+      .subscribe(condicaoDaViaDados => this.condicaoDaViaDados = condicaoDaViaDados);
+  }
+  listaDadosPeriodoDia(){
+    this.analisaAcidenteTransitoService.dadosCondicaoDaVia()
+      .subscribe(periodoDiaDados => this.periodoDiaDados = periodoDiaDados);
   }
   listaDadosPista(){
     this.analisaAcidenteTransitoService.dadosPista()
@@ -59,6 +73,9 @@ export class GraficosComponent implements OnInit {
   listaDadosTipoVia(){
     this.analisaAcidenteTransitoService.dadosTipoVia()
       .subscribe(tipoViaDados => this.tipoViaDados = tipoViaDados);
-
+  }
+  listaDadosVisibilidade(){
+    this.analisaAcidenteTransitoService.dadosVisibilidade()
+      .subscribe( visibilidadeDados => this.visibilidadeDados = visibilidadeDados);
   }
 }

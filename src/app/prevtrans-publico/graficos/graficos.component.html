@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com o Clima
       <ngx-charts-advanced-pie-chart
         [scheme]="colorScheme"
         [results]="climaDados"
@@ -9,6 +10,25 @@
       </ngx-charts-advanced-pie-chart>
     </div>
     <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com a Condição da Via
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="condicaoDaViaDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com o Periodo do Dia
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="periodoDiaDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com o Tipo de Pista
       <ngx-charts-advanced-pie-chart
         [scheme]="colorScheme"
         [results]="pistaDados"
@@ -17,6 +37,7 @@
       </ngx-charts-advanced-pie-chart>
     </div>
     <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com o a Sinalização da Via
       <ngx-charts-advanced-pie-chart
         [scheme]="colorScheme"
         [results]="sinalizacaoDados"
@@ -25,6 +46,16 @@
       </ngx-charts-advanced-pie-chart>
     </div>
     <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com o Tipo do Acidente de Trânsito
+      <ngx-charts-advanced-pie-chart
+        [scheme]="colorScheme"
+        [results]="tipoAcidenteTransitoDados"
+        [gradient]="false"
+        (select)="onSelect($event)">
+      </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com o Tipo de Via
       <ngx-charts-advanced-pie-chart
         [scheme]="colorScheme"
         [results]="tipoViaDados"
@@ -33,9 +64,10 @@
       </ngx-charts-advanced-pie-chart>
     </div>
     <div class="col s12 l6">
+      Estatística de Acidentes de Acordo com a Visibilidade
       <ngx-charts-advanced-pie-chart
         [scheme]="colorScheme"
-        [results]="tipoAcidenteTransitoDados"
+        [results]="visibilidadeDados"
         [gradient]="false"
         (select)="onSelect($event)">
       </ngx-charts-advanced-pie-chart>
