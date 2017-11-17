@@ -3,10 +3,10 @@
     <ul id="nav-menu" class="left hide-on-med-and-down">
       <li *ngIf="auth.temPermissao('ROLE_CADASTRAR_USUARIO')"><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Usuário</a></li>
       <li>
-        <form materialize>
+        <form materialize [formGroup]="buscaUsuarioForm">
           <div class="header-search-wrapper">
             <i class="material-icons" style="margin-right: 15px">search</i>
-            <input class="header-search-input " placeholder="Pesquisar Usuário">
+            <input formControlName="buscaControl" class="header-search-input " placeholder="Pesquisar Usuário">
           </div>
         </form>
       </li>

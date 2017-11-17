@@ -15,19 +15,14 @@
             <label class="black-text text-darken-4" for="titulo-publicacao">Titulo Publicação</label>
           </app-input-container>
         </div>
-        <div class="input-field col s12 m4 l2">
-          <app-input-container>
-            <input id="data" formControlName="data" name="datepicker" materialize="pickadate"
-                   [materializeParams]="[{format: 'dd/mm/yyyy'}]" type="text" autocomplete="off">
-            <label class="black-text text-darken-4" for="data">Data</label>
-          </app-input-container>
-        </div>
-        <div class="input-field col s12 m4 l2">
-          <app-input-container>
-            <input class="timepicker" id="hora" formControlName="hora" type="text" autocomplete="off">
-            <label class="black-text text-darken-4" for="hora">Hora</label>
-          </app-input-container>
-        </div>
+        <owl-date-time class="col s12 m4 l4"
+                        [dataType]="'string'"
+                        [showOtherMonths]="true"
+                        [placeHolder]="'Data Acidente de Trânsito'"
+                        [dateFormat]="'DD-MM-YYYY HH:mm'"
+                        formControlName="dataAcidenteTransito"
+                        [locale]="pt" >
+        </owl-date-time>
         <div class="input-field col s12 m12 l12">
           <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 250 caracteres">
             <textarea id="descricao" formControlName="descricao" class="materialize-textarea"></textarea>
@@ -127,26 +122,28 @@
         </div>
         <div class="input-field col s12 m4 l2">
           <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
-            <input id="numero-de-vitimas" formControlName="numeroDeVitimas" type="text" autocomplete="off">
-            <label class="black-text text-darken-4" for="numero-de-vitimas">Número de Vitimas</label>
-          </app-input-container>
-        </div>
-        <div class="input-field col s12 m4 l2">
-          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
-            <input id="numero-de-mortos" formControlName="numeroDeMortos" type="text"
+            <input (blur)="somaVitimas" id="numero-de-mortos" formControlName="numeroDeMortos" type="text"
                    autocomplete="off">
             <label class="black-text text-darken-4" for="numero-de-mortos">Número de Mortos</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l2">
           <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
-            <input id="numero-de-feridos" formControlName="numeroDeFeridos" type="text"
+            <input (blur)="somaVitimas" id="numero-de-feridos" formControlName="numeroDeFeridos" type="text"
                    autocomplete="off">
             <label class="black-text text-darken-4" for="numero-de-feridos">Número de Feridos</label>
           </app-input-container>
         </div>
+        <div class="input-field col s12 m4 l2">
+          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+            <input  id="numero-de-vitimas" formControlName="numeroDeVitimas" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="numero-de-vitimas">Número de Vitimas</label>
+          </app-input-container>
+        </div>
       </div>
-
+      <div class="row">
+      {{ acidenteTransitoForm.value| json}}
+      </div>
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">

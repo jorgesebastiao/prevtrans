@@ -22,9 +22,6 @@
           </app-input-container>
         </div>
         <div class="col s12">
-        <!--  <div *ngIf="usuarioForm.hasError('usuarioEmUsoM')" class="error-msg cols 12 center-align">
-            Usuário em uso!!
-          </div>-->
         </div>
         <div class="input-field col s12 m12 l12">
           <app-input-container errorMessage="E-mail inválido">
@@ -32,10 +29,26 @@
             <label class="black-text text-darken-4" for="email">E-mail</label>
           </app-input-container>
         </div>
+      </div>
+      <div class="row">
         <div class="col s12">
-          <!-- <div *ngIf="usuarioForm.get('email').hasError('emailEmUso') && usuarioForm.get('email').touched" class="error-msg cols 12 center-align">
-              Email em uso!!
-            </div>-->
+          <h1 class="divisor">
+            <label class="black-text fom">Intituição</label>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l12 ">
+          <app-input-container errorMessage="Selecione a instituição a qual o usuário faz parte">
+            <select id="instituicao-usuario" formControlName="instituicao"
+                    materialize="material_select" [materializeSelectOptions]="instituicoes">
+              <option value="" disabled selected>Selecione a Instituicao do Usuário</option>
+              <option *ngFor="let instituicao of instituicoes "
+                      [disabled]="auth.jwtPayload.id_instituicao !='PREVTRANS_ADMINISTRACAO'" [ngValue]="instituicao">{{instituicao.razaoSocial}}
+              </option>
+            </select>
+            <label for="instituicao-usuario" class="black-text text-darken-4">Instituição do usuário</label>
+          </app-input-container>
         </div>
       </div>
       <div class="row">
@@ -51,7 +64,7 @@
             <select id="permissoes-usuarios" multiple formControlName="usuarioPermissoes"
                     materialize="material_select" [materializeSelectOptions]="permissoes">
               <option value="" disabled selected>Selecione as Permissões do Usuário</option>
-              <option *ngFor="let permissao of permissoes " [ngValue]="permissao">{{permissao.descricao}}</option>
+              <option *ngFor="let permissao of permissoes " [ngValue]="permissao" [disabled]="auth.jwtPayload.id_instituicao !='PREVTRANS_ADMINISTRACAO' && (permissao.permissao=='ROLE_CADASTRAR_INSTITUICAO' ||permissao.permissao =='ROLE_ALTERAR_INSTITUICAO')">{{permissao.descricao}}</option>
             </select>
             <label for="permissoes-usuarios" class="black-text text-darken-4">Permissões de Usuários</label>
           </app-input-container>
@@ -60,7 +73,7 @@
           <div class="switch">
             <label class="black-text">
               INATIVO
-              <input   id="ativo" formControlName="ativo" type="checkbox">
+              <input id="ativo" formControlName="ativo" type="checkbox">
               <span class="lever"></span>
               ATIVO
             </label>
@@ -70,7 +83,8 @@
       <div class="row">
       </div>
       <div class="row">
-        <button (click)="cancelar()" class="amber accent-4 right  waves-yellow btn"><i class="material-icons left">clear</i>Cancelar
+        <button (click)="cancelar()" class="amber accent-4 right  waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
         </button>
         <button (click)="salvar(usuarioForm.value)" [disabled]="!usuarioForm.valid"
                 class="amber accent-4 right  waves-yellow btn" style="margin-right: 10px; "><i

@@ -62,8 +62,7 @@ export class PerfilUsuarioComponent implements OnInit {
       return undefined;
     }
     if (senha.value !== verificaSenha.value) {
-      return {senhaNotMatch: true}
-    }
+      return {senhaNotMatch: true}}
     return undefined;
   }
 
@@ -81,13 +80,16 @@ export class PerfilUsuarioComponent implements OnInit {
       .subscribe(user => {
         this.perfilUsuarioForm.patchValue(user);
         this.inicializaMaterialize();
-        this.router.navigate(['admin']);
-        this.confirmacao('Dados do Usuário Alterados com sucesso!!');
+        this.router.navigate(['admin']).then(
+          () => this.confirmacao('Dados do Usuário Alterados com sucesso!!')
+      );
       });
   }
 
   cancelar() {
-    this.router.navigate(['admin']);
+    this.router.navigate(['admin']).then(
+      () =>  this.confirmacao('Operação Cancelada !!')
+  );
   }
 
   alterarSenha() {
@@ -112,7 +114,7 @@ export class PerfilUsuarioComponent implements OnInit {
       Materialize.updateTextFields();
     });
   }
-  confirmacao(msg: string){
+  confirmacao(msg: string) {
     this.toastyService.success({
       title: 'Confirmação',
       msg: msg,

@@ -9,6 +9,7 @@ import {PrevtransAdminHerrorHandler} from '../../prevtrans-admin/prevtrans-admin
 import {AuthHttp} from 'angular2-jwt';
 import {ErrorHandlerService} from '../error-handler.service';
 import {UsuarioPermissao} from '../models/UsuarioPermissao.model';
+import {Instituicao} from '../models/instituicao.model';
 
 @Injectable()
 export class UsuarioService {
@@ -21,8 +22,21 @@ export class UsuarioService {
       .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 
-  usuarios(): Observable<Usuario[]> {
-    return this.http.get(`${PREVTRANS_API}/usuarios`)
+  instituicaoUsuario(id: string): Observable<Instituicao> {
+    return this.http.get(`${PREVTRANS_API}/usuarios/instituicoes/${id}`)
+      .map(response => response.json()).catch(error => {
+        this.hand.handle(error);
+        return Observable.of<Usuario>();
+      });
+  }
+
+  usuariosPorInstituicao(id: string, busca?: string ): Observable<Usuario[]> {
+    return this.http.get(`${PREVTRANS_API}/usuarios/instituicoes/${id}`,{params: {busca}})
+      .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
+  }
+
+  usuarios(busca?: string): Observable<Usuario[]> {
+    return this.http.get(`${PREVTRANS_API}/usuarios`, {params: {busca}})
       .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 
@@ -79,7 +93,7 @@ export class UsuarioService {
 
   deleteUsuario(id: string): Observable<String> {
     return this.http.delete(`${PREVTRANS_API}/usuarios/${id}`)
-      .map(response => response.text() ? response.json() : response );
+      .map(response => response.text() ? response.json() : response);
   }
 
 }

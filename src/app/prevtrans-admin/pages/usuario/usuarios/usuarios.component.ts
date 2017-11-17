@@ -1,10 +1,16 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {UsuarioService} from '../../../../shared/services';
 import {Usuario} from '../../../../shared/models/usuario.model';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MaterializeAction} from 'angular2-materialize';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
-import {ToastyService} from "ng2-toasty";
+import {ToastyService} from 'ng2-toasty';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/from';
+import {Observable} from 'rxjs/Observable';
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -18,6 +24,8 @@ export class UsuariosComponent implements OnInit {
   idUsuario: string;
   usuarios: Usuario[];
   senhaForm: FormGroup;
+  buscaUsuarioForm: FormGroup;
+  buscaControl: FormControl;
   alteraSenhaAction = new EventEmitter<string | MaterializeAction>();
   removerUsuarioAction = new EventEmitter<MaterializeAction>();
 
@@ -28,6 +36,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buscaUsuarios();
     this.validaForm();
     this.carregarUsuarios();
     this.inicializaMaterialize();
@@ -52,12 +61,63 @@ export class UsuariosComponent implements OnInit {
     return undefined;
   }
 
+  buscaUsuarios() {
+    if (this.auth.jwtPayload.id_instituicao === 'PREVTRANS_ADMINISTRACAO') {
+      this.buscaControl = this.formBuilder.control('');
+      this.buscaUsuarioForm = this.formBuilder.group(
+        {
+          buscaControl: this.buscaControl
+        }
+      );
+      this.buscaControl.valueChanges.debounceTime(500)
+        .distinctUntilChanged()
+        .switchMap(busca => this.usuarioService.usuarios(busca)
+        )
+        .catch(erro => Observable.from([]))
+        .subscribe(usuarios => {
+          if (usuarios) {
+            this.usuarios = usuarios;
+          } else {
+            this.toastyService.info('Usuário não encontrado');
+          }
+        });
+    } else {
+      this.buscaControl = this.formBuilder.control('');
+      this.buscaUsuarioForm = this.formBuilder.group(
+        {
+          buscaControl: this.buscaControl
+        }
+      );
+      this.buscaControl.valueChanges.debounceTime(500)
+        .distinctUntilChanged()
+        .switchMap(busca => this.usuarioService.usuariosPorInstituicao(this.auth.jwtPayload.id_instituicao, busca)
+        )
+        .catch(erro => Observable.from([]))
+        .subscribe(usuarios => {
+          if (usuarios) {
+            this.usuarios = usuarios;
+          } else {
+            this.toastyService.info('Usuário não encontrado');
+          }
+        });
+    }
+  }
+
   carregarUsuarios() {
-    this.usuarioService.usuarios().subscribe(
-      usuarios => {
-        this.usuarios = usuarios;
-      }
-    );
+    if (this.auth.jwtPayload.id_instituicao == 'PREVTRANS_ADMINISTRACAO') {
+      this.usuarioService.usuarios().subscribe(
+        usuarios => {
+          this.usuarios = usuarios;
+        }
+      );
+    } else {
+      this.usuarioService.usuariosPorInstituicao(this.auth.jwtPayload.id_instituicao)
+        .subscribe(
+          usuarios => {
+            this.usuarios = usuarios;
+          }
+        );
+    }
   }
 
   setAtivo(usuario: Usuario) {

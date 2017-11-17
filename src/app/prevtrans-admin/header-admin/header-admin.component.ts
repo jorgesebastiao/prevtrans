@@ -4,8 +4,9 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../shared/seguranca/auth.service';
 import {LogoutService} from '../../shared/seguranca/logout.service';
 import {ErrorHandlerService} from 'app/shared';
+import {ToastyService} from 'ng2-toasty';
 
-declare var jQuery: any;
+declare const jQuery: any;
 
 @Component({
   selector: 'app-header-admin',
@@ -16,7 +17,8 @@ declare var jQuery: any;
 export class HeaderAdminComponent implements OnInit {
 
   constructor(public auth: AuthService, private logoutService: LogoutService,
-              private errorHandler: ErrorHandlerService, private router: Router) {
+              private errorHandler: ErrorHandlerService, private router: Router,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -41,7 +43,9 @@ export class HeaderAdminComponent implements OnInit {
   logout() {
     this.logoutService.logout()
       .then(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']).then(
+          () => this.toastyService.success('Sessão Finalizada')
+        );
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

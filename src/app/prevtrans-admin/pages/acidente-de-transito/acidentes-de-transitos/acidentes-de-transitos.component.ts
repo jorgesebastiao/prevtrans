@@ -10,6 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/from';
 import {Observable} from 'rxjs/Observable';
+import {ToastyService} from 'ng2-toasty';
 
 
 @Component({
@@ -26,7 +27,9 @@ export class AcidentesDeTransitosComponent implements OnInit {
   modalActions = new EventEmitter<MaterializeAction>();
   acidentesTransitos: AcidenteTransito[];
 
-  constructor(public auth: AuthService, private formBuilder: FormBuilder, private acidenteTransitoService: AcidenteTransitoService) {
+  constructor(public auth: AuthService, private formBuilder: FormBuilder,
+              private acidenteTransitoService: AcidenteTransitoService,
+              private toastyService: ToastyService) {
   }
 
   ngOnInit() {
@@ -38,10 +41,14 @@ export class AcidentesDeTransitosComponent implements OnInit {
     );
     this.buscaControl.valueChanges.debounceTime(500)
       .distinctUntilChanged()
-      .switchMap(busca => this.acidenteTransitoService.acidentesTransito())
+      .switchMap(busca => this.acidenteTransitoService.acidentesTransito(busca))
       .catch(erro => Observable.from([]))
       .subscribe(acidentesTransitos => {
-        this.acidentesTransitos = acidentesTransitos;
+        if(acidentesTransitos) {
+          this.acidentesTransitos = acidentesTransitos;
+        }else{
+          this.toastyService.info('Acidente de Trânsito não encontrado');
+        }
       });
     this.carregaAcidenteTransito();
   }
@@ -68,10 +75,19 @@ export class AcidentesDeTransitosComponent implements OnInit {
   }
 
   carregaAcidenteTransito() {
-    this.acidenteTransitoService.acidentesTransito().subscribe(
-      acidentesTransitos => {
-        this.acidentesTransitos = acidentesTransitos;
-      }
-    );
+    if(this.auth.jwtPayload.id_instituicao === 'PREVTRANS_ADMINISTRACAO') {
+      this.acidenteTransitoService.acidentesTransito().subscribe(
+        acidentesTransitos => {
+          this.acidentesTransitos = acidentesTransitos;
+        }
+      );
+    }else{
+      this.acidenteTransitoService.acidentesTransitoPorInstituicao(this.auth.jwtPayload.id_instituica)
+        .subscribe(
+          acidentesTransitos => {
+            this.acidentesTransitos = acidentesTransitos;
+          }
+        );
+    }
   }
 }

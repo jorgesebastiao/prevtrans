@@ -19,11 +19,6 @@ export class AcidenteTransitoService {
   constructor(private authHttp: AuthHttp, private http: Http, private  auth: AuthService, private hand: ErrorHandlerService) {
   }
 
-  acidentesTransito(): Observable<AcidenteTransito[]> {
-    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito`)
-      .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
-  }
-
   getAcidenteTransito(id: string): Observable<AcidenteTransito> {
     return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
       .map(response => response.json()).catch(error => {
@@ -45,9 +40,19 @@ export class AcidenteTransitoService {
       });
   }
 
+  acidentesTransito(busca?: string): Observable<AcidenteTransito[]> {
+    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito`, {params: {busca}})
+      .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
+  }
+
+  acidentesTransitoPorInstituicao(id: string, busca?: string): Observable<AcidenteTransito[]> {
+    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito/instituicoes/${id}`, {params: {busca}})
+      .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
+  }
+/*
   uploadImagem(formdata: any): Promise<void> {
     const headers = new Headers();
-    /** No need to include Content-Type in Angular 4 */
+    /** No need to include Content-Type in Angular 4
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
     console.log(formdata);
@@ -68,7 +73,7 @@ export class AcidenteTransitoService {
 
   upload(formdata: any): Observable<UrlFotos> {
     const headers = new Headers();
-    this.auth.obterNovoAccessToken();
+    this.auth.obterNovoAccessToken().then(()=>{
     const token = localStorage.getItem('tokenPrevtrans');
     headers.append('Authorization', 'bearer ' + token);
     return this.http.post(`${PREVTRANS_API}/acidentes-de-transito/imagens`,
@@ -78,7 +83,9 @@ export class AcidenteTransitoService {
         console.log('falha' + error);
         return Observable.of<String>();
       });
+    });
   }
+*/
 
   postAcidenteDeTransito(acidenteTransito: AcidenteTransito): Observable<String> {
     const headers = new Headers();

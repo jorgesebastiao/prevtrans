@@ -9,6 +9,9 @@ import {DataGraficos} from '../../shared/models/dataGraficos.model';
 })
 export class GraficosComponent implements OnInit {
 
+  diaDados: DataGraficos[];
+  semanaDados: DataGraficos[];
+  mesDados: DataGraficos[];
   climaDados: DataGraficos[];
   condicaoDaViaDados: DataGraficos[];
   periodoDiaDados: DataGraficos[];
@@ -17,14 +20,23 @@ export class GraficosComponent implements OnInit {
   tipoViaDados: DataGraficos[];
   tipoAcidenteTransitoDados: DataGraficos[];
   visibilidadeDados: DataGraficos[];
+  // configuração gráfico de barras
+  colorSchemeBarra = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
   colorScheme = {
     domain: ['#2980b9', '#f1c40f', '#34495e', '#d35400']
   };
 
 
-  constructor(private analisaAcidenteTransitoService: AnalisaAcidenteTransitoService) {}
+  constructor(private analisaAcidenteTransitoService: AnalisaAcidenteTransitoService) {
+  }
 
   ngOnInit() {
+    this.diaDados = [];
+    this.semanaDados = [];
+    this.mesDados = [];
     this.climaDados = [];
     this.condicaoDaViaDados = [];
     this.periodoDiaDados = [];
@@ -33,6 +45,9 @@ export class GraficosComponent implements OnInit {
     this.tipoAcidenteTransitoDados = [];
     this.tipoViaDados = [];
     this.visibilidadeDados = [];
+    this.listaDadosDia();
+    this.listaDadosSemana();
+    this.listaDadosMes();
     this.listaDadosClima();
     this.listaDadosCondicaoDaVia();
     this.listaDadosPeriodoDia();
@@ -42,40 +57,63 @@ export class GraficosComponent implements OnInit {
     this.listaDadosTipoVia();
     this.listaDadosVisibilidade();
   }
+
   onSelect(event) {
     console.log(event);
   }
 
-  listaDadosClima(){
+  listaDadosDia() {
+    this.analisaAcidenteTransitoService.dadosDias()
+      .subscribe(diaDados => this.diaDados = diaDados);
+  }
+
+  listaDadosSemana() {
+    this.analisaAcidenteTransitoService.dadosSemanas()
+      .subscribe(semanaDados => this.semanaDados = semanaDados);
+  }
+
+  listaDadosMes() {
+    this.analisaAcidenteTransitoService.dadosMeses()
+      .subscribe(mesDados => this.mesDados = mesDados);
+  }
+
+  listaDadosClima() {
     this.analisaAcidenteTransitoService.dadosClima()
       .subscribe(climaDados => this.climaDados = climaDados);
   }
-  listaDadosCondicaoDaVia(){
+
+  listaDadosCondicaoDaVia() {
     this.analisaAcidenteTransitoService.dadosCondicaoDaVia()
       .subscribe(condicaoDaViaDados => this.condicaoDaViaDados = condicaoDaViaDados);
   }
-  listaDadosPeriodoDia(){
-    this.analisaAcidenteTransitoService.dadosCondicaoDaVia()
+
+  listaDadosPeriodoDia() {
+    this.analisaAcidenteTransitoService.dadosPeriodoDia()
       .subscribe(periodoDiaDados => this.periodoDiaDados = periodoDiaDados);
   }
-  listaDadosPista(){
+
+  listaDadosPista() {
     this.analisaAcidenteTransitoService.dadosPista()
       .subscribe(pistaDados => this.pistaDados = pistaDados);
   }
-  listaDadosSinalizacao(){
+
+  listaDadosSinalizacao() {
     this.analisaAcidenteTransitoService.dadosSinalizacao()
       .subscribe(sinalizacaoDados => this.sinalizacaoDados = sinalizacaoDados);
   }
-  listaDadosTipoAcidenteTransito(){
+
+  listaDadosTipoAcidenteTransito() {
     this.analisaAcidenteTransitoService.dadosTipoAcidenteTransito()
       .subscribe(tipoAcidenteTransitoDados => this.tipoAcidenteTransitoDados = tipoAcidenteTransitoDados);
   }
-  listaDadosTipoVia(){
+
+  listaDadosTipoVia() {
     this.analisaAcidenteTransitoService.dadosTipoVia()
       .subscribe(tipoViaDados => this.tipoViaDados = tipoViaDados);
   }
-  listaDadosVisibilidade(){
+
+  listaDadosVisibilidade() {
     this.analisaAcidenteTransitoService.dadosVisibilidade()
-      .subscribe( visibilidadeDados => this.visibilidadeDados = visibilidadeDados);
+      .subscribe(visibilidadeDados => this.visibilidadeDados = visibilidadeDados);
   }
 }

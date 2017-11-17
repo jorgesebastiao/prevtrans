@@ -28,7 +28,9 @@ export class LoginComponent implements OnInit {
         this.loginForm.patchValue({
           senha: ''
         });
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin']).then(
+          () => {}
+        );
       }
     ).catch(erro => {
         this.loginForm.patchValue({

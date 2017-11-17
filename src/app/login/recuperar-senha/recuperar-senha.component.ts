@@ -25,7 +25,7 @@ export class RecuperarSenhaComponent implements OnInit {
     });
   }
 
-  recuperarSenha(){
+  recuperarSenha() {
     this.status = true;
     this.recuperaSenhaService.recuperarSenha(this.recuperaForm.get('email').value).then(
       () => {
@@ -40,7 +40,7 @@ export class RecuperarSenhaComponent implements OnInit {
         this.erro = erro;
     });
   }
-  valida(){
+  valida() {
     return !!this.erro;
   }
 }

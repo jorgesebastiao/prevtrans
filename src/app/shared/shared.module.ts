@@ -5,7 +5,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {JwtHelper} from 'angular2-jwt';
 import {CepPipe, CpnjPipe, CpfPipe, TelefonePipe} from './pipes';
 import {PrevtransMaskDirective} from './directives/prevtrans-mask.directive';
-import 'materialize-css';
 import {MaterializeModule} from 'angular2-materialize';
 import {AgmCoreModule} from '@agm/core';
 import {AgmJsMarkerClustererModule, ClusterManager} from '@agm/js-marker-clusterer';
@@ -28,6 +27,7 @@ import {
 } from './services';
 import {AuthService, RecuperarSenhaService} from './seguranca';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {DateTimePickerModule} from 'ng-pick-datetime';
 
 @NgModule({
   imports: [
@@ -37,6 +37,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
     AgmCoreModule,
     AgmJsMarkerClustererModule,
     ReactiveFormsModule,
+    DateTimePickerModule,
     NgxChartsModule
   ],
   declarations: [InputComponent, CepPipe,
@@ -45,7 +46,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
     CepPipe, CpnjPipe, CpfPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
     AgmCoreModule, AgmJsMarkerClustererModule,
-    ReactiveFormsModule, NgxChartsModule]
+    ReactiveFormsModule, DateTimePickerModule, NgxChartsModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

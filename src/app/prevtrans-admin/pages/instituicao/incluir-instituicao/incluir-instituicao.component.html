@@ -3,7 +3,7 @@
     <form materialize [formGroup]="instituicaoForm" novalidate>
       <div class="row">
         <div class="col s12">
-          <h1 class="divisor" >
+          <h1 class="divisor">
             <label class="black-text fom">{{titulo}}</label>
           </h1>
         </div>
@@ -11,137 +11,116 @@
       <div class="row">
         <div class="input-field col s12 m6 l6">
           <app-input-container errorMessage="Campo Obrigatório">
-            <input id="razao-social"  type="text" formControlName="razaoSocial" autocomplete="off">
-            <label class="black-text text-darken-4"  for="razao-social">Razão Social</label>
+            <input id="razao-social" type="text" formControlName="razaoSocial" autocomplete="off">
+            <label class="black-text text-darken-4" for="razao-social">Razão Social</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m6 l6">
           <app-input-container errorMessage="Campo Obrigatório">
-            <input id="nome-fantasia"  type="text" formControlName="nomeFantasia" autocomplete="off">
-            <label class="black-text text-darken-4"  for="nome-fantasia">Nome Fantasia</label>
+            <input id="nome-fantasia" type="text" formControlName="nomeFantasia" autocomplete="off">
+            <label class="black-text text-darken-4" for="nome-fantasia">Nome Fantasia</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l4">
           <app-input-container errorMessage="Cnpj Inválido">
-            <input id="cnpj"  type="text" name="cnpj" prevtransMask="99.999.999/9999-99" formControlName="cnpj" autocomplete="off">
-            <label class="black-text text-darken-4"  for="cnpj">Cnpj</label>
+            <input id="cnpj" type="text" name="cnpj" prevtransMask="99.999.999/9999-99" formControlName="cnpj"
+                   autocomplete="off">
+            <label class="black-text text-darken-4" for="cnpj">Cnpj</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l4">
           <app-input-container errorMessage="Campo Obrigatório">
-            <input id="inscricao-municipal"  type="text" formControlName="inscricaoMunicipal" autocomplete="off">
-            <label class="black-text text-darken-4"  for="inscricao-municipal">Inscrição Municipal</label>
+            <input id="inscricao-municipal" type="text" formControlName="inscricaoMunicipal" autocomplete="off">
+            <label class="black-text text-darken-4" for="inscricao-municipal">Inscrição Municipal</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l4">
-          <app-input-container errorMessage="Campo Obrigatório" >
-            <input id="inscricao-estadual"  type="text" formControlName="inscricaoEstadual" autocomplete="off">
-            <label class="black-text text-darken-4"  for="inscricao-estadual">Inscrição Estadual</label>
+          <app-input-container errorMessage="Campo Obrigatório">
+            <input id="inscricao-estadual" type="text" formControlName="inscricaoEstadual" autocomplete="off">
+            <label class="black-text text-darken-4" for="inscricao-estadual">Inscrição Estadual</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l6">
           <app-input-container errorMessage="E-mail inválido">
-            <input id="email"  type="text" formControlName="email" autocomplete="off">
-            <label class="black-text text-darken-4"  for="email">E-mail</label>
+            <input id="email" type="text" formControlName="email" autocomplete="off">
+            <label class="black-text text-darken-4" for="email">E-mail</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l3">
           <app-input-container errorMessage="Campo Obrigatório">
-            <input id="telefone"  type="text" formControlName="telefone" prevtransMask="(99)9999-9999" autocomplete="off">
-            <label class="black-text"  for="telefone">Telefone Fixo</label>
+            <input id="telefone" type="text" formControlName="telefone" prevtransMask="(99)9999-9999"
+                   autocomplete="off">
+            <label class="black-text" for="telefone">Telefone Fixo</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l3">
-          <app-input-container >
-            <input id="celular"  type="text" formControlName="celular" prevtransMask="(99)99999-9999" autocomplete="off">
-            <label class="grey-text text-darken-4"  for="celular">Celular</label>
+          <app-input-container>
+            <input id="celular" type="text" formControlName="celular" prevtransMask="(99)99999-9999" autocomplete="off">
+            <label class="grey-text text-darken-4" for="celular">Celular</label>
           </app-input-container>
         </div>
       </div>
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
-            <label class="black-text fom" >Endereço</label>
+            <label class="black-text fom">Endereço</label>
           </h1>
         </div>
       </div>
       <div class="row">
-      <div class="input-field col s12 m4 l3">
-        <app-input-container errorMessage="Cep inválido">
-          <input id="cep" (blur)="consultaCep()" prevtransMask="99999-999" type="text" formControlName="cep" autocomplete="off">
-          <label class="black-text text-darken-4"  for="cep">Cep</label>
-        </app-input-container>
-      </div>
+        <div class="input-field col s12 m4 l3">
+          <app-input-container errorMessage="Cep inválido">
+            <input id="cep" (blur)="consultaCep()" prevtransMask="99999-999" type="text" formControlName="cep"
+                   autocomplete="off">
+            <label class="black-text text-darken-4" for="cep">Cep</label>
+          </app-input-container>
+        </div>
         <div class="input-field col s12 m4 l8">
           <app-input-container errorMessage="Campo Obrigatorio">
-            <input id="endereco"  type="text" formControlName="endereco" autocomplete="off">
-            <label class="black-text text-darken-4"  for="endereco">Endereço</label>
+            <input id="endereco" type="text" formControlName="endereco" autocomplete="off">
+            <label class="black-text text-darken-4" for="endereco">Endereço</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l1">
           <app-input-container errorMessage="Número Inválido">
-            <input id="numero"  type="text" formControlName="numero" autocomplete="off">
-            <label class="black-text text-darken-4"  for="numero">Numero</label>
+            <input id="numero" type="text" formControlName="numero" autocomplete="off">
+            <label class="black-text text-darken-4" for="numero">Numero</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l4">
-          <app-input-container >
-            <input id="complemento"  type="text" formControlName="complemento" autocomplete="off">
-            <label class="black-text text-darken-4"  for="complemento">Complemento</label>
+          <app-input-container>
+            <input id="complemento" type="text" formControlName="complemento" autocomplete="off">
+            <label class="black-text text-darken-4" for="complemento">Complemento</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l4">
           <app-input-container errorMessage="Campo Obrigatório">
             <input id="bairro" formControlName="bairro" type="text" autocomplete="off">
-            <label  class="black-text text-darken-4" for="bairro">Bairro</label>
+            <label class="black-text text-darken-4" for="bairro">Bairro</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l1">
           <app-input-container>
             <input id="estado" formControlName="estado" type="text" autocomplete="off">
-            <label  class="black-text text-darken-4" for="estado">Estado</label>
+            <label class="black-text text-darken-4" for="estado">Estado</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l3">
           <app-input-container errorMessage="Campo Obrigatorio">
             <input id="cidade" formControlName="cidade" type="text" autocomplete="off">
-            <label class="black-text text-darken-4" for="cidade" >Cidade</label>
+            <label class="black-text text-darken-4" for="cidade">Cidade</label>
           </app-input-container>
         </div>
       </div>
+
       <div class="row">
-        <a (click)="adicionarUsuario()" class="col s12 m3 l3 amber accent-4 waves-light btn-large"><i
-          class="material-icons left">add</i>Adicionar Usuário</a>
-        <div class="col s12">
-          <table class="striped responsive-table">
-            <thead>
-            <tr>
-              <th>NOME</th>
-              <th>CPF</th>
-              <th>USUARIO</th>
-              <th>ALTERAR</th>
-              <th>EXCLUIR</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let usuarioT of usuarios">
-              <td>{{usuarioT.nome}}</td>
-              <td>{{usuarioT.usuario}}</td>
-              <td>{{usuarioT.ativo}}</td>
-              <td style="text-align: center">
-                <a class="waves-yellow btn-flat center"> <i class="material-icons">mode_edit</i></a>
-              </td>
-              <td >
-                <a class="waves-yellow btn-flat center"> <i class="material-icons">delete</i></a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-        <div class="row">
-        <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i class="material-icons left">clear</i>Cancelar</button>
-        <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid" class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i class="material-icons left">done</i>Salvar </button>
+        <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i
+          class="material-icons left">clear</i>Cancelar
+        </button>
+        <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid"
+                class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
+          class="material-icons left">done</i>Salvar
+        </button>
       </div>
     </form>
   </div>
@@ -153,7 +132,7 @@
     <p>A bunch of text</p>
   </div>
   <div class="modal-footer ">
-    <a  class="modal-action modal-close waves-effect waves-green btn-flat">Confirma</a>
+    <a class="modal-action modal-close waves-effect waves-green btn-flat">Confirma</a>
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
   </div>
 </div>

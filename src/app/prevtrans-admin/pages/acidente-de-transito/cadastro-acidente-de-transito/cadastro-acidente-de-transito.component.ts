@@ -31,11 +31,10 @@ import {
   TipoAcidenteTransito
 } from '../../../../shared/models';
 import {ToastyService} from 'ng2-toasty';
-import {forEach} from "@angular/router/src/utils/collection";
 
 declare const jQuery: any;
 declare const Materialize: any;
-var pgwSlideshow;
+declare const System: any;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -68,6 +67,10 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   tiposVeiculos: TipoVeiculo[];
   modalVeiculoActions = new EventEmitter<string | MaterializeAction>();
 
+
+  pt: any;
+  ptLocale: any;
+
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private activeRoute: ActivatedRoute,
@@ -99,8 +102,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.acidenteTransito = new AcidenteTransito();
     this.acidenteTransito.urlFotos = [];
     this.localizacao = new Localizacao();
+    this.inicializaCalendario();
     this.validaForm();
-    this.inicializaToolTipe();
     this.inicializaMaterialize();
     this.listaTiposVeiculos();
     this.listaCondicoesDasVias();
@@ -111,7 +114,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.listaPeriodosDias();
     this.listaSinalizacoes();
     this.listaTiposAcidentesTransito();
-    this.inicializaPsw();
     const id = this.activeRoute.snapshot.params['id'];
     if (id) {
       this.titulo = 'Alterar Acidente de Trânsito';
@@ -119,16 +121,28 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     }
   }
 
+  inicializaCalendario() {
+    this.ptLocale = System.import('date-fns/locale/pt');
+    this.pt = {
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
+      dayNamesShort: ['Dom', 'Seg', 'Terç', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
+        'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      dateFns: this.ptLocale
+    };
+  }
+
   validaForm() {
     this.acidenteTransitoForm = this.formBuilder.group(
       {
         tituloPublicacao: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        data: this.formBuilder.control(''),
-        hora: this.formBuilder.control(''),
+        dataAcidenteTransito: this.formBuilder.control(''),
         descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(250)]),
-        numeroDeVitimas: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeMortos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeFeridos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
+        numeroDeVitimas: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         condicaoDaVia: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
         tipoVia: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
         visibilidade: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
@@ -258,11 +272,30 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
           this.lng = acidenteTransito.longitude;
           this.localizacao.latitude = acidenteTransito.latitude;
           this.localizacao.longitude = acidenteTransito.longitude;
+          this.somaVitimas;
           this.inicializaMaterialize();
         } else {
-          this.router.navigate(['/admin/acidentes-de-transitos']);
+          this.router.navigate(['/admin/acidentes-de-transitos']).then(
+            () => this.toastyService.error('Acidente de Trânsito não encontrado!!')
+          );
         }
       });
+  }
+
+  get somaVitimas() {
+    let soma = function (valor1: number, valor2: number) {
+      return valor1 + valor2;
+    }
+    const numeroFeridos: number = parseInt(this.acidenteTransitoForm.controls['numeroDeFeridos'].value, 10);
+    const numeroMortos: number = parseInt(this.acidenteTransitoForm.controls['numeroDeMortos'].value, 10);
+    if (numeroFeridos && numeroMortos) {
+      const numeroDeVitimas = soma(numeroFeridos, numeroMortos);
+      this.acidenteTransitoForm.controls['numeroDeVitimas'].patchValue(numeroDeVitimas);
+      this.acidenteTransitoForm.controls['numeroDeVitimas'].disable({onlySelf: true});
+      this.inicializaMaterialize();
+      return true;
+    }
+    return false;
   }
 
   salvar(acidenteTransito: AcidenteTransito) {
@@ -277,8 +310,9 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   cadastrarAcidenteTransito(acidenteTransito: AcidenteTransito) {
     this.acidenteTransitoService.postAcidenteDeTransito(acidenteTransito)
       .subscribe(() => {
-        this.router.navigate(['/admin/acidentes-de-transitos']);
-        this.confirmacao('Cadastro Realizado com Sucesso!!');
+        this.router.navigate(['/admin/acidentes-de-transitos']).then(
+          () => this.confirmacao('Cadastro Realizado com Sucesso!!')
+        );
       });
   }
 
@@ -286,40 +320,21 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     acidenteTransito.idAcidenteTransito = this.acidenteTransito.idAcidenteTransito;
     this.acidenteTransitoService.putAcidenteDeTransito(this.acidenteTransito.idAcidenteTransito, acidenteTransito)
       .subscribe(() => {
-        this.router.navigate(['/admin/acidentes-de-transitos']);
-        this.confirmacao('Cadastro Alterado com Sucesso!!');
+        this.router.navigate(['/admin/acidentes-de-transitos']).then(
+          () => this.confirmacao('Cadastro Alterado com Sucesso!!')
+        );
       });
   }
 
   cancelar() {
-    this.router.navigate(['admin/acidentes-de-transitos']);
-    this.confirmacao('Cadastro do acidente de trânsito cancelado!!');
+    this.router.navigate(['admin/acidentes-de-transitos']).then(
+      () => this.confirmacao('Operação Cancelada!!')
+    );
   }
 
   inicializaMaterialize() {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
-    });
-  }
-
-  inilializaTime() {
-    jQuery('.timepicker').pickatime({
-      default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-      fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-      twelvehour: false, // Use AM/PM or 24-hour format
-      donetext: 'OK', // text for done-button
-      cleartext: 'Limpar', // text for clear-button
-      canceltext: 'Cancelar', // Text for cancel-button
-      autoclose: false, // automatic close timepicker
-      ampmclickable: false, // make AM PM clickable
-      aftershow: function () {
-      } // Function for after opening timepicker
-    });
-  }
-
-  inicializaMaterialBox() {
-    jQuery(document).ready(function () {
-      jQuery('.materialboxed').materialbox();
     });
   }
 
@@ -392,28 +407,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.fechaModalVeiculo();
   }
 
-  imageUploaded(event) {
-    /*
-        const formData: FormData = new FormData();
-        formData.append('file', event.file);
-        this.acidenteTransitoService.upload(formData).subscribe(url => {
-          this.urlFotos.push(url);
-          console.log('url imagem'+ url);
-          console.log(url);
-          this.reloadPsw();
-        });*/
-    //  this.reloadPsw();
-    console.log(this.urlFotos);
-  }
-
-  imageRemoved(event) {
-    console.log(event);
-  }
-
-  disableSendButton(event) {
-
-  }
-
   confirmacao(msg: string) {
     this.toastyService.success({
       title: 'Confirmação!',
@@ -421,25 +414,6 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
       showClose: true,
       timeout: 10000,
       theme: 'default'
-    });
-  }
-
-  inicializaToolTipe() {
-    jQuery(document).ready(function () {
-      jQuery('.tooltipped').tooltip({delay: 50});
-    });
-  }
-
-  inicializaPsw() {
-    jQuery(document).ready(function () {
-      pgwSlideshow = jQuery('.pgwSlideshow').pgwSlideshow();
-    });
-  }
-
-  reloadPsw() {
-    console.log('iniciando carregamento');
-    jQuery(document).ready(function () {
-      pgwSlideshow.reload(true);
     });
   }
 }

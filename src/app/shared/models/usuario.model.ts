@@ -1,4 +1,5 @@
 import {UsuarioPermissao} from './UsuarioPermissao.model';
+import {Instituicao} from './instituicao.model';
 
 export class Usuario {
 
@@ -8,6 +9,7 @@ export class Usuario {
               public email?: string,
               public senha?: string,
               public ativo?: boolean,
+              public instituicao?: Instituicao,
               public usuarioPermissoes?: UsuarioPermissao[]) {
   }
 }

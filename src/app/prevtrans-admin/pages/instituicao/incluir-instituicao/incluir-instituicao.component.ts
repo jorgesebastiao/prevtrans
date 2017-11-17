@@ -5,7 +5,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Instituicao, Usuario} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
 import {PrevtransCnpjValidator} from '../../../../shared/validators/prevtrans-cnpj-validator';
-import {ToastyService} from "ng2-toasty";
+import {ToastyService} from 'ng2-toasty';
 
 declare const jQuery: any;
 declare const Materialize: any;
@@ -62,8 +62,9 @@ export class IncluirInstituicaoComponent implements OnInit {
   salvarInstituicao(instituicao: Instituicao) {
     this.instituicaoService.postInstituicao(instituicao)
       .subscribe( () => {
-          this.router.navigate(['admin/instituicoes']);
-          this.confirmacao('Instiuição cadastrada com sucesso!!');
+          this.router.navigate(['admin/instituicoes']).then(
+            () => this.confirmacao('Instiuição cadastrada com sucesso!!')
+          );
         }
       );
   }
@@ -72,14 +73,17 @@ export class IncluirInstituicaoComponent implements OnInit {
     instituicao.idInstituicao = this.instituicao.idInstituicao;
     this.instituicaoService.putInstituicao(this.instituicao.idInstituicao, instituicao)
       .subscribe(() => {
-          this.router.navigate(['admin/instituicoes']);
-          this.confirmacao('Instiuição alterada com sucesso!!');
+          this.router.navigate(['admin/instituicoes']).then(
+            () => this.confirmacao('Instiuição alterada com sucesso!!')
+        );
         }
       );
   }
 
   cancelar() {
-    this.router.navigate(['admin/instituicoes']);
+    this.router.navigate(['admin/instituicoes']).then(
+      () => this.confirmacao('Operação Cancelada!!')
+    );
   }
 
   carregarInstituicao(id: string) {
@@ -92,7 +96,7 @@ export class IncluirInstituicaoComponent implements OnInit {
   }
 
   consultaCep() {
-    let cepBusca = this.instituicaoForm.get('cep').value;
+    const cepBusca = this.instituicaoForm.get('cep').value;
     if (cepBusca && (cepBusca !== this.instituicao.cep)) {
       this.instituicao.cep = cepBusca;
       this.cepService.consultaCep(cepBusca)
@@ -149,7 +153,7 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   }
 
-  confirmacao(msg: string){
+  confirmacao(msg: string) {
     this.toastyService.success({
       title: 'Confirmação',
       msg: msg,

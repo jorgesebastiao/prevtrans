@@ -4,10 +4,10 @@
       <li *ngIf="auth.temPermissao('ROLE_CADASTRAR_INSTITUICAO')"><a [routerLink]="['novo']"><i class="material-icons left">add_box</i>Cadastrar Instituição</a>
       </li>
       <li>
-        <form>
+        <form materialize [formGroup]="buscaInstituicaoForm" >
           <div class="header-search-wrapper">
             <i class="material-icons" style="margin-right: 15px">search</i>
-            <input class="header-search-input " placeholder="Pesquisar Instituição">
+            <input formControlName="buscaControl" class="header-search-input " placeholder="Pesquisar Instituição">
           </div>
         </form>
       </li>
@@ -39,7 +39,7 @@
           <td>{{instituicao.inscricaoEstadual}}</td>
           <td>{{instituicao.telefone |telefone}}</td>
           <td>
-            <button *ngIf="auth.temPermissao('ROLE_ALTERAR_INSTITUICAO')" [routerLink]="[instituicao.idInstituicao]"
+            <button [disabled]="auth.jwtPayload.id_instituicao==instituicao.idInstituicao" *ngIf="auth.temPermissao('ROLE_ALTERAR_INSTITUICAO')" [routerLink]="[instituicao.idInstituicao]"
                class="amber waves-yellow btn-flat center"> <i class="material-icons white-text">mode_edit</i></button>
           </td>
         </tr>

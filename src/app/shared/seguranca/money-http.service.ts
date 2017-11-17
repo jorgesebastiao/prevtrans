@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestOptionsArgs, Response } from '@angular/http';
-import { AuthConfig, AuthHttp, JwtHelper } from 'angular2-jwt';
+import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './auth.service';
 

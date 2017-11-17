@@ -18,8 +18,8 @@ export class InstituicaoService {
   constructor(private http: AuthHttp, private hand: ErrorHandlerService) {
   }
 
-  instituicoes(): Observable<Instituicao[]> {
-    return this.http.get(`${PREVTRANS_API}/instituicoes`)
+  instituicoes(busca?: string): Observable<Instituicao[]> {
+    return this.http.get(`${PREVTRANS_API}/instituicoes`, {params: {busca}})
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);
         return Observable.of<Instituicao[]>([]);

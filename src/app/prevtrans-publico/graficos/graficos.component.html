@@ -1,5 +1,56 @@
 <div class="container">
   <div class="row">
+    <div class="barras col s12 l12">
+      Estatística de Acidentes de Acordo com o dia
+      <ngx-charts-bar-vertical
+        [scheme]="colorSchemeBarra"
+        [results]="diaDados"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="'Dias'"
+        [yAxisLabel]="'Quantidade de Acidentes'"
+        [legendTitle]="'Legenda'"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+    <div class="barras col s12 l12">
+      Estatística de Acidentes de Acordo com a Semana
+      <ngx-charts-bar-vertical
+        [scheme]="colorSchemeBarra"
+        [results]="semanaDados"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="'Dias da Semana'"
+        [yAxisLabel]="'Quantidade de Acidentes'"
+        [legendTitle]="'Legenda'"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+    <div class="barras col s12 l12">
+      Estatística de Acidentes de Acordo com o Mês
+      <ngx-charts-bar-vertical
+        [scheme]="colorSchemeBarra"
+        [results]="mesDados"
+        [gradient]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="'Meses'"
+        [yAxisLabel]="'Quantidade de Acidentes'"
+        [legendTitle]="'Legenda'"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
     <div class="col s12 l6">
       Estatística de Acidentes de Acordo com o Clima
       <ngx-charts-advanced-pie-chart
