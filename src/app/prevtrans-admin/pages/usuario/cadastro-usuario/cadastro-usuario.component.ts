@@ -1,8 +1,8 @@
 import {Component, forwardRef, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Usuario, UsuarioPermissao} from '../../../../shared/models';
-import { UsuarioService} from '../../../../shared/services';
+import {UsuarioService} from '../../../../shared/services';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
 import {ToastyService} from 'ng2-toasty';
 import {Instituicao} from '../../../../shared/models/instituicao.model';
@@ -23,8 +23,9 @@ export class CadastroUsuarioComponent implements OnInit {
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   usuarioForm: FormGroup;
   usuario: Usuario;
-  permissoes: UsuarioPermissao [];
+  permissoes: UsuarioPermissao[];
   instituicoes: Instituicao[];
+  confirma: boolean;
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
@@ -46,7 +47,7 @@ export class CadastroUsuarioComponent implements OnInit {
     const id = this.routes.snapshot.params['id'];
     if (id) {
       this.titulo = 'Alterar Usuário';
-      this.carregarUsuario(id);
+        this.carregarUsuario(id);
     } else {
       this.titulo = 'Cadastrar Usuário';
     }
@@ -87,12 +88,11 @@ export class CadastroUsuarioComponent implements OnInit {
   }
 
   validaForm() {
-    console.log('inicializa Form');
     this.usuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.emailPattern)])),
       usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
-      instituicao: this.formBuilder.control('' , [Validators.required, Validators.minLength(1)]),
+      instituicao: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       ativo: ['true']
     });
@@ -116,6 +116,8 @@ export class CadastroUsuarioComponent implements OnInit {
           }
         }
       }
+      console.log(this);
+      this.inicializaMaterialize();
       for (let i = 0; i < this.instituicoes.length; i++) {
         if (this.instituicoes[i].idInstituicao === usuario.instituicao.idInstituicao) {
           this.instituicoes[i] = usuario.instituicao;
@@ -127,6 +129,7 @@ export class CadastroUsuarioComponent implements OnInit {
   }
 
   salvar(usuario: Usuario) {
+    this.confirma = true;
     if (this.editando) {
       this.alterarUsuario(usuario);
     } else {
@@ -138,8 +141,8 @@ export class CadastroUsuarioComponent implements OnInit {
     usuario.idUsuario = this.usuario.idUsuario;
     this.usuarioService.putUsuario(this.usuario.idUsuario, usuario).subscribe(() => {
       this.router.navigate(['admin/usuarios']).then(
-        () =>  this.confirmacao('Usuário Alterado com Sucesso!!')
-    );
+        () => this.confirmacao('Usuário Alterado com Sucesso!!')
+      );
     });
   }
 
@@ -148,7 +151,7 @@ export class CadastroUsuarioComponent implements OnInit {
       () => {
         this.router.navigate(['admin/usuarios']).then(
           () => this.confirmacao('Usuário Cadastrado com Sucesso!!')
-      );
+        );
       }
     );
   }
@@ -156,8 +159,8 @@ export class CadastroUsuarioComponent implements OnInit {
   cancelar() {
     this.usuarioForm.reset();
     this.router.navigate(['admin/usuarios']).then(
-      () =>  this.confirmacao('Operação Cancelada!!')
-  );
+      () => this.confirmacao('Operação Cancelada!!')
+    );
   }
 
   inicializaMaterialize() {

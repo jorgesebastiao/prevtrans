@@ -19,10 +19,12 @@ export class IncluirInstituicaoComponent implements OnInit {
   titulo = 'Cadastrar Instituição';
   cepPattern = /^[0-9]{8}$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  confirma: boolean;
 
   instituicao = new Instituicao();
   instituicaoForm: FormGroup;
   usuarios: Usuario[];
+
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
@@ -34,7 +36,6 @@ export class IncluirInstituicaoComponent implements OnInit {
   ngOnInit() {
     this.usuarios = [];
     this.inicializaMaterialize();
-    this.inicializaModal();
     this.validaForm();
     const id = this.routes.snapshot.params['id'];
     if (id) {
@@ -47,11 +48,8 @@ export class IncluirInstituicaoComponent implements OnInit {
     return Boolean(this.instituicao.idInstituicao);
   }
 
-  confirma() {
-    jQuery('#modal-instituicao').modal('open');
-  }
-
   salvar(instituicao: Instituicao) {
+    this.confirma = true;
     if (this.editando) {
       this.alterarInstituicao(instituicao);
     } else {
@@ -61,7 +59,7 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   salvarInstituicao(instituicao: Instituicao) {
     this.instituicaoService.postInstituicao(instituicao)
-      .subscribe( () => {
+      .subscribe(() => {
           this.router.navigate(['admin/instituicoes']).then(
             () => this.confirmacao('Instiuição cadastrada com sucesso!!')
           );
@@ -75,7 +73,7 @@ export class IncluirInstituicaoComponent implements OnInit {
       .subscribe(() => {
           this.router.navigate(['admin/instituicoes']).then(
             () => this.confirmacao('Instiuição alterada com sucesso!!')
-        );
+          );
         }
       );
   }
@@ -142,15 +140,6 @@ export class IncluirInstituicaoComponent implements OnInit {
     jQuery(document).ready(function () {
       Materialize.updateTextFields();
     });
-  }
-
-  inicializaModal() {
-    jQuery(document).ready(function () {
-      jQuery('.modal').modal();
-    });
-  }
-  adicionarUsuario() {
-
   }
 
   confirmacao(msg: string) {

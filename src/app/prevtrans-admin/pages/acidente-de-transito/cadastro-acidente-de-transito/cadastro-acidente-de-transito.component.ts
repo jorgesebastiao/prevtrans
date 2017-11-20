@@ -5,36 +5,36 @@ import {AgmMap} from '@agm/core';
 import {MaterializeAction} from 'angular2-materialize';
 import {
   AcidenteTransitoService,
+  ClimaService,
   GoogleMapsService,
-  TipoVeiculoService,
-  ViaService,
-  TipoAcidenteTransitoService,
+  PeriodoDiaService,
   PistaService,
   SinalizacaoService,
-  VisibilidadeService,
-  PeriodoDiaService,
-  ClimaService
+  TipoAcidenteTransitoService,
+  TipoVeiculoService,
+  ViaService,
+  VisibilidadeService
 } from '../../../../shared/services';
 import {
   AcidenteTransito,
+  Clima,
   CondicaoDaVia,
   Localizacao,
-  TipoVeiculo,
-  UrlFotos,
-  TipoVia,
-  Veiculo,
-  Visibilidade,
-  Clima,
-  Pista,
   PeriodoDia,
+  Pista,
   Sinalizacao,
-  TipoAcidenteTransito
+  TipoAcidenteTransito,
+  TipoVeiculo,
+  TipoVia,
+  UrlFotos,
+  Veiculo,
+  Visibilidade
 } from '../../../../shared/models';
 import {ToastyService} from 'ng2-toasty';
+import {AuthService} from '../../../../shared/seguranca/auth.service';
 
 declare const jQuery: any;
 declare const Materialize: any;
-declare const System: any;
 
 @Component({
   selector: 'app-cadastro-acidente-de-transito',
@@ -66,10 +66,9 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   urlFotos: UrlFotos[];
   tiposVeiculos: TipoVeiculo[];
   modalVeiculoActions = new EventEmitter<string | MaterializeAction>();
-
-
-  pt: any;
-  ptLocale: any;
+  confirma: boolean;
+  data: any;
+  hora: any;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -84,7 +83,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
               private sinalizacaoService: SinalizacaoService,
               private visibilidadeService: VisibilidadeService,
               private periodoDiaService: PeriodoDiaService,
-              private climaService: ClimaService) {
+              private climaService: ClimaService,
+              private auth: AuthService) {
   }
 
   ngOnInit() {
@@ -122,15 +122,37 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   inicializaCalendario() {
-    this.ptLocale = System.import('date-fns/locale/pt');
-    this.pt = {
-      firstDayOfWeek: 0,
-      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
-      dayNamesShort: ['Dom', 'Seg', 'Terç', 'Qua', 'Qui', 'Sex', 'Sáb'],
-      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
+    this.data = {
+      format: 'dd/mm/yyyy',
+      selectYears: 3,
+      selectMonths: true,
+      monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
         'Novembro', 'Dezembro'],
-      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-      dateFns: this.ptLocale
+      monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
+      weekdaysShort: ['Dom', 'Seg', 'Terç', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      showMonthsShort: false,
+      showWeekdaysFull: false,
+      editable: false,
+      firstDay: 0,
+      max: true,
+      today: 'Hoje',
+      clear: 'limpar',
+      close: 'Ok',
+      closeOnSelect: false
+    };
+
+    this.hora = {
+      default: 'now',
+      fromnow: 0,
+      twelvehour: false,
+      donetext: 'OK',
+      cleartext: 'Limpar',
+      canceltext: 'Cancelar',
+      autoclose: false,
+      ampmclickable: false,
+      max: true,
+      interval: 0
     };
   }
 
@@ -138,7 +160,8 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.acidenteTransitoForm = this.formBuilder.group(
       {
         tituloPublicacao: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        dataAcidenteTransito: this.formBuilder.control(''),
+        data: this.formBuilder.control(''),
+        hora: this.formBuilder.control(''),
         descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(250)]),
         numeroDeMortos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeFeridos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
@@ -158,7 +181,9 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
         complemento: this.formBuilder.control(''),
         bairro: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
         estado: this.formBuilder.control('', [Validators.required, Validators.minLength(2)]),
-        cidade: this.formBuilder.control('', [Validators.required, Validators.minLength(3)])
+        cidade: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
+        numeroVeiculosEnvolvidos: this.formBuilder.control('', [Validators.required, Validators.minLength(3)])
+
       }
     );
     this.veiculoForm = this.formBuilder.group(
@@ -299,6 +324,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   salvar(acidenteTransito: AcidenteTransito) {
+    this.confirma = true;
     if (this.editando) {
       this.alterarAcidenteTransito(acidenteTransito);
     } else {
@@ -308,7 +334,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   cadastrarAcidenteTransito(acidenteTransito: AcidenteTransito) {
-    this.acidenteTransitoService.postAcidenteDeTransito(acidenteTransito)
+    this.acidenteTransitoService.postAcidenteDeTransito(this.auth.jwtPayload.id_instituicao, acidenteTransito)
       .subscribe(() => {
         this.router.navigate(['/admin/acidentes-de-transitos']).then(
           () => this.confirmacao('Cadastro Realizado com Sucesso!!')
@@ -318,6 +344,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   alterarAcidenteTransito(acidenteTransito: AcidenteTransito) {
     acidenteTransito.idAcidenteTransito = this.acidenteTransito.idAcidenteTransito;
+    acidenteTransito.instituicao = this.acidenteTransito.instituicao;
     this.acidenteTransitoService.putAcidenteDeTransito(this.acidenteTransito.idAcidenteTransito, acidenteTransito)
       .subscribe(() => {
         this.router.navigate(['/admin/acidentes-de-transitos']).then(
@@ -351,7 +378,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
       if (condicoesDasVias) {
         this.condicoesDasVias = condicoesDasVias;
       }
-    })
+    });
   }
 
   listaTiposVias() {
@@ -405,6 +432,26 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   adicionaVeiculo(veiculo: Veiculo) {
     this.veiculos.push(veiculo);
     this.fechaModalVeiculo();
+  }
+
+  alterarVeiculo(veiculo: Veiculo, idM: number) {
+    if (veiculo.idVeiculo) {
+      console.log('com id index' + idM);
+      console.log(veiculo);
+      /*
+            let index = this.veiculos.findIndex(p => p.idVeiculo === veiculo.idVeiculo);
+            this.veiculos.splice(index, 1);*/
+    } else {
+      console.log('sem id index' + idM);
+      console.log(veiculo);
+    }
+  }
+
+  removerVeiculo(veiculo: Veiculo, index: number) {
+    if (veiculo.idVeiculo) {
+    } else {
+      this.veiculos.splice(index, 1);
+    }
   }
 
   confirmacao(msg: string) {

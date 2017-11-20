@@ -39,17 +39,24 @@ export class AcidentesDeTransitosComponent implements OnInit {
         buscaControl: this.buscaControl
       }
     );
-    this.buscaControl.valueChanges.debounceTime(500)
-      .distinctUntilChanged()
-      .switchMap(busca => this.acidenteTransitoService.acidentesTransito(busca))
-      .catch(erro => Observable.from([]))
-      .subscribe(acidentesTransitos => {
-        if(acidentesTransitos) {
+    if (this.auth.jwtPayload.id_instituicao === 'PREVTRANS_ADMINISTRACAO') {
+      this.buscaControl.valueChanges.debounceTime(500)
+        .distinctUntilChanged()
+        .switchMap(busca => this.acidenteTransitoService.acidentesTransito(busca))
+        .catch(erro => Observable.from([]))
+        .subscribe(acidentesTransitos => {
           this.acidentesTransitos = acidentesTransitos;
-        }else{
-          this.toastyService.info('Acidente de Trânsito não encontrado');
-        }
-      });
+        });
+    } else {
+      this.buscaControl.valueChanges.debounceTime(500)
+        .distinctUntilChanged()
+        .switchMap(busca => this.acidenteTransitoService
+          .acidentesTransitoPorInstituicao(this.auth.jwtPayload.id_instituicao, busca))
+        .catch(erro => Observable.from([]))
+        .subscribe(acidentesTransitos => {
+          this.acidentesTransitos = acidentesTransitos;
+        });
+    }
     this.carregaAcidenteTransito();
   }
 
@@ -75,14 +82,14 @@ export class AcidentesDeTransitosComponent implements OnInit {
   }
 
   carregaAcidenteTransito() {
-    if(this.auth.jwtPayload.id_instituicao === 'PREVTRANS_ADMINISTRACAO') {
+    if (this.auth.jwtPayload.id_instituicao === 'PREVTRANS_ADMINISTRACAO') {
       this.acidenteTransitoService.acidentesTransito().subscribe(
         acidentesTransitos => {
           this.acidentesTransitos = acidentesTransitos;
         }
       );
-    }else{
-      this.acidenteTransitoService.acidentesTransitoPorInstituicao(this.auth.jwtPayload.id_instituica)
+    } else {
+      this.acidenteTransitoService.acidentesTransitoPorInstituicao(this.auth.jwtPayload.id_instituicao)
         .subscribe(
           acidentesTransitos => {
             this.acidentesTransitos = acidentesTransitos;

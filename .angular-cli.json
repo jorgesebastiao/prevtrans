@@ -20,7 +20,6 @@
       "prefix": "app",
       "styles": [
         "../node_modules/materialize-css/dist/css/materialize.css",
-        "../node_modules/ng-pick-datetime/assets/style/picker.min.css",
         "../node_modules/ng2-toasty/style-default.css",
         "../node_modules/ng2-toasty/style-material.css",
         "styles.css"

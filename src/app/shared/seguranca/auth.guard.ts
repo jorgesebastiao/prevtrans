@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (this.auth.isAccessTokenInvalido()) {
-      console.log('Navegação com access token inválido. Obtendo novo token...');
 
       return this.auth.obterNovoAccessToken()
         .then(() => {
@@ -31,7 +30,6 @@ export class AuthGuard implements CanActivate {
               }
             );
           }
-
           return true;
         });
     } else if (next.data.roles && !this.auth.temQualquerPermissao(next.data.roles)) {

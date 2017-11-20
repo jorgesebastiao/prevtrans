@@ -64,7 +64,10 @@
             <select id="permissoes-usuarios" multiple formControlName="usuarioPermissoes"
                     materialize="material_select" [materializeSelectOptions]="permissoes">
               <option value="" disabled selected>Selecione as Permissões do Usuário</option>
-              <option *ngFor="let permissao of permissoes " [ngValue]="permissao" [disabled]="auth.jwtPayload.id_instituicao !='PREVTRANS_ADMINISTRACAO' && (permissao.permissao=='ROLE_CADASTRAR_INSTITUICAO' ||permissao.permissao =='ROLE_ALTERAR_INSTITUICAO')">{{permissao.descricao}}</option>
+              <option *ngFor="let permissao of (permissoes)" [ngValue]="permissao"
+                      [disabled]="auth.jwtPayload.id_instituicao !='PREVTRANS_ADMINISTRACAO'
+                       && (permissao.permissao=='ROLE_CADASTRAR_INSTITUICAO'
+                       || permissao.permissao =='ROLE_ALTERAR_INSTITUICAO')">{{permissao.descricao }}</option>
             </select>
             <label for="permissoes-usuarios" class="black-text text-darken-4">Permissões de Usuários</label>
           </app-input-container>
@@ -83,10 +86,10 @@
       <div class="row">
       </div>
       <div class="row">
-        <button (click)="cancelar()" class="amber accent-4 right  waves-yellow btn"><i
+        <button type="button" (click)="cancelar()" class="amber accent-4 right  waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
         </button>
-        <button (click)="salvar(usuarioForm.value)" [disabled]="!usuarioForm.valid"
+        <button type="button" (click)="salvar(usuarioForm.value)" [disabled]="!usuarioForm.valid||confirma"
                 class="amber accent-4 right  waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
         </button>

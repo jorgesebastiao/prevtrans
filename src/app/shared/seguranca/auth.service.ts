@@ -49,9 +49,6 @@ export class AuthService {
       .toPromise()
       .then(response => {
         this.armazenarToken(response.json().access_token);
-
-        console.log('Novo access token criado!');
-
         return Promise.resolve(null);
       })
       .catch(response => {
@@ -86,7 +83,6 @@ export class AuthService {
 
   private carregarToken() {
     const token = localStorage.getItem('tokenPrevtrans');
-
     if (token) {
       this.armazenarToken(token);
     }

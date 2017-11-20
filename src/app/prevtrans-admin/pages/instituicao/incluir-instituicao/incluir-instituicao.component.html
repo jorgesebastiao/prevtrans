@@ -117,7 +117,7 @@
         <button (click)="cancelar()" class="amber accent-4 right waves-effect waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
         </button>
-        <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid"
+        <button (click)="salvar(instituicaoForm.value)" [disabled]="!instituicaoForm.valid||confirma"
                 class="amber accent-4 right waves-effect waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
         </button>
@@ -125,15 +125,3 @@
     </form>
   </div>
 </div>
-
-<div id="modal-instituicao" class="modal">
-  <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
-  </div>
-  <div class="modal-footer ">
-    <a class="modal-action modal-close waves-effect waves-green btn-flat">Confirma</a>
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
-  </div>
-</div>
-

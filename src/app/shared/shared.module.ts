@@ -27,7 +27,6 @@ import {
 } from './services';
 import {AuthService, RecuperarSenhaService} from './seguranca';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {DateTimePickerModule} from 'ng-pick-datetime';
 
 @NgModule({
   imports: [
@@ -37,7 +36,6 @@ import {DateTimePickerModule} from 'ng-pick-datetime';
     AgmCoreModule,
     AgmJsMarkerClustererModule,
     ReactiveFormsModule,
-    DateTimePickerModule,
     NgxChartsModule
   ],
   declarations: [InputComponent, CepPipe,
@@ -46,7 +44,7 @@ import {DateTimePickerModule} from 'ng-pick-datetime';
     CepPipe, CpnjPipe, CpfPipe, TelefonePipe,
     PrevtransMaskDirective, CommonModule, FormsModule,
     AgmCoreModule, AgmJsMarkerClustererModule,
-    ReactiveFormsModule, DateTimePickerModule, NgxChartsModule]
+    ReactiveFormsModule, NgxChartsModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

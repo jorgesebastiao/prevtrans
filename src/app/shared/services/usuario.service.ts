@@ -10,6 +10,7 @@ import {AuthHttp} from 'angular2-jwt';
 import {ErrorHandlerService} from '../error-handler.service';
 import {UsuarioPermissao} from '../models/UsuarioPermissao.model';
 import {Instituicao} from '../models/instituicao.model';
+import { Response  } from '@angular/http';
 
 @Injectable()
 export class UsuarioService {
@@ -42,7 +43,9 @@ export class UsuarioService {
 
   getUsuario(id: string): Observable<Usuario> {
     return this.http.get(`${PREVTRANS_API}/usuarios/${id}`)
-      .map(response => response.json()).catch(error => {
+      .map((response: Response ) => {
+       return <Usuario>  response.json();
+       }).catch(error => {
         this.hand.handle(error);
         return Observable.of<Usuario>();
       });

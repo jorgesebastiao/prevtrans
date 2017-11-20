@@ -7,7 +7,7 @@ export const PrevtransPublicoRoutes: Routes = [
     path: '', component: PrevtransPublicoComponent,
     children: [
       {path: '', component: AcidentesMapsComponent},
-      {path: 'graficos', loadChildren: './graficos/graficos.module#GraficosModule'}
+      {path: 'dados-estatisticos', loadChildren: './graficos/graficos.module#GraficosModule'}
     ]
   }
 ];
