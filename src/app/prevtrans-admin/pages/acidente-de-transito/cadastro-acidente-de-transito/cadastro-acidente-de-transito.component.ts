@@ -1,6 +1,6 @@
 import {Component, EventEmitter, HostListener, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AgmMap} from '@agm/core';
 import {MaterializeAction} from 'angular2-materialize';
 import {
@@ -44,6 +44,7 @@ declare const Materialize: any;
 export class CadastroAcidenteDeTransitoComponent implements OnInit {
   titulo = 'Cadastrar Acidente de Trânsito';
   tituloVeiculo = 'Adicionar Veiculo';
+
   lat: number = -27.900756;
   lng: number = -50.756954;
   zoom = 15;
@@ -104,7 +105,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.acidenteTransito.urlFotos = [];
     this.localizacao = new Localizacao();
     this.inicializaCalendario();
-    this.validaForm();
+    this.iniciaForm();
     this.inicializaMaterialize();
     this.listaTiposVeiculos();
     this.listaCondicoesDasVias();
@@ -158,13 +159,14 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     };
   }
 
-  validaForm() {
+  iniciaForm() {
     this.acidenteTransitoForm = this.formBuilder.group(
       {
         tituloPublicacao: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        data: this.formBuilder.control(''),
-        hora: this.formBuilder.control(''),
-        descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(150)]),
+        data: this.formBuilder.control(new Date(), [Validators.required]),
+        hora: this.formBuilder.control(new Date().getHours() + ':' + new Date().getMinutes().toPrecision(2), [Validators.required]),
+        descricao: this.formBuilder.control('', [Validators.required,
+          Validators.minLength(150), Validators.maxLength(250)]),
         numeroDeMortos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeFeridos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeVitimas: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
@@ -191,7 +193,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     );
     this.veiculoForm = this.formBuilder.group(
       {
-        tipoVeiculo: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
+        tipoVeiculo: this.formBuilder.control('', [Validators.required]),
         fabricante: this.formBuilder.control('', [Validators.required]),
         marca: this.formBuilder.control('', [Validators.required]),
         placa: this.formBuilder.control('', [Validators.required]),
@@ -199,6 +201,18 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
         numeroOcupantes: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)])
       }
     );
+    this.inicializaMaterialize();
+  }
+
+  validaForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({onlySelf: true});
+      } else if (control instanceof FormGroup) {
+        this.validaForm(control);
+      }
+    });
   }
 
   @ViewChild(AgmMap) private myMap: any;
@@ -324,13 +338,16 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   salvar(acidenteTransito: AcidenteTransito) {
-    this.confirma = true;
-    if (this.editando) {
-      acidenteTransito.veiculos = this.veiculos;
-      this.alterarAcidenteTransito(acidenteTransito);
+    if (this.acidenteTransitoForm.valid) {
+      if (this.editando) {
+        acidenteTransito.veiculos = this.veiculos;
+        this.alterarAcidenteTransito(acidenteTransito);
+      } else {
+        acidenteTransito.veiculos = this.veiculos;
+        this.cadastrarAcidenteTransito(acidenteTransito);
+      }
     } else {
-      acidenteTransito.veiculos = this.veiculos;
-      this.cadastrarAcidenteTransito(acidenteTransito);
+      this.validaForm(this.acidenteTransitoForm);
     }
   }
 
@@ -440,20 +457,16 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.veiculoForm.reset();
   }
 
-   get validaAdiciona() {
-    let valor: number = parseInt(this.acidenteTransitoForm.get('numeroDeVeiculos').value, 10);
-    if(this.veiculos.length < valor && valor > 0 ) {
-      return true;
-    }
-    return false;
+  get validaAdiciona() {
+    const valor: number = parseInt(this.acidenteTransitoForm.get('numeroDeVeiculos').value, 10);
+    return this.veiculos.length < valor && valor > 0;
   }
-  get totalVeiculos(){
+
+  get totalVeiculos() {
     let valor: number = parseInt(this.acidenteTransitoForm.get('numeroDeVeiculos').value, 10);
-    if((this.veiculos.length < valor || this.veiculos.length > valor) || valor <= 0 ) {
-      return true;
-    }
-    return false;
+    return (this.veiculos.length < valor || this.veiculos.length > valor) || valor <= 0;
   }
+
   adicionaVeiculo(veiculo: Veiculo) {
     this.veiculos.push(veiculo);
     this.fechaModalVeiculo();
@@ -473,11 +486,11 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
 
   removerVeiculo(veiculo: Veiculo, index: number) {
     if (veiculo.idVeiculo) {
-     /* this.acidenteTransitoService.deleteVeiculos(this.acidenteTransito.idAcidenteTransito, veiculo.idVeiculo)
-        .subscribe(() => {
-          this.veiculos.splice(index, 1);
-        this.confirmacao('Veiculo Removido');
-      });*/
+      /* this.acidenteTransitoService.deleteVeiculos(this.acidenteTransito.idAcidenteTransito, veiculo.idVeiculo)
+         .subscribe(() => {
+           this.veiculos.splice(index, 1);
+         this.confirmacao('Veiculo Removido');
+       });*/
     } else {
       this.veiculos.splice(index, 1);
     }

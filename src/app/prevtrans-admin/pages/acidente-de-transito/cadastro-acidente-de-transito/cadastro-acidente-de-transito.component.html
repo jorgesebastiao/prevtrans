@@ -16,22 +16,25 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m2 l2">
-          <app-input-container>
-            <input materialize="pickadate" class="datepicker" formControlName="data"
+          <app-input-container errorMessage="Campo Obrigatorio">
+            <input id="data" materialize="pickadate" class="datepicker" formControlName="data"
                    [materializeParams]="[data]">
+            <label class="black-text text-darken-4 active" for="data">Data Acidente</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m2 l2">
-          <app-input-container>
-            <input materialize="pickatime"
+          <app-input-container errorMessage="Campo Obrigatorio">
+            <input id="hora" materialize="pickatime"
                    class="timepicker"
                    formControlName="hora"
                    [materializeParams]="[hora]">
+            <label class="black-text text-darken-4 active" for="hora">Hora</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m12 l12">
-          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 150 caracteres">
-            <textarea id="descricao" formControlName="descricao" class="materialize-textarea"></textarea>
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 150 caracteres, tamanho maximo 250 caracteres">
+            <textarea materialize="characterCounter" data-length="250" id="descricao" formControlName="descricao"
+                      class="materialize-textarea"> </textarea>
             <label class="black-text text-darken-4" for="descricao">Descrição do Acidente de Trânsito</label>
           </app-input-container>
         </div>
@@ -200,7 +203,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l2">
-          <app-input-container>
+          <app-input-container errorMessage="Campo Obrigatório" >
             <input id="estado" formControlName="estado" type="text" autocomplete="off">
             <label class="black-text text-darken-4" for="estado">Estado</label>
           </app-input-container>
@@ -215,7 +218,7 @@
       </div>
       <div class="row">
         <div class="input-field col s12 m4 l3">
-          <app-input-container errorMessage="somente numeros">
+          <app-input-container errorMessage="Campo Obrigatório, somente números">
             <input id="numero-de-veiculos" formControlName="numeroDeVeiculos" type="text" autocomplete="off">
             <label class="black-text text-darken-4" for="numero-de-veiculos">Número de Veiculos Envolvidos</label>
           </app-input-container>
@@ -264,9 +267,7 @@
         <button  (click)="cancelar()" class="amber accent-4 right waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
         </button>
-        <button (click)="salvar(acidenteTransitoForm.value)"
-                [disabled]="!acidenteTransitoForm.valid || totalVeiculos || confirma"
-                class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
+        <button (click)="salvar(acidenteTransitoForm.value)" class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
         </button>
       </div>

@@ -22,8 +22,11 @@ export class GraficosComponent implements OnInit {
   visibilidadeDados: DataGraficos[];
   // configuração gráfico de barras
   colorSchemeBarra = {
-    domain: ['#FF00C6', '#2900FF', '#E8A80C', '#00C9FF', '#FFDD34', '#FF4D73', '#2980b9', '#f1c40f',
-      '#34495e', '#d35400']
+    domain: ['#2F4F4F', '#696969', '#191970', '#6495ED', '#483D8B', '#6A5ACD', '#7B68EE', '#1E90FF',
+      '#FDF5E6', '#FFDAB9', '#FFDEAD', '#F0FFF0', '#F0F8FF', '#E6E6FA', '#FFF0F5', '#FFE4E1', '#CFCFCF',
+      '#87CEFA', '#4682B4', '#5F9EA0', '#66CDAA', '#006400', '#556B2F', '#8FBC8F', '#2E8B57', '#98FB98',
+      '#7CFC00', '#F0E68C', '#FFFF00', '#DAA520', '#B8860B', '#BC8F8F', '#CD5C5C', '#F4A460', '#FFA07A',
+      '#FF4500', '#FF0000', '#FF69B4', '#DB7093', '#C71585', '#00BFFF']
   };
 
   colorScheme = {

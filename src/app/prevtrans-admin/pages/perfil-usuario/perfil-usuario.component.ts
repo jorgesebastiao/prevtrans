@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../../shared/models/usuario.model';
 import {AuthService} from '../../../shared/seguranca/auth.service';
 import {MaterializeAction} from 'angular2-materialize';
@@ -33,15 +33,15 @@ export class PerfilUsuarioComponent implements OnInit {
   ngOnInit() {
     this.titulo = 'Perfil Usuário';
     this.inicializaMaterialize();
-    this.validaForm();
+    this.iniciaForm();
     this.carregarPerfil();
   }
 
-  validaForm() {
+  iniciaForm() {
     this.perfilUsuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       usuario: this.formBuilder.control('', Validators.compose([Validators.required,
-         Validators.pattern(this.LOGIN_REGEX)])),
+        Validators.pattern(this.LOGIN_REGEX)])),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.EMAIL_REGEX)])
     });
 
@@ -50,10 +50,6 @@ export class PerfilUsuarioComponent implements OnInit {
       verificaSenha: this.formBuilder.control('', [Validators.required, Validators.minLength(8)])
     }, {validator: PerfilUsuarioComponent.equalsTo});
   }
-  /*
-   validaLogin(control: AbstractControl): { [key: string]: boolean } {
-   // return this.autturlogin.validate(control);
-  }*/
 
   static equalsTo(group: AbstractControl): { [key: string]: boolean } {
     const senha = group.get('senha');
@@ -62,8 +58,20 @@ export class PerfilUsuarioComponent implements OnInit {
       return undefined;
     }
     if (senha.value !== verificaSenha.value) {
-      return {senhaNotMatch: true}}
+      return {senhaNotMatch: true}
+    }
     return undefined;
+  }
+
+  validaForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({onlySelf: true});
+      } else if (control instanceof FormGroup) {
+        this.validaForm(control);
+      }
+    });
   }
 
   carregarPerfil() {
@@ -76,20 +84,24 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   salvar(usuario: Usuario) {
+    if (this.perfilUsuarioForm.valid) {
     this.usuarioService.alterarPerfil(this.auth.jwtPayload.idUsuario, usuario)
       .subscribe(user => {
         this.perfilUsuarioForm.patchValue(user);
         this.inicializaMaterialize();
         this.router.navigate(['admin']).then(
           () => this.confirmacao('Dados do Usuário Alterados com sucesso!!')
-      );
+        );
       });
+    }else {
+      this.validaForm(this.perfilUsuarioForm);
+    }
   }
 
   cancelar() {
     this.router.navigate(['admin']).then(
-      () =>  this.confirmacao('Operação Cancelada !!')
-  );
+      () => this.confirmacao('Operação Cancelada !!')
+    );
   }
 
   alterarSenha() {
@@ -103,8 +115,8 @@ export class PerfilUsuarioComponent implements OnInit {
   salvarSenha(senha: string) {
     this.usuarioService.alterarSenha(this.auth.jwtPayload.idUsuario, senha)
       .subscribe(() => {
-        this.fechaModalSenha();
-        this.confirmacao('Senha Alterada Com Sucesso!!');
+          this.fechaModalSenha();
+          this.confirmacao('Senha Alterada Com Sucesso!!');
         }
       );
   }
@@ -114,6 +126,7 @@ export class PerfilUsuarioComponent implements OnInit {
       Materialize.updateTextFields();
     });
   }
+
   confirmacao(msg: string) {
     this.toastyService.success({
       title: 'Confirmação',

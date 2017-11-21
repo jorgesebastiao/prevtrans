@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 
 import {Instituicao, Usuario} from '../../../../shared/models';
 import {CepService, InstituicaoService} from '../../../../shared/services';
@@ -36,7 +36,7 @@ export class IncluirInstituicaoComponent implements OnInit {
   ngOnInit() {
     this.usuarios = [];
     this.inicializaMaterialize();
-    this.validaForm();
+    this.iniciaForm();
     const id = this.routes.snapshot.params['id'];
     if (id) {
       this.titulo = 'Alterar Instituição';
@@ -49,11 +49,15 @@ export class IncluirInstituicaoComponent implements OnInit {
   }
 
   salvar(instituicao: Instituicao) {
-    this.confirma = true;
-    if (this.editando) {
-      this.alterarInstituicao(instituicao);
+    if (this.instituicaoForm.valid) {
+      this.confirma = true;
+      if (this.editando) {
+        this.alterarInstituicao(instituicao);
+      } else {
+        this.salvarInstituicao(instituicao);
+      }
     } else {
-      this.salvarInstituicao(instituicao);
+      this.validaForm(this.instituicaoForm);
     }
   }
 
@@ -111,7 +115,7 @@ export class IncluirInstituicaoComponent implements OnInit {
     }
   }
 
-  validaForm() {
+  iniciaForm() {
     this.instituicaoForm = this.formBuilder.group({
       razaoSocial: this.formBuilder.control(null, [Validators.required, Validators.minLength(5)]),
       nomeFantasia: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
@@ -134,6 +138,18 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   static validaCnpj(control: AbstractControl): { [p: string]: boolean } {
     return PrevtransCnpjValidator.validate(control);
+  }
+
+
+  validaForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({onlySelf: true});
+      } else if (control instanceof FormGroup) {
+        this.validaForm(control);
+      }
+    });
   }
 
   inicializaMaterialize() {

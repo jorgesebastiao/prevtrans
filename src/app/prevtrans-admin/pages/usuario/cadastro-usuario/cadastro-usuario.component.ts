@@ -26,6 +26,7 @@ export class CadastroUsuarioComponent implements OnInit {
   permissoes: UsuarioPermissao[];
   instituicoes: Instituicao[];
   confirma: boolean;
+
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
               private router: Router,
@@ -40,14 +41,14 @@ export class CadastroUsuarioComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.validaForm();
+    this.iniciaForm();
     this.carregarInstituicaoUsuario();
     this.inicializaMaterialize();
     this.usuario = new Usuario();
     const id = this.routes.snapshot.params['id'];
     if (id) {
       this.titulo = 'Alterar Usuário';
-        this.carregarUsuario(id);
+      this.carregarUsuario(id);
     } else {
       this.titulo = 'Cadastrar Usuário';
     }
@@ -87,7 +88,7 @@ export class CadastroUsuarioComponent implements OnInit {
     }
   }
 
-  validaForm() {
+  iniciaForm() {
     this.usuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.emailPattern)])),
@@ -95,6 +96,17 @@ export class CadastroUsuarioComponent implements OnInit {
       instituicao: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       ativo: ['true']
+    });
+  }
+
+  validaForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({onlySelf: true});
+      } else if (control instanceof FormGroup) {
+        this.validaForm(control);
+      }
     });
   }
 
@@ -129,11 +141,14 @@ export class CadastroUsuarioComponent implements OnInit {
   }
 
   salvar(usuario: Usuario) {
-    this.confirma = true;
-    if (this.editando) {
-      this.alterarUsuario(usuario);
+    if (this.usuarioForm.valid) {
+      if (this.editando) {
+        this.alterarUsuario(usuario);
+      } else {
+        this.cadastrarUsuario(usuario);
+      }
     } else {
-      this.cadastrarUsuario(usuario);
+      this.validaForm(this.usuarioForm);
     }
   }
 

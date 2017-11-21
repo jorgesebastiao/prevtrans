@@ -41,28 +41,6 @@ agm-map {
   position: relative;
   overflow: hidden;
 }
-.image-upload{
-  --active-color:#ffab00  !important;
-}
-.excluir{
-  display: none;
-  position: absolute;
-  top: 16px;
-}
-
-.botao-excluir {
-  opacity: 0;
-  position: absolute;
-  top: 45px;
-  padding-left: 25px;
-}
-
-.botao-excluir:hover {
-  opacity: 1;
-  position: absolute;
-  top: 45px;
-  padding-left: 25px;
-}
 
 th{
   text-align: center;
