@@ -63,4 +63,9 @@ export class AcidenteTransitoService {
     return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
       .map(response => response.text() ? response.json() : response);
   }
+
+  deleteVeiculos(id: string, id2: string): Observable<String> {
+    return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}/veiculos/${id2}`)
+      .map(response => response.text() ? response.json() : response);
+  }
 }

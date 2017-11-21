@@ -30,7 +30,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m12 l12">
-          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 250 caracteres">
+          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 150 caracteres">
             <textarea id="descricao" formControlName="descricao" class="materialize-textarea"></textarea>
             <label class="black-text text-darken-4" for="descricao">Descrição do Acidente de Trânsito</label>
           </app-input-container>
@@ -215,12 +215,12 @@
       </div>
       <div class="row">
         <div class="input-field col s12 m4 l3">
-          <app-input-container>
-            <input id="numero-veiculos" formControlName="numeroVeiculosEnvolvidos" type="text" autocomplete="off">
-            <label class="black-text text-darken-4" for="numero-veiculos">Número de Veiculos Envolvidos</label>
+          <app-input-container errorMessage="somente numeros">
+            <input id="numero-de-veiculos" formControlName="numeroDeVeiculos" type="text" autocomplete="off">
+            <label class="black-text text-darken-4" for="numero-de-veiculos">Número de Veiculos Envolvidos</label>
           </app-input-container>
         </div>
-        <button [disabled]="veiculos.length== acidenteTransitoForm.get('numeroVeiculosEnvolvidos').value" (click)="abreModalVeiculo()" class="amber accent-4 col s12 m3 l3  waves-light btn-large"><i
+        <button [disabled]="!validaAdiciona" (click)="abreModalVeiculo()" class="amber accent-4 col s12 m3 l3  waves-light btn-large"><i
           class="material-icons left">add</i>Adicionar Veiculos</button>
         <div class="col s12">
           <table class="striped responsive-table">
@@ -256,10 +256,16 @@
         </div>
       </div>
       <div class="row">
+        <div *ngIf="totalVeiculos" class="error-msg cols 12 center-align">
+          Número de Veiculos Envolvidos não Conferem  com o número de veiculos inseridos!!
+        </div>
+      </div>
+      <div class="row">
         <button  (click)="cancelar()" class="amber accent-4 right waves-yellow btn"><i
           class="material-icons left">clear</i>Cancelar
         </button>
-        <button (click)="salvar(acidenteTransitoForm.value)" [disabled]="!acidenteTransitoForm.valid||confirma"
+        <button (click)="salvar(acidenteTransitoForm.value)"
+                [disabled]="!acidenteTransitoForm.valid || totalVeiculos || confirma"
                 class="amber accent-4 right waves-yellow btn" style="margin-right: 10px; "><i
           class="material-icons left">done</i>Salvar
         </button>
@@ -305,7 +311,7 @@
       <div class="row">
         <div class="col s12">
           <h1 class="divisor">
-            <label class="black-text fom">Adicionar Veiculo</label>
+            <label class="black-text fom">{{tituloVeiculo}}</label>
           </h1>
         </div>
       </div>

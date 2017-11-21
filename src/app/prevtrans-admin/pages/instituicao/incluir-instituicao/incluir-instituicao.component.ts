@@ -132,7 +132,7 @@ export class IncluirInstituicaoComponent implements OnInit {
     });
   }
 
-  static validaCnpj(control: AbstractControl): { [key: string]: boolean } {
+  static validaCnpj(control: AbstractControl): { [p: string]: boolean } {
     return PrevtransCnpjValidator.validate(control);
   }
 

@@ -34,6 +34,7 @@ export class AcidenteTransito {
               public visibilidade?: Visibilidade,
               public condicaoDaVia?: CondicaoDaVia,
               public tipoVia?: TipoVia,
+              public numeroDeVeiculos?: number,
               public veiculos?: Veiculo[],
               public instituicao?: Instituicao,
               public  urlFotos?: UrlFotos[]) {
