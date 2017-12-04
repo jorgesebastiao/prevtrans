@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -13,7 +14,7 @@ export class CepService {
   constructor(private http: Http) { }
 
   consultaCep( cep: string): Observable<any> {
-    return this.http.get(`${CEP_API}/${cep}/json`)
+    return this.http.get(`${CEP_API}/${cep}/json`).timeout(3600)
       .map(response => response.json())
       .catch(PrevtransAdminHerrorHandler.handleError);
   }

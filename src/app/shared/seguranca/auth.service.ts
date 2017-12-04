@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-
+import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/toPromise';
 import {AUTH_LOGIN } from './../../app.api';
 import {JwtHelper} from 'angular2-jwt';
@@ -20,13 +20,12 @@ export class AuthService {
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
 
     return this.http.post(AUTH_LOGIN, body,
-      { headers, withCredentials: true })
+      { headers, withCredentials: true }).timeout(3600)
       .toPromise()
       .then(response => {
         this.armazenarToken(response.json().access_token);
       })
       .catch(response => {
-        console.log(response);
         if (response.status === 400) {
          const falha = response.json();
           if (falha.error === 'invalid_grant') {
@@ -45,14 +44,13 @@ export class AuthService {
     const body = 'grant_type=refresh_token';
 
     return this.http.post(AUTH_LOGIN, body,
-      { headers, withCredentials: true })
+      { headers, withCredentials: true }).timeout(3600)
       .toPromise()
       .then(response => {
         this.armazenarToken(response.json().access_token);
         return Promise.resolve(null);
       })
       .catch(response => {
-        console.error('Erro ao renovar token.', response);
         return Promise.resolve(null);
       });
   }

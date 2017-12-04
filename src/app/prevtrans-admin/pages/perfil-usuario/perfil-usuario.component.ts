@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, EventEmitter, forwardRef, Inject, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../../shared/models/usuario.model';
 import {AuthService} from '../../../shared/seguranca/auth.service';
@@ -17,6 +17,8 @@ declare const Materialize: any;
 })
 export class PerfilUsuarioComponent implements OnInit {
   titulo: string;
+  messageErroUsuario: string;
+  messageErroEmail: string;
   LOGIN_REGEX = /^[_'.@A-Za-z0-9-]*$/;
   EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
@@ -25,13 +27,14 @@ export class PerfilUsuarioComponent implements OnInit {
   alteraSenhaAction = new EventEmitter<string | MaterializeAction>();
 
   constructor(private formBuilder: FormBuilder, private  auth: AuthService,
-              private usuarioService: UsuarioService,
-              private router: Router,
-              private toastyService: ToastyService) {
+              @Inject(forwardRef(() => UsuarioService)) private usuarioService: UsuarioService,
+              private router: Router, private toastyService: ToastyService) {
   }
 
   ngOnInit() {
     this.titulo = 'Perfil Usuário';
+    this.messageErroUsuario = '';
+    this.messageErroEmail = '';
     this.inicializaMaterialize();
     this.iniciaForm();
     this.carregarPerfil();
@@ -41,8 +44,9 @@ export class PerfilUsuarioComponent implements OnInit {
     this.perfilUsuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       usuario: this.formBuilder.control('', Validators.compose([Validators.required,
-        Validators.pattern(this.LOGIN_REGEX)])),
-      email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.EMAIL_REGEX)])
+        Validators.pattern(this.LOGIN_REGEX)]), this.validaUsuario.bind(this)),
+      email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.EMAIL_REGEX)],
+        this.verificaEmail.bind(this))
     });
 
     this.senhaForm = this.formBuilder.group({
@@ -61,6 +65,38 @@ export class PerfilUsuarioComponent implements OnInit {
       return {senhaNotMatch: true}
     }
     return undefined;
+  }
+
+  validaUsuario(control: AbstractControl) {
+    const q = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.usuarioService.verificaUsuario(control.value, this.auth.jwtPayload.idUsuario)
+          .subscribe(() => {
+            this.messageErroUsuario = 'Usuário inválido';
+            resolve(null);
+          }, () => {
+            this.messageErroUsuario = 'Usuário já está em uso';
+            resolve({'usuarioEmUso': true});
+          });
+      }, 1000);
+    });
+    return q;
+  }
+
+  verificaEmail(control: AbstractControl) {
+    const q = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.usuarioService.verificaEmail(control.value, this.auth.jwtPayload.idUsuario)
+          .subscribe(() => {
+            this.messageErroEmail = 'E-mail inválido';
+            resolve(null);
+          }, () => {
+            this.messageErroEmail = 'E-mail  já está em uso';
+            resolve({'emailEmUso': true});
+          });
+      }, 1000);
+    });
+    return q;
   }
 
   validaForm(formGroup: FormGroup) {
@@ -85,15 +121,15 @@ export class PerfilUsuarioComponent implements OnInit {
 
   salvar(usuario: Usuario) {
     if (this.perfilUsuarioForm.valid) {
-    this.usuarioService.alterarPerfil(this.auth.jwtPayload.idUsuario, usuario)
-      .subscribe(user => {
-        this.perfilUsuarioForm.patchValue(user);
-        this.inicializaMaterialize();
-        this.router.navigate(['admin']).then(
-          () => this.confirmacao('Dados do Usuário Alterados com sucesso!!')
-        );
-      });
-    }else {
+      this.usuarioService.alterarPerfil(this.auth.jwtPayload.idUsuario, usuario)
+        .subscribe(user => {
+          this.perfilUsuarioForm.patchValue(user);
+          this.inicializaMaterialize();
+          this.router.navigate(['admin']).then(
+            () => this.confirmacao('Dados do Usuário Alterados com sucesso!!')
+          );
+        });
+    } else {
       this.validaForm(this.perfilUsuarioForm);
     }
   }

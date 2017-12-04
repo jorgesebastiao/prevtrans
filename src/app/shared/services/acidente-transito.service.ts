@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http} from '@angular/http';
+import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -18,7 +19,7 @@ export class AcidenteTransitoService {
   }
 
   getAcidenteTransito(id: string): Observable<AcidenteTransito> {
-    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
+    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito/${id}`).timeout(3600)
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);
         return Observable.of<AcidenteTransito>();
@@ -26,24 +27,24 @@ export class AcidenteTransitoService {
   }
 
   acidenteTransitoPublico(): Observable<AcidenteTransito[]> {
-    return this.http.get(`${PREVTRANS_API}/acidentes-de-transito`)
+    return this.http.get(`${PREVTRANS_API}/acidentes-de-transito`).timeout(3600)
       .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 
 
   acidentesTransito(busca?: string): Observable<AcidenteTransito[]> {
-    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito`, {params: {busca}})
+    return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito`, {params: {busca}}).timeout(3600)
       .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 
   acidentesTransitoPorInstituicao(id: string, busca?: string): Observable<AcidenteTransito[]> {
     return this.authHttp.get(`${PREVTRANS_API}/acidentes-de-transito/instituicoes/${id}`, {params: {busca}})
-      .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
+      .timeout(3600).map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 
   postAcidenteDeTransito(idInstituicao: string, acidenteTransito: AcidenteTransito): Observable<String> {
     return this.authHttp.post(`${PREVTRANS_API}/acidentes-de-transito/instituicoes/${idInstituicao}`,
-      JSON.stringify(acidenteTransito))
+      JSON.stringify(acidenteTransito)).timeout(3600)
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);
         return Observable.of<String>();
@@ -52,7 +53,7 @@ export class AcidenteTransitoService {
 
   putAcidenteDeTransito(id: string, acidenteTransito: AcidenteTransito): Observable<String> {
     return this.authHttp.put(`${PREVTRANS_API}/acidentes-de-transito/${id}`,
-      JSON.stringify(acidenteTransito))
+      JSON.stringify(acidenteTransito)).timeout(3600)
       .map(response => response.json()).catch(error => {
         this.hand.handle(error);
         return Observable.of<String>();
@@ -60,12 +61,12 @@ export class AcidenteTransitoService {
   }
 
   deleteAcidenteTransito(id: string): Observable<String> {
-    return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}`)
+    return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}`).timeout(3600)
       .map(response => response.text() ? response.json() : response);
   }
 
   deleteVeiculos(id: string, id2: string): Observable<String> {
-    return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}/veiculos/${id2}`)
+    return this.authHttp.delete(`${PREVTRANS_API}/acidentes-de-transito/${id}/veiculos/${id2}`).timeout(3600)
       .map(response => response.text() ? response.json() : response);
   }
 }

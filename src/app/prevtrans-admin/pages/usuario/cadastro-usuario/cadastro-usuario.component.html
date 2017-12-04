@@ -16,7 +16,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m12 l12">
-          <app-input-container errorMessage="Usuário inválido">
+          <app-input-container [errorMessage]=messageErroUsuario>
             <input id="usuario" type="text" formControlName="usuario" autocomplete="off">
             <label class="black-text text-darken-4" for="usuario">Usuário</label>
           </app-input-container>
@@ -24,7 +24,7 @@
         <div class="col s12">
         </div>
         <div class="input-field col s12 m12 l12">
-          <app-input-container errorMessage="E-mail inválido">
+          <app-input-container [errorMessage]=messageErroEmail>
             <input id="email" type="text" formControlName="email" autocomplete="off">
             <label class="black-text text-darken-4" for="email">E-mail</label>
           </app-input-container>

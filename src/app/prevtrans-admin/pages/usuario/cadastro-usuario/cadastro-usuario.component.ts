@@ -1,12 +1,13 @@
 import {Component, forwardRef, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Usuario, UsuarioPermissao} from '../../../../shared/models';
 import {UsuarioService} from '../../../../shared/services';
 import {AuthService} from '../../../../shared/seguranca/auth.service';
 import {ToastyService} from 'ng2-toasty';
 import {Instituicao} from '../../../../shared/models/instituicao.model';
 import {InstituicaoService} from '../../../../shared/services/instituicao.service';
+import {Observable} from "rxjs/Observable";
 
 
 declare const jQuery: any;
@@ -23,9 +24,10 @@ export class CadastroUsuarioComponent implements OnInit {
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   usuarioForm: FormGroup;
   usuario: Usuario;
+  messageErroUsuario: string;
+  messageErroEmail: string;
   permissoes: UsuarioPermissao[];
   instituicoes: Instituicao[];
-  confirma: boolean;
 
   constructor(private formBuilder: FormBuilder,
               private routes: ActivatedRoute,
@@ -45,6 +47,8 @@ export class CadastroUsuarioComponent implements OnInit {
     this.carregarInstituicaoUsuario();
     this.inicializaMaterialize();
     this.usuario = new Usuario();
+    this.messageErroUsuario = '';
+    this.messageErroEmail= '' ;
     const id = this.routes.snapshot.params['id'];
     if (id) {
       this.titulo = 'Alterar Usuário';
@@ -91,12 +95,46 @@ export class CadastroUsuarioComponent implements OnInit {
   iniciaForm() {
     this.usuarioForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.emailPattern)])),
-      usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.pattern(this.LOGIN_REGEX)]),
+      email: new FormControl('', Validators.compose([Validators.required, Validators.pattern(this.emailPattern)]),
+        this.verificaEmail.bind(this)),
+      usuario: this.formBuilder.control('', [Validators.required, Validators.minLength(3),
+        Validators.pattern(this.LOGIN_REGEX)], this.validaUsuario.bind(this)),
       instituicao: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       usuarioPermissoes: this.formBuilder.control('', [Validators.required, Validators.minLength(1)]),
       ativo: ['true']
     });
+  }
+
+  validaUsuario(control: AbstractControl) {
+    const q = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.usuarioService.verificaUsuario(control.value, this.usuario.idUsuario)
+          .subscribe(() => {
+            this.messageErroUsuario = 'Usuário inválido';
+            resolve(null);
+          }, () => {
+            this.messageErroUsuario = 'Usuário já está em uso';
+            resolve({'usuarioEmUso': true});
+          });
+      }, 1000);
+    });
+    return q;
+  }
+
+  verificaEmail(control: AbstractControl) {
+    const q = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.usuarioService.verificaEmail(control.value, this.usuario.idUsuario)
+          .subscribe(() => {
+            this.messageErroEmail = 'E-mail inválido';
+            resolve(null);
+          }, () => {
+            this.messageErroEmail = 'E-mail  já está em uso';
+            resolve({'emailEmUso': true});
+          });
+      }, 1000);
+    });
+    return q;
   }
 
   validaForm(formGroup: FormGroup) {
@@ -153,6 +191,7 @@ export class CadastroUsuarioComponent implements OnInit {
   }
 
   alterarUsuario(usuario: Usuario) {
+    console.log('alterando');
     usuario.idUsuario = this.usuario.idUsuario;
     this.usuarioService.putUsuario(this.usuario.idUsuario, usuario).subscribe(() => {
       this.router.navigate(['admin/usuarios']).then(
@@ -197,4 +236,5 @@ export class CadastroUsuarioComponent implements OnInit {
   get instituicao() {
     return this.auth.jwtPayload.id_instituicao !== 'PREVTRANS_ADMINISTRACAO';
   }
+
 }

@@ -18,6 +18,7 @@ declare const Materialize: any;
 export class IncluirInstituicaoComponent implements OnInit {
   titulo = 'Cadastrar Instituição';
   cepPattern = /^[0-9]{8}$/;
+  numberPattern = /^[0-9]*$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   confirma: boolean;
 
@@ -125,10 +126,10 @@ export class IncluirInstituicaoComponent implements OnInit {
       inscricaoMunicipal: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
       telefone: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      celular: this.formBuilder.control(''),
+      celular: this.formBuilder.control('',[Validators.required]),
       cep: this.formBuilder.control('', [Validators.required, Validators.pattern(this.cepPattern)]),
       endereco: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
-      numero: this.formBuilder.control(''),
+      numero: this.formBuilder.control('', [Validators.pattern(this.numberPattern)]),
       complemento: this.formBuilder.control(''),
       bairro: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       estado: this.formBuilder.control('', [Validators.required, Validators.minLength(2)]),

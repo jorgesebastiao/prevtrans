@@ -15,3 +15,4 @@ export * from './pista.model';
 export * from './visibilidade.model';
 export * from './sinalizacao.model';
 export * from './dataGraficos.model';
+export * from './erro.model';
