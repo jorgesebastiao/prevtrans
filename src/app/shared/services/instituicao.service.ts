@@ -34,6 +34,18 @@ export class InstituicaoService {
       });
   }
 
+  verificaCnpj(cnpj: string, id?: string) {
+    return this.http.get(`${PREVTRANS_API}/instituicoes/usuario/${cnpj}`, {params: {id}})
+      .map(response => response.text() ? response.json() : response)
+      .catch(erro => Observable.throw(erro));
+  }
+
+  verificaEmail(email: string, id?: string) {
+    return this.http.get(`${PREVTRANS_API}/instituicoes/email/${email}`, {params: {id}})
+      .map(response => response.text() ? response.json() : response)
+      .catch(erro => Observable.throw(erro));
+  }
+
   postInstituicao(instituicao: Instituicao): Observable<String> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

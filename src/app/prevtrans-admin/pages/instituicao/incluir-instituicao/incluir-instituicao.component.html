@@ -22,7 +22,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l4">
-          <app-input-container errorMessage="Cnpj Inválido">
+          <app-input-container [errorMessage]= messageErroCnpj>
             <input id="cnpj" type="text" name="cnpj" prevtransMask="99.999.999/9999-99" formControlName="cnpj"
                    autocomplete="off">
             <label class="black-text text-darken-4" for="cnpj">Cnpj</label>
@@ -41,7 +41,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l6">
-          <app-input-container errorMessage="E-mail inválido">
+          <app-input-container [errorMessage]=messageErroEmail>
             <input id="email" type="text" formControlName="email" autocomplete="off">
             <label class="black-text text-darken-4" for="email">E-mail</label>
           </app-input-container>
