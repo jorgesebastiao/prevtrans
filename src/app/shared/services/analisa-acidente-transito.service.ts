@@ -5,6 +5,7 @@ import {PREVTRANS_API} from '../../app.api';
 import {PrevtransAdminHerrorHandler} from '../../prevtrans-admin/prevtrans-admin-herror-handler';
 import {DataGraficos} from '../models/dataGraficos.model';
 import 'rxjs/add/operator/timeout';
+import 'rxjs/add/operator/timeoutWith';
 
 @Injectable()
 export class AnalisaAcidenteTransitoService {
@@ -14,12 +15,12 @@ export class AnalisaAcidenteTransitoService {
   }
 
   dadosClima(): Observable<DataGraficos[]> {
-    return this.http.get(`${this.URL_API}/dados-clima`).timeout(3600)
+    return this.http.get(`${this.URL_API}/dados-clima`).timeout(3000)
       .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 
   dadosCondicaoDaVia(): Observable<DataGraficos[]> {
-    return this.http.get(`${this.URL_API}/dados-condicao-via`).timeout(3600)
+    return this.http.get(`${this.URL_API}/dados-condicao-via`).timeout(3000)
       .map(response => response.json()).catch(PrevtransAdminHerrorHandler.handleError);
   }
 

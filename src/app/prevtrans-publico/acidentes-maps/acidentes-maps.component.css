@@ -2,26 +2,31 @@ agm-map {
   height: 100%;
   position: relative;
 }
-.col{
+
+.col {
   padding: 0;
 }
-#map{
+
+#map {
   width: 100%;
   height: 100%;
   margin: 0;
   position: relative;
   overflow: hidden;
 }
-.acidentes{
+
+.acidentes {
   overflow: hidden;
   position: relative;
-  top:0;
+  top: 0;
   left: 10;
   z-index: 50;
 }
+
+/*
 .modal{
   bottom: 4%;
-  /* top: auto !important; */
+  /* top: auto !important;
   display: none;
   position: fixed;
   left: 330;
@@ -44,4 +49,30 @@ agm-map {
   -o-transform: translate(0);
   transform: translate(0);
   will-change: top, opacity;
+}
+*/
+.modal {
+  max-height: 85% !important;
+}
+
+.titulo {
+  padding-top: 10px !important;
+  padding-left: 10px !important;
+  font-size: 1.1rem;
+  /*  text-transform: uppercase;*/
+}
+
+.texto {
+  padding-left: 10px !important;
+}
+
+.titulo-car {
+  padding-top: 10px !important;
+  padding-left: 10px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.corpo {
+  margin-left: 1rem;
 }

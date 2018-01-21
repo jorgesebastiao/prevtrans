@@ -6,7 +6,7 @@ export class PrevtransCnpjValidator {
       return null;
     }
 
-    return {'cnpj': true};
+    return {'cnpjInvalido': true};
   }
 
   static cnpjValido(cnpj: any): boolean {

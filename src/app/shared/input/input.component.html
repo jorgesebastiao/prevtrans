@@ -2,5 +2,12 @@
      [class.has-error]="hasError()">
   <label for="inputSuccess" >{{label}}</label>
   <ng-content></ng-content>
-  <div class="error-msg" *ngIf="hasError()">{{errorMessage}}</div>
+  <div class="error-msg" *ngIf="hasRequired()">Campo obrigatório</div>
+  <div class="error-msg" *ngIf="hasParttern()">{{errorMessage[0]}}</div>
+  <div class="error-msg" *ngIf="hasMinLenght()">{{errorMessage[1]}}</div>
+  <div class="error-msg" *ngIf="hasMaxLength()">{{errorMessage[2]}}</div>
+  <div class="error-msg" *ngIf="hasCnpjEmUso()">Cnpj já esta em uso</div>
+  <div class="error-msg" *ngIf="hasCnpjInvalido()">Cnpj inválido</div>
+  <div class="error-msg" *ngIf="hasEmailEmUso()">E-mail já está em uso</div>
+  <div class="error-msg" *ngIf="hasUsuarioEmUso()">Usuário já está em uso</div>
 </div>

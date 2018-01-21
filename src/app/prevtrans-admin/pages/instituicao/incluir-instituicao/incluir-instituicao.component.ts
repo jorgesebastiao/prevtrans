@@ -17,8 +17,6 @@ declare const Materialize: any;
 })
 export class IncluirInstituicaoComponent implements OnInit {
   titulo = 'Cadastrar Instituição';
-  messageErroCnpj: string;
-  messageErroEmail: string;
   cepPattern = /^[0-9]{8}$/;
   numberPattern = /^[0-9]*$/;
   emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -38,8 +36,6 @@ export class IncluirInstituicaoComponent implements OnInit {
 
   ngOnInit() {
     this.usuarios = [];
-    this.messageErroCnpj = '';
-    this.messageErroEmail = '';
     this.inicializaMaterialize();
     this.iniciaForm();
     const id = this.routes.snapshot.params['id'];
@@ -124,10 +120,9 @@ export class IncluirInstituicaoComponent implements OnInit {
     this.instituicaoForm = this.formBuilder.group({
       razaoSocial: this.formBuilder.control(null, [Validators.required, Validators.minLength(5)]),
       nomeFantasia: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-      cnpj: this.formBuilder.control('', Validators.compose([
-        Validators.required, IncluirInstituicaoComponent.validaCnpj]), this.cnpjEmUso.bind(this)),
-      inscricaoEstadual: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-      inscricaoMunicipal: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
+      cnpj: this.formBuilder.control('', [Validators.required, IncluirInstituicaoComponent.validaCnpj], this.cnpjEmUso.bind(this)),
+      inscricaoEstadual: this.formBuilder.control(''),
+      inscricaoMunicipal: this.formBuilder.control(''),
       email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)],
         this.emailEmUso.bind(this)),
       telefone: this.formBuilder.control('', [Validators.required, Validators.minLength(8)]),
@@ -150,11 +145,9 @@ export class IncluirInstituicaoComponent implements OnInit {
       setTimeout(() => {
         this.instituicaoService.verificaCnpj(control.value, this.instituicao.idInstituicao)
           .subscribe(() => {
-            this.messageErroCnpj = 'Cnpj Inválido';
             resolve(null);
           }, () => {
-            this.messageErroCnpj = 'Cnpj já está em uso';
-            resolve({'usuarioEmUso': true});
+            resolve({'cnpjEmUso': true});
           });
       }, 1000);
     });
@@ -166,10 +159,8 @@ export class IncluirInstituicaoComponent implements OnInit {
       setTimeout(() => {
         this.instituicaoService.verificaEmail(control.value, this.instituicao.idInstituicao)
           .subscribe(() => {
-            this.messageErroEmail = 'E-mail inválido';
             resolve(null);
           }, () => {
-            this.messageErroEmail = 'E-mail  já está em uso';
             resolve({'emailEmUso': true});
           });
       }, 1000);

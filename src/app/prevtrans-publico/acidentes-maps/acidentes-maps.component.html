@@ -12,12 +12,62 @@
   </agm-map>
 </div>
 
-<div id="exibe-informacao" class="modal scrollbar">
+<div id="exibe-informacao" class="modal bottom-sheet">
   <div class="modal-content">
-    <h4>{{acidenteTransito.tituloPublicacao}}</h4>
-    <p>{{acidenteTransito.descricao}}</p>
+    <div class="card-panel row">
+      <h4 class="titulo-car card-panel col s12">{{acidenteTransito.tituloPublicacao}}</h4>
+
+      <div class="col s12 card-panel">
+        <h4 class="titulo">Descrição</h4>
+        <p class="texto">{{acidenteTransito.descricao}}</p>
+      </div>
+
+      <div class="card-panel col s12">
+        <h4 class="titulo">Localização Acidente de trânsito</h4>
+        <p class="texto">Latitude Aproximada: {{acidenteTransito.latitude}}</p>
+        <p class="texto">Longitude Aproximada: {{acidenteTransito.longitude}}</p>
+        <p class="texto">Cep: {{acidenteTransito.cep | cep}}</p>
+        <p class="texto">Endereço: {{acidenteTransito.endereco}}</p>
+        <p class="texto">Bairro: {{acidenteTransito.bairro}}</p>
+        <p class="texto">Cidade: {{acidenteTransito.cidade}}</p>
+        <p class="texto">Estado: {{acidenteTransito.estado}}</p>
+      </div>
+
+      <div class="corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Clima</h4>
+        <p class="texto">{{acidenteTransito.clima.clima}}</p>
+      </div>
+
+      <div class="corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Condição da Via</h4>
+        <p class="texto">{{acidenteTransito.condicaoDaVia.condicao}}</p>
+      </div>
+      <div class="corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Periodo do Dia</h4>
+        <p class="texto">{{acidenteTransito.periodoDia.periodoDia}}</p>
+      </div>
+      <div class="corpo card-panel  col s12 m6 l6 ">
+        <h4 class="titulo">Pista</h4>
+        <p class="texto">{{acidenteTransito.pista.pista}}</p>
+      </div>
+      <div class="corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Sinalização</h4>
+        <p class="texto">{{acidenteTransito.sinalizacao.sinalizacao}}</p>
+      </div>
+      <div class="corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Tipo Acidente de Trânsito</h4>
+        <p class="texto">{{acidenteTransito.tipoAcidenteTransito.tipoAcidenteTransito}}</p>
+      </div>
+      <div class="corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Tipo de Via</h4>
+        <p class="texto">{{acidenteTransito.tipoVia.tipoVia}}</p>
+      </div>
+      <div class=" corpo card-panel col s12 m6 l6">
+        <h4 class="titulo">Visibilidade</h4>
+        <p class="texto">{{acidenteTransito.visibilidade.visibilidade}}</p>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
-    <a class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
   </div>
 </div>

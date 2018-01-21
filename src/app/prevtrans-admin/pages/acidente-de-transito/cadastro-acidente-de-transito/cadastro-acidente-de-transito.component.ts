@@ -103,6 +103,7 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.veiculos = [];
     this.acidenteTransito = new AcidenteTransito();
     this.acidenteTransito.urlFotos = [];
+    this.acidenteTransito.periodoDia = new PeriodoDia();
     this.localizacao = new Localizacao();
     this.inicializaCalendario();
     this.iniciaForm();
@@ -163,10 +164,10 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
     this.acidenteTransitoForm = this.formBuilder.group(
       {
         tituloPublicacao: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        data: this.formBuilder.control(new Date(), [Validators.required]),
-        hora: this.formBuilder.control(new Date().getHours() + ':' + new Date().getMinutes().toPrecision(2), [Validators.required]),
+        data: this.formBuilder.control('', [Validators.required]),
+        hora: this.formBuilder.control('', [Validators.required]),
         descricao: this.formBuilder.control('', [Validators.required,
-          Validators.minLength(150), Validators.maxLength(250)]),
+          Validators.minLength(50), Validators.maxLength(250)]),
         numeroDeMortos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeFeridos: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
         numeroDeVitimas: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
@@ -485,15 +486,15 @@ export class CadastroAcidenteDeTransitoComponent implements OnInit {
   }
 
   removerVeiculo(veiculo: Veiculo, index: number) {
-    if (veiculo.idVeiculo) {
+    /*if (veiculo.idVeiculo) {
       /* this.acidenteTransitoService.deleteVeiculos(this.acidenteTransito.idAcidenteTransito, veiculo.idVeiculo)
          .subscribe(() => {
            this.veiculos.splice(index, 1);
          this.confirmacao('Veiculo Removido');
        });*/
-    } else {
+    /*} else {*/
       this.veiculos.splice(index, 1);
-    }
+ //   }
   }
 
   confirmacao(msg: string) {

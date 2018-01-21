@@ -8,7 +8,7 @@ import {NgModel, FormControlName} from '@angular/forms'
 export class InputComponent implements OnInit, AfterContentInit {
 
   @Input() label: string;
-  @Input() errorMessage: string;
+  @Input() errorMessage: string[];
 
   input: any;
 
@@ -34,6 +34,39 @@ export class InputComponent implements OnInit, AfterContentInit {
   }
 
   hasError(): boolean {
-    return this.input.invalid && (this.input.dirty || this.input.touched);
+    return this.input.invalid && (this.input.dirty || this.input.touched)
+      && (!this.input.hasError('required') || !this.input.hasError('pattern'));
+  }
+
+  hasRequired() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('required') && !this.input.hasError('cnpjInvalido');
+  }
+
+  hasParttern() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('pattern');
+  }
+
+  hasCnpjInvalido() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('cnpjInvalido');
+  }
+
+  hasCnpjEmUso() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('cnpjEmUso');
+  }
+
+  hasEmailEmUso() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('emailEmUso');
+  }
+
+  hasUsuarioEmUso() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('usuarioEmUso');
+  }
+
+  hasMinLenght() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('minlength');
+  }
+
+  hasMaxLength() {
+    return this.input.invalid && (this.input.dirty || this.input.touched) && this.input.hasError('maxlength');
   }
 }

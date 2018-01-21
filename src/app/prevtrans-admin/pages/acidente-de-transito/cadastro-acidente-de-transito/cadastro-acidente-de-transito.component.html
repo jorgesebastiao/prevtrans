@@ -10,20 +10,20 @@
       </div>
       <div class="row">
         <div class="input-field col s12 m4 l8 ">
-          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 5">
+          <app-input-container [errorMessage]="['','tamanho minimo 5']">
             <input id="titulo-publicacao" type="text" formControlName="tituloPublicacao" autocomplete="off">
             <label class="black-text text-darken-4" for="titulo-publicacao">Titulo Publicação</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m2 l2">
-          <app-input-container errorMessage="Campo Obrigatorio">
+          <app-input-container >
             <input id="data" materialize="pickadate" class="datepicker" formControlName="data"
                    [materializeParams]="[data]">
             <label class="black-text text-darken-4 active" for="data">Data Acidente</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m2 l2">
-          <app-input-container errorMessage="Campo Obrigatorio">
+          <app-input-container >
             <input id="hora" materialize="pickatime"
                    class="timepicker"
                    formControlName="hora"
@@ -32,7 +32,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m12 l12">
-          <app-input-container errorMessage="Campo Obrigatório , tamanho minimo 150 caracteres, tamanho maximo 250 caracteres">
+          <app-input-container [errorMessage]="['','tamanho minimo 50 caracteres','tamanho maximo 250 caracteres']">
             <textarea materialize="characterCounter" data-length="250" id="descricao" formControlName="descricao"
                       class="materialize-textarea"> </textarea>
             <label class="black-text text-darken-4" for="descricao">Descrição do Acidente de Trânsito</label>
@@ -80,7 +80,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m3 l3">
-          <app-input-container errorMessage="Campo Obrigatório ">
+          <app-input-container >
             <select id="sinalizacao" formControlName="sinalizacao" materialize="material_select"
                     [materializeSelectOptions]="sinalizacoes">
               <option value="" disabled selected></option>
@@ -90,7 +90,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m3 l3">
-          <app-input-container errorMessage="Campo Obrigatório ">
+          <app-input-container >
             <select id="clima" formControlName="clima" materialize="material_select"
                     [materializeSelectOptions]="climas">
               <option value="" disabled selected></option>
@@ -100,7 +100,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m3 l3">
-          <app-input-container errorMessage="Campo Obrigatório ">
+          <app-input-container >
             <select id="periodo-dia" formControlName="periodoDia" materialize="material_select"
                     [materializeSelectOptions]="periodosDias">
               <option value="" disabled selected></option>
@@ -110,7 +110,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m3 l3">
-          <app-input-container errorMessage="Campo Obrigatório ">
+          <app-input-container >
             <select id="tipo-acidente-transito" formControlName="tipoAcidenteTransito" materialize="material_select"
                     [materializeSelectOptions]="tiposAcidentesTransitio">
               <option value="" disabled selected></option>
@@ -120,7 +120,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m3 l3">
-          <app-input-container errorMessage="Campo Obrigatório ">
+          <app-input-container>
             <select id="pista" formControlName="pista" materialize="material_select"
                     [materializeSelectOptions]="pistas">
               <option value="" disabled selected></option>
@@ -130,21 +130,21 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l2">
-          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+          <app-input-container [errorMessage]="['Somente Números']">
             <input (blur)="somaVitimas" id="numero-de-mortos" formControlName="numeroDeMortos" type="text"
                    autocomplete="off">
             <label class="black-text text-darken-4" for="numero-de-mortos">Número de Mortos</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l2">
-          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+          <app-input-container [errorMessage]="['Somente Números']">
             <input (blur)="somaVitimas" id="numero-de-feridos" formControlName="numeroDeFeridos" type="text"
                    autocomplete="off">
             <label class="black-text text-darken-4" for="numero-de-feridos">Número de Feridos</label>
           </app-input-container>
         </div>
         <div class="input-field col s12 m4 l2">
-          <app-input-container errorMessage="Campo Obrigatório ,Somente Números">
+          <app-input-container [errorMessage]="['Somente Números']">
             <input  id="numero-de-vitimas" formControlName="numeroDeVitimas" type="text" autocomplete="off">
             <label class="black-text text-darken-4" for="numero-de-vitimas">Número de Vitimas</label>
           </app-input-container>
@@ -173,7 +173,7 @@
           </app-input-container>
         </div>
         <div class="input-field col s12 m3 l3">
-          <app-input-container errorMessage="Cep inválido">
+          <app-input-container [errorMessage]="['Cep inválido']">
             <input id="cep" prevtransMask="99999-999" type="text" formControlName="cep" autocomplete="off">
             <label class="black-text text-darken-4" for="cep">Cep</label>
           </app-input-container>
@@ -235,7 +235,6 @@
               <th>PLACA</th>
               <th>DESCRIÇÃO</th>
               <th>NUMERO DE OCUPANTES</th>
-              <th>ALTERAR</th>
               <th>EXCLUIR</th>
             </tr>
             </thead>
@@ -247,9 +246,6 @@
               <td>{{veiculoT.placa}}</td>
               <td>{{veiculoT.descricao}}</td>
               <td>{{veiculoT.numeroOcupantes}}</td>
-              <td>
-                <a (click)="alterarVeiculo(veiculoT, i)" class="amber accent-4  white-text  btn-flat"> <i class="material-icons">mode_edit</i></a>
-              </td>
               <td>
                 <a (click)="removerVeiculo(veiculoT, i)" class="amber accent-4 white-text  btn-flat"><i class="material-icons">delete</i></a>
               </td>

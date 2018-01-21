@@ -15,13 +15,13 @@
         </app-input-container>
       </div>
       <div class="input-field col s12 m12 l12 ">
-        <app-input-container [errorMessage]=messageErroUsuario>
+        <app-input-container [errorMessage]="['Usuário inválido','']">
           <input id="usuario" type="text" formControlName="usuario" autocomplete="off">
           <label class="black-text text-darken-4" for="usuario">Usuario</label>
         </app-input-container>
       </div>
       <div class="input-field col s12 m12 l12 ">
-        <app-input-container [errorMessage]=messageErroEmail>
+        <app-input-container [errorMessage]="['E-mail inválido','']">
           <input id="email" type="text" formControlName="email" autocomplete="off">
           <label class="black-text text-darken-4" for="email">Email</label>
         </app-input-container>

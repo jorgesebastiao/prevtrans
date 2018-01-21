@@ -35,7 +35,7 @@ export class InstituicaoService {
   }
 
   verificaCnpj(cnpj: string, id?: string) {
-    return this.http.get(`${PREVTRANS_API}/instituicoes/usuario/${cnpj}`, {params: {id}})
+    return this.http.get(`${PREVTRANS_API}/instituicoes/cnpj/${cnpj}`, {params: {id}})
       .map(response => response.text() ? response.json() : response)
       .catch(erro => Observable.throw(erro));
   }
